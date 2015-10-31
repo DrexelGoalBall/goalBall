@@ -45,7 +45,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\GameRules\CoinFlip.cs" />
+     <Compile Include="Assets\Scripts\GameRules\DoOnKey.cs" />
+     <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
+     <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
      <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
