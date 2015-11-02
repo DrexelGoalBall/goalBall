@@ -3,21 +3,35 @@ using System.Collections;
 
 public class GoalP2 : MonoBehaviour {
 
-	public GameObject ball;
-	public GameObject controller;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public GameObject ball;
+    public GameObject controller;
+    bool inside;
+    // Use this for initialization
+    void Start()
+    {
+        inside = false;
+    }
 
-	void OnTriggerEnter(Collider col){
-		if(col.gameObject.name == "Ball"){
-			controller.GetComponent<ScoreP2>().addScore();
-		}
-	}
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.name == "Ball" && !inside)
+        {
+            controller.GetComponent<ScoreDisplay>().addScoreP1();
+            inside = true;
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.gameObject.name == "Ball" && inside)
+        {
+            inside = false;
+        }
+    }
 }

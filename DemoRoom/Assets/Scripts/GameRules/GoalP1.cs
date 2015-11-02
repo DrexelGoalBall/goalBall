@@ -18,7 +18,7 @@ public class GoalP1 : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col){
 		if(col.gameObject.name == "Ball" && !inside){
-			controller.GetComponent<ScoreP2>().addScore();
+			controller.GetComponent<ScoreDisplay>().addScoreP2();
 			inside = true;
 		}
 	}
