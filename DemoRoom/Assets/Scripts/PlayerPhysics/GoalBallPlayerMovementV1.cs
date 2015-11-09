@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GoalBallPlayerMovementV1 : MonoBehaviour
 {
-
     //Control names
     public string Horizonal = "Horizontal";
     public string Vertical = "Vertical";
@@ -13,7 +12,8 @@ public class GoalBallPlayerMovementV1 : MonoBehaviour
 
     //Movement Speed
     public float speed = 10f;
-    
+
+    public int sideCorrection = 1;
 
 	// Use this for initialization
 	void Start ()
@@ -27,6 +27,7 @@ public class GoalBallPlayerMovementV1 : MonoBehaviour
         float hinput = Input.GetAxis(Horizonal);
         float vinput = Input.GetAxis(Vertical);
 
-        RB.velocity = (gameObject.transform.right * hinput * speed)  +  (gameObject.transform.forward * vinput * speed);
+        RB.velocity = (sideCorrection * gameObject.transform.right * hinput * speed) + 
+                      (sideCorrection * gameObject.transform.forward * vinput * speed);
 	}
 }

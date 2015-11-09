@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraBox : MonoBehaviour {
 
     //Cameras
-    public Camera[] cams;
+    public List<Camera> cams = new List<Camera>();
 
     //Indexs
     int currentIndex = 0;
@@ -24,10 +25,10 @@ public class CameraBox : MonoBehaviour {
     {
 	    if (Input.GetKeyDown(KeyCode.K))
         {
-            if (cams.Length > 1)
+            if (cams.Count > 1)
             {
                 cams[currentIndex].enabled = false;
-                if (currentIndex == cams.Length - 1)
+                if (currentIndex == cams.Count - 1)
                 {
                     currentIndex = 0;
                 }

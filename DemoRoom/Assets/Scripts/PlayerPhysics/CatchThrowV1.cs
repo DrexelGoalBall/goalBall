@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class CatchThrowV1 : MonoBehaviour {
+public class CatchThrowV1 : NetworkBehaviour
+{
+    [SyncVar(hook = "PickedUpBall")]
+    public bool ballheld = false;
+    [SyncVar()]
+    public bool ballInRange = false;
 
     //Catch Colider 
     public GameObject ThrowDirection;
@@ -9,10 +15,15 @@ public class CatchThrowV1 : MonoBehaviour {
 
     //Throw Options
     public float throwForce = 10f;
-    public bool ballInRange = false;
-    public bool ballheld = false;
+    //public bool ballInRange = false;
+    //public bool ballheld = false;
     public float pickupDistance = 5f;
     public string pickUpThrowButton = "Throw";
+
+    void Start()
+    {
+        ball = GameObject.FindGameObjectWithTag("Ball");
+    }
 
 	// Update is called once per frame
 	void Update ()
@@ -21,7 +32,7 @@ public class CatchThrowV1 : MonoBehaviour {
         Vector3 ballPos = ball.transform.position;
 
         //Determine if you can pickup the ball
-        if (Vector3.Distance(playerPos, ballPos) <  pickupDistance)
+        if (isLocalPlayer && Vector3.Distance(playerPos, ballPos) <  pickupDistance)
         {
             ballInRange = true;
         }
@@ -43,7 +54,9 @@ public class CatchThrowV1 : MonoBehaviour {
 
         if (Input.GetButtonDown(pickUpThrowButton) && (ballInRange || ballheld))
         {
-            Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+            ballheld = !ballheld;
+
+            /*Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
             if (ballheld)
             {
@@ -55,13 +68,31 @@ public class CatchThrowV1 : MonoBehaviour {
             else
             {
                 ballheld = true;
-                ballRB.constraints = RigidbodyConstraints.FreezePosition;
+                ballRB.constraints = RigidbodyConstraints.FreezeAll;
                 ball.transform.parent = ThrowDirection.transform;
                 ball.transform.localPosition = new Vector3(0, 0, 0);
-            }
+            }*/
         }
 	}
 
+    [Client]
+    void PickedUpBall(bool ballHeld)
+    {
+        Debug.Log("Ball held = " + ballHeld);
 
+        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
+        if (ballheld)
+        {
+            ball.transform.parent = null;
+            ballRB.constraints = RigidbodyConstraints.None;
+            ballRB.AddForce(ThrowDirection.transform.forward * throwForce);
+        }
+        else
+        {
+            ballRB.constraints = RigidbodyConstraints.FreezeAll;
+            ball.transform.parent = ThrowDirection.transform;
+            ball.transform.localPosition = new Vector3(0, 0, 0);
+        }
+    }
 }

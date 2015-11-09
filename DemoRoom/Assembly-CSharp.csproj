@@ -47,22 +47,33 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameRules\CoinFlip.cs" />
      <Compile Include="Assets\Scripts\GameRules\DoOnKey.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GameTimer.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GoalP1.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GoalP2.cs" />
+     <Compile Include="Assets\Scripts\GameRules\ScoreDisplay.cs" />
+     <Compile Include="Assets\Scripts\GameRules\ScoreP2.cs" />
+     <Compile Include="Assets\Scripts\Network\ActivateSpawnPoints.cs" />
+     <Compile Include="Assets\Scripts\Network\AddSpawnPoints.cs" />
+     <Compile Include="Assets\Scripts\Network\Ball_MotionSync.cs" />
+     <Compile Include="Assets\Scripts\Network\FPS.cs" />
+     <Compile Include="Assets\Scripts\Network\NetworkManager_Custom.cs" />
+     <Compile Include="Assets\Scripts\Network\NetworkMenu.cs" />
+     <Compile Include="Assets\Scripts\Network\Player_ID.cs" />
+     <Compile Include="Assets\Scripts\Network\Player_Latency.cs" />
+     <Compile Include="Assets\Scripts\Network\Player_NetworkSetup.cs" />
+     <Compile Include="Assets\Scripts\Network\Player_SyncPosition.cs" />
+     <Compile Include="Assets\Scripts\Network\Player_SyncRotation.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV1.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
      <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
