@@ -13,24 +13,26 @@ public class Fouls : MonoBehaviour {
 	Vector3 redStart, blueStart, ballStart;
 	
 	Vector3 stopVector;
-	int frameTimer;				// Counts the throw timing
+    //Timer
+    Timer timer;
+    public int dogp = 10;
+
 
 	// Use this for initialization
 	void Start () {
 		redStart = redBallLanding.transform.position;
 		blueStart = blueBallLanding.transform.position;
 		ballStart = ball.transform.position;
-		
+        timer = gameObject.AddComponent<Timer>();
+        timer.SetLengthOfTimer(10);
 		stopVector = new Vector3(0, 0, 0);
-		frameTimer = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(frameTimer == 600){
+		if(timer.getTime() < 0){
 			ThrowTimeFoul();
 		}
-		frameTimer++;
 	}
 
 	public void LineOut(){
@@ -47,14 +49,14 @@ public class Fouls : MonoBehaviour {
 		if(possession == 1){
 			ball.transform.position = blueStart;	
 			ball.GetComponent<Rigidbody>().velocity = stopVector;
-			frameTimer = 0;
-			possession = 2;
+            timer.Reset();
+            possession = 2;
 		}
 		else if(possession == 2){
 			ball.transform.position = redStart;
 			ball.GetComponent<Rigidbody>().velocity = stopVector;
-			frameTimer = 0;
-			possession = 1;
+            timer.Reset();
+            possession = 1;
 		}
 
 	}
