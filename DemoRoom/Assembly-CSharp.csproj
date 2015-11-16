@@ -45,24 +45,30 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\GameRules\BallStartAndReset.cs" />
      <Compile Include="Assets\Scripts\GameRules\CoinFlip.cs" />
      <Compile Include="Assets\Scripts\GameRules\DoOnKey.cs" />
+     <Compile Include="Assets\Scripts\GameRules\Fouls.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GameTimer.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GoalP1.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GoalP2.cs" />
+     <Compile Include="Assets\Scripts\GameRules\LineTrigger.cs" />
+     <Compile Include="Assets\Scripts\GameRules\ScoreDisplay.cs" />
+     <Compile Include="Assets\Scripts\GameRules\ScoreP2.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV1.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV2.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
+     <Compile Include="Assets\Scripts\SoundScripts\BallInnerSounds.cs" />
      <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\Scripts\SoundScripts\Referee.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
