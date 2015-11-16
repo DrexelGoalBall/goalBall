@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CoinFlip : ScriptableObject {
+public class CoinFlip : MonoBehaviour {
 
     public float odds = .5f;
     public int expected = 1;
