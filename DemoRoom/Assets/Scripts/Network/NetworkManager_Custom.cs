@@ -29,7 +29,7 @@ public class NetworkManager_Custom : NetworkManager
     {
         networkInfoText.text = "Creating local match...";
         NetworkManager.singleton.networkAddress = "localhost";
-        NetworkManager.singleton.networkPort = 7777;
+        //NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartHost();
     }
 
@@ -38,9 +38,12 @@ public class NetworkManager_Custom : NetworkManager
         if (!joining)
         {
             joining = true;
-            networkInfoText.text = "Joining local match...";
-            NetworkManager.singleton.networkAddress = "localhost";
-            NetworkManager.singleton.networkPort = 7777;
+            string address = GameObject.Find("AddressField").GetComponent<InputField>().text;
+            if (string.IsNullOrEmpty(address))
+                address = "localhost";
+            NetworkManager.singleton.networkAddress = address;
+            //NetworkManager.singleton.networkPort = 7777;
+            networkInfoText.text = string.Format("Joining match on {0}...", address);
             NetworkManager.singleton.StartClient();
         }
     }
@@ -129,16 +132,18 @@ public class NetworkManager_Custom : NetworkManager
     {
         Debug.Log("Add Player");
         Transform spawnLoc = this.startPositions[NetworkManager.singleton.numPlayers];
-        foreach (Transform t in this.startPositions)
-            Debug.Log(t.name);
+        //foreach (Transform t in this.startPositions)
+        //    Debug.Log(t.name);
         Quaternion spawnRot = Quaternion.identity;
         int sideCorrection = 1;
+        Debug.Log(spawnLoc.name);
         if (spawnLoc.name.StartsWith("Red"))
         {
             spawnRot = Quaternion.Euler(new Vector3(0, 180, 0));
             sideCorrection = -1;
         }
         GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, spawnLoc.position, spawnRot);
+        Debug.Log(sideCorrection);
         player.GetComponent<GoalBallPlayerMovementV1>().sideCorrection = sideCorrection;
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
     }
@@ -157,6 +162,8 @@ public class NetworkManager_Custom : NetworkManager
 
     public override void OnClientConnect(NetworkConnection conn)
     {
+        base.OnClientConnect(conn);
+
         joining = false;
         Debug.Log("Client Connect");
     }
@@ -167,51 +174,87 @@ public class NetworkManager_Custom : NetworkManager
         {
             networkInfoText.text = "Failed to join.";
             Debug.Log(conn.address + " - " + conn.hostId);
-            if (conn.address.Trim().Equals("127.0.0.1"))
-                HostLocal();
+            //if (conn.address.Trim().Equals("127.0.0.1"))
+            //    HostLocal();
         }
         joining = false;
         Debug.Log("Client Disconnect");
+
+        base.OnClientDisconnect(conn);
     }
 
     /*public override void OnClientError(NetworkConnection conn, int errorCode)
     {
+        base.OnClientError(conn, errorCode);
+        
         joining = false;
         Debug.Log("Client Error");
     }*/
 
     public override void OnServerConnect(NetworkConnection conn)
     {
+        base.OnServerConnect(conn);
+
         joining = false;
         Debug.Log("Server Connect");
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
+        base.OnServerDisconnect(conn);
+
         joining = false;
         Debug.Log("Server Disconnect");
     }
     
     /*public override void OnServerError(NetworkConnection conn, int errorCode)
     {
+        base.OnServerError(conn, errorCode);
+        
         joining = false;
         Debug.Log("Server Error");
     }*/
 
     public override void OnStopClient()
     {
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        if (ball != null)
+        {
+            GameObject g = ball;
+            while (g.transform.parent != null)
+            {
+                g = g.transform.parent.gameObject;
+            }
+
+            CatchThrowV1 ct = g.GetComponent<CatchThrowV1>();
+            if (ct != null && ct.isLocalPlayer)
+            {
+                Debug.Log("Ball is going to be deleted, save it!");
+                ct.DropBall();
+            }
+            //NetworkIdentity ni = g.GetComponent<NetworkIdentity>();
+            //if (ni != null && ni.isLocalPlayer)
+            //    g.transform.parent = null;
+        }
+
+        //base.OnStopClient();
+
         joining = false;
         Debug.Log("Stop Client");
     }
 
     public override void OnStopHost()
     {
+        //base.OnStopHost();
+
         joining = false;
         Debug.Log("Stop Host");
     }
 
     public override void OnStopServer()
     {
+        base.OnStopServer();
+
         joining = false;
         Debug.Log("Stop Server");
     }

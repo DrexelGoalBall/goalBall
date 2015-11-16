@@ -48,7 +48,7 @@ public class Ball_MotionSync : NetworkBehaviour
 
     void LerpMotion()
     {
-        if (isServer)
+        if (isServer || transform.parent != null)
         {
             return;
         }

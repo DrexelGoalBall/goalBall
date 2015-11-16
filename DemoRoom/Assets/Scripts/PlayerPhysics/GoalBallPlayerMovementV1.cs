@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class GoalBallPlayerMovementV1 : MonoBehaviour
+public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
     //Control names
     public string Horizonal = "Horizontal";
@@ -13,6 +14,7 @@ public class GoalBallPlayerMovementV1 : MonoBehaviour
     //Movement Speed
     public float speed = 10f;
 
+    [SyncVar]
     public int sideCorrection = 1;
 
 	// Use this for initialization

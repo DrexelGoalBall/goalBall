@@ -45,13 +45,13 @@ public class Fouls : MonoBehaviour {
 
 	public void foul(){
 		if(possession == 1){
-			ball.transform.position = new Vector3(blueTeamX, blueTeamY, blueTeamZ);	
+            ball.transform.position = redStart;
 			ball.GetComponent<Rigidbody>().velocity = stopVector;
 			frameTimer = 0;
 			possession = 2;
 		}
 		else if(possession == 2){
-			ball.transform.position = new Vector3(redTeamX, redTeamY, redTeamZ);
+            ball.transform.position = blueStart;
 			ball.GetComponent<Rigidbody>().velocity = stopVector;
 			frameTimer = 0;
 			possession = 1;

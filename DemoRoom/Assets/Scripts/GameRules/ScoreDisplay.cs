@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
+public class ScoreDisplay : NetworkBehaviour {
 
-public class ScoreDisplay : MonoBehaviour {
+    [SyncVar]
+    int scorep1;
+    [SyncVar]
+    int scorep2;
 
 	public Text p1score;
     public Text p2score;
-	int scorep1;
-    int scorep2;
 
 	// Use this for initialization
 	void Start ()
     {
-		scorep1 = 0;
-        scorep2 = 0;
+        if (isServer)
+        {
+            scorep1 = 0;
+            scorep2 = 0;
+        }
 	}
 	
 	// Update is called once per frame
@@ -28,23 +34,35 @@ public class ScoreDisplay : MonoBehaviour {
 
 	public void addScoreP1()
     {
-		scorep1++;
-		print("Added: " + scorep1);
+        if (isServer)
+        {
+            scorep1++;
+            print("Added: " + scorep1);
+        }
 	}
 
 	public void subScoreP1()
     {
-		scorep1--;
+        if (isServer)
+        {
+            scorep1--;
+        }
 	}
 
     public void addScoreP2()
     {
-        scorep2++;
-        print("Added: " + scorep2);
+        if (isServer)
+        {
+            scorep2++;
+            print("Added: " + scorep2);
+        }
     }
 
     public void subScoreP2()
     {
-        scorep2--;
+        if (isServer)
+        {
+            scorep2--;
+        }
     }
 }

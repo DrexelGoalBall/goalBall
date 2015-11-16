@@ -4,9 +4,10 @@ using UnityEngine.Networking;
 
 public class CatchThrowV1 : NetworkBehaviour
 {
-    [SyncVar(hook = "PickedUpBall")]
+    [SyncVar(hook = "ChangeBallHold")]
     public bool ballheld = false;
-    [SyncVar()]
+    private bool balldrop = false;
+
     public bool ballInRange = false;
 
     //Catch Colider 
@@ -54,45 +55,65 @@ public class CatchThrowV1 : NetworkBehaviour
 
         if (Input.GetButtonDown(pickUpThrowButton) && (ballInRange || ballheld))
         {
-            ballheld = !ballheld;
-
-            /*Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-
-            if (ballheld)
-            {
-                ballheld = false;
-                ball.transform.parent = null;
-                ballRB.constraints = RigidbodyConstraints.None;
-                ballRB.AddForce(ThrowDirection.transform.forward * throwForce);
-            }
-            else
-            {
-                ballheld = true;
-                ballRB.constraints = RigidbodyConstraints.FreezeAll;
-                ball.transform.parent = ThrowDirection.transform;
-                ball.transform.localPosition = new Vector3(0, 0, 0);
-            }*/
+            TransmitBallChange(!ballheld, false);
         }
 	}
 
-    [Client]
-    void PickedUpBall(bool ballHeld)
+    void ChangeBallHold(bool held)
     {
-        Debug.Log("Ball held = " + ballHeld);
+        Debug.Log("Ball held = " + held);
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
-        if (ballheld)
+        if (!held)
         {
             ball.transform.parent = null;
             ballRB.constraints = RigidbodyConstraints.None;
-            ballRB.AddForce(ThrowDirection.transform.forward * throwForce);
+            if (!balldrop)
+                ballRB.AddForce(ThrowDirection.transform.forward * throwForce);
         }
         else
         {
             ballRB.constraints = RigidbodyConstraints.FreezeAll;
             ball.transform.parent = ThrowDirection.transform;
             ball.transform.localPosition = new Vector3(0, 0, 0);
+        }
+    }
+
+    [Command]
+    void CmdBallUpdates(bool held, bool drop)
+    {
+        balldrop = drop;
+        ballheld = held;
+        //Debug.Log("Command called");
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log("NOOOOOO");
+    }
+
+    [ClientCallback]
+    void TransmitBallChange(bool held, bool drop)
+    {
+        if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
+        {
+            Debug.Log("Send");
+            CmdBallUpdates(held, drop);
+            Debug.Log("Back");
+            if (!isServer)
+            {
+                balldrop = drop;
+                ballheld = held;
+            }
+        }
+    }
+
+    public void DropBall()
+    {
+        if (ballheld)
+        {
+            TransmitBallChange(false, true);
         }
     }
 }

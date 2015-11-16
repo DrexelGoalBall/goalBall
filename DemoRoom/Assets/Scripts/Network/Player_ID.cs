@@ -59,6 +59,4 @@ public class Player_ID : NetworkBehaviour {
 	{
 		playerUniqueIdentity = name;
 	}
-
-
 }
