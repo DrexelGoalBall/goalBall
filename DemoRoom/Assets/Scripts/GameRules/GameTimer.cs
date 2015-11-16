@@ -22,12 +22,13 @@ public class GameTimer : MonoBehaviour {
     public int halfLength = 120;
     int half = 1;
     bool endGame = false;
+    bool gameGoing = false;
 
 	// Use this for initialization
 	void Start () {
         timer = gameObject.AddComponent<Timer>();
         timer.SetLengthOfTimer(halfLength + 1);
-        timer.Resume();
+        timer.Pause();
         player1Start = player1.transform.position;
         player2Start = player2.transform.position;
         ballStart = ball.transform.position;
@@ -58,7 +59,22 @@ public class GameTimer : MonoBehaviour {
 
         //Determine what half it is
         half = half + 1;
+    }
 
-       
+    public void StartGame()
+    {
+        timer.Resume();
+        gameGoing = true;
+    }
+
+    public void StopGame()
+    {
+        timer.Pause();
+        gameGoing = false;
+    }
+
+    public bool GameIsGoing()
+    {
+        return gameGoing;
     }
 }

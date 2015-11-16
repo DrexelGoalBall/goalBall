@@ -58,7 +58,8 @@ public class Referee : MonoBehaviour {
     //So other scripts can wait until referee is finished speaking
     public bool refereeSpeaking()
     {
-        return AS.isPlaying;
+        if (AS.isPlaying || queue.Count > 0) return true;
+        return false;
     }
     
     //Things referee can say

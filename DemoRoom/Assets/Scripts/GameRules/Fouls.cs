@@ -15,6 +15,7 @@ public class Fouls : MonoBehaviour {
 	public GameObject ball;
     public Possession ballPossession;
     public ListObjectLocation ballLocation;
+    public GameTimer GT;
 
     //AreaNames
     public string RedTeamArea = "RedTeamArea";
@@ -27,7 +28,10 @@ public class Fouls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
+        GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
+        BR = GameController.GetComponent<BallReset>();
+        GT = GameController.GetComponent<GameTimer>();
+        
         ballPossession = ball.GetComponent<Possession>();
         ballLocation = ball.GetComponent<ListObjectLocation>();
         timer = gameObject.AddComponent<Timer>();
@@ -39,6 +43,12 @@ public class Fouls : MonoBehaviour {
 	void Update () {
         string location = ballLocation.currentArea;
         string possession = ballPossession.HasPossessionOfBall();
+        if (GT.GameIsGoing())
+        {
+            timer.Reset();
+            timer.Pause();
+            return;
+        }
         if (location == RedTeamArea || location == BlueTeamArea)
         {
             timer.Resume();
