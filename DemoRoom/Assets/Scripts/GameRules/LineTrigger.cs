@@ -3,6 +3,11 @@ using System.Collections;
 
 public class LineTrigger : MonoBehaviour {
 
+    /// <summary>
+    /// Line Trigger
+    /// Throws a foul when a ball hits the out of bounds area.
+    /// </summary>
+
 	public GameObject controller;
 	void OnTriggerEnter(Collider col){
         Debug.Log("YO");

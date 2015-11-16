@@ -3,16 +3,23 @@ using System.Collections;
 
 public class Fouls : MonoBehaviour {
 
-	public int possession;		//1 for red team, 2 for blue
+    /// <summary>
+    /// Foul System
+    /// This system keeps track of all of the fouls that can happen in a game and give the ball to the player that should get it.
+    /// Current fouls are:
+    /// Time foul (have possession of the ball for over 10 seconds)
+    /// Out of bounts (throw the ball out of bounds)
+    /// </summary>
 
-
-	public GameObject redBallLanding, blueBallLanding;
+    public BallReset BR;
 	public GameObject ball;
+    public Possession ballPossession;
+    public ListObjectLocation ballLocation;
 
-	//Foul possession locations
-	Vector3 redStart, blueStart, ballStart;
+    //AreaNames
+    public string RedTeamArea = "RedTeamArea";
+    public string BlueTeamArea = "BlueTeamArea";
 	
-	Vector3 stopVector;
     //Timer
     Timer timer;
     public int dogp = 10;
@@ -20,44 +27,68 @@ public class Fouls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		redStart = redBallLanding.transform.position;
-		blueStart = blueBallLanding.transform.position;
-		ballStart = ball.transform.position;
+        BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
+        ballPossession = ball.GetComponent<Possession>();
+        ballLocation = ball.GetComponent<ListObjectLocation>();
         timer = gameObject.AddComponent<Timer>();
         timer.SetLengthOfTimer(10);
-		stopVector = new Vector3(0, 0, 0);
+        timer.Resume();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(timer.getTime() < 0){
-			ThrowTimeFoul();
+        string location = ballLocation.currentArea;
+        string possession = ballPossession.HasPossessionOfBall();
+        if (location == RedTeamArea || location == BlueTeamArea)
+        {
+            timer.Resume();
+        }
+        else if (location != RedTeamArea || location != BlueTeamArea)
+        {
+            timer.Reset();
+            timer.Pause();
+        }
+        if (timer.getTime() < 0)
+        {
+            ThrowTimeFoul();
 		}
 	}
 
 	public void LineOut(){
-		print("Line Out");
-		foul();
+        string possession = ballPossession.HasPossessionOfBall();
+        print("Line Out");
+        if (possession == "Red")
+        {
+            foul(true);
+        }
+        if (possession == "Blue")
+        {
+            foul(false);
+        }
 	}
 
 	void ThrowTimeFoul(){
 		print("Throw Time Foul");
-		foul();
-	}
+        string possession = ballPossession.HasPossessionOfBall();
+        if (possession == "Red")
+        {
+            foul(true);
+        }
+        if (possession == "Blue")
+        {
+            foul(false);
+        }
+    }
 
-	public void foul(){
-		if(possession == 1){
-			ball.transform.position = blueStart;	
-			ball.GetComponent<Rigidbody>().velocity = stopVector;
-            timer.Reset();
-            possession = 2;
-		}
-		else if(possession == 2){
-			ball.transform.position = redStart;
-			ball.GetComponent<Rigidbody>().velocity = stopVector;
-            timer.Reset();
-            possession = 1;
-		}
-
-	}
+	public void foul(bool isRed)
+    {
+        if (isRed)
+        {
+            BR.placeBallRSC();
+        }
+        else
+        {
+            BR.placeBallBSC();
+        }
+    }
 }

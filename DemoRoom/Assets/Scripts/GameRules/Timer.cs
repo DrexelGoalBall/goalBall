@@ -22,7 +22,6 @@ public class Timer : MonoBehaviour
         if (time < 0) return;
 
         time -= Time.deltaTime;
-        Debug.Log (time);
     }
 
     //Setters and getters

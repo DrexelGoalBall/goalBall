@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ListObjectLocation : MonoBehaviour {
 
-    private string currentArea;
+    public string currentArea;
 
     void OnTriggerEnter(Collider col)
     {

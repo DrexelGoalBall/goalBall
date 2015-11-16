@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GoalP1 : MonoBehaviour {
+public class BlueGoal : MonoBehaviour {
 
 	public GameObject ball;
-	public GameObject controller;
+	public ScoreKeeper scoreKeeper;
 	bool inside;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
 		inside = false;
 	}
 	
@@ -18,7 +20,7 @@ public class GoalP1 : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col){
 		if(col.gameObject.name == "Ball" && !inside){
-			controller.GetComponent<ScoreDisplay>().addScoreP2();
+			scoreKeeper.BlueTeamScored();
 			inside = true;
 		}
 	}

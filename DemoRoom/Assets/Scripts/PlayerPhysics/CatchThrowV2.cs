@@ -3,6 +3,11 @@ using System.Collections;
 
 public class CatchThrowV2 : MonoBehaviour {
 
+    /// <summary>
+    /// CatchThrowV2
+    /// This script
+    /// </summary>
+
     //Catch Colider 
     public GameObject ThrowDirection;
     public GameObject ball;
@@ -78,11 +83,19 @@ public class CatchThrowV2 : MonoBehaviour {
 
         if (Input.GetButtonDown(pickUpThrowButton) && (ballInRange || ballheld))
         {
-                ballheld = true;
-                charging = true;
-                ball.transform.parent = ThrowDirection.transform;
-                ballRB.constraints = RigidbodyConstraints.FreezeAll;
-                ball.transform.localPosition = new Vector3(0, 0, 0);
+            ballheld = true;
+            charging = true;
+            if (gameObject.tag == "BluePlayer")
+            {
+                ball.GetComponent<Possession>().BlueTeamPossession();
+            }
+            else if (gameObject.tag == "RedPlayer")
+            {
+                ball.GetComponent<Possession>().RedTeamPossession();
+            }
+            ball.transform.parent = ThrowDirection.transform;
+            ballRB.constraints = RigidbodyConstraints.FreezeAll;
+            ball.transform.localPosition = new Vector3(0, 0, 0);
         }
 
         if (Input.GetButtonUp(pickUpThrowButton) && ballheld)

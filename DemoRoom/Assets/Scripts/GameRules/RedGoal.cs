@@ -1,28 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GoalP2 : MonoBehaviour {
+public class RedGoal : MonoBehaviour {
 
     public GameObject ball;
-    public GameObject controller;
+    public ScoreKeeper scoreKeeper;
     bool inside;
     // Use this for initialization
     void Start()
     {
+        scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
         inside = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name == "Ball" && !inside)
         {
-            controller.GetComponent<ScoreDisplay>().addScoreP1();
+            scoreKeeper.RedTeamScored();
             inside = true;
         }
     }
