@@ -10,7 +10,12 @@ namespace MenuTools
 		private static int horiz = 0;
 		private static int vert = 0;
 
-		private static int HOLDLIMIT = 40; // How many frames button must be held to run function
+		private static int HOLDLIMIT = 30; // How many frames button must be held to run function
+
+		private static string HorizontalButton = "Horizontal";
+		private static string VerticalButton = "Vertical";
+
+		private static AudioSource source;
 
 		// Key Delegates
 		public delegate void LeftFunc();
@@ -18,45 +23,101 @@ namespace MenuTools
 		public delegate void UpFunc();
 		public delegate void DownFunc();
 
-		public static void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down)
+// Public Static Functions
+		public static void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down, AudioClip rightSound, AudioClip leftSound, AudioClip upSound, AudioClip downSound)
 		{
-
-			if (horiz >= HOLDLIMIT) // Right
+			if (Input.GetButtonUp(HorizontalButton))
 			{
-				right();
 				horiz = 0;
-			}	
-			else if (horiz <= -(HOLDLIMIT) ) // Left
-			{
-				left();
-				horiz = 0;
-			}	
-
-			if (vert >= HOLDLIMIT) // Up
-			{	
-				up();
-				vert = 0;
 			}
-			else if (vert <= -(HOLDLIMIT) ) // Down
+			if (Input.GetButtonUp(VerticalButton))
 			{
-				down(); 
 				vert = 0;
 			}
 
-			if (Input.GetAxis("Horizontal") > 0) // Right
+			// Audio for each option if user holds down key for long enough
+			if (!source.isPlaying)
+			{
+				if (horiz >= HOLDLIMIT) // Right
+				{
+					playDirectionalSound(rightSound);
+					horiz = 0;
+				}	
+				else if (horiz <= -(HOLDLIMIT) ) // Left
+				{
+					playDirectionalSound(leftSound);
+					horiz = 0;
+				}	
+
+				if (vert >= HOLDLIMIT) // Up
+				{	
+					playDirectionalSound(upSound);
+					vert = 0;
+				}
+				else if (vert <= -(HOLDLIMIT) ) // Down
+				{
+					playDirectionalSound(downSound);
+					vert = 0;
+				}
+			}
+
+			float horizonDir = Input.GetAxis(HorizontalButton);
+			float verticDir = Input.GetAxis(VerticalButton);
+
+			if (Input.GetButtonDown("Submit"))
+			{
+				if (horizonDir > 0) // Right
+				{
+					right();
+				}	
+				else if (horizonDir < 0 ) // Left
+				{
+					left();
+				}	
+
+				if (verticDir > 0) // Up
+				{	
+					up();
+				}
+				else if (verticDir < 0) // Down
+				{
+					down(); 
+				}
+			}
+
+			if (horizonDir > 0) // Right
 				horiz++;
-			else if (Input.GetAxis("Horizontal") < 0) // Left
+			else if (horizonDir < 0) // Left
 				horiz--;
-			else if (Input.GetAxis("Vertical") > 0) // Up
+			else if (verticDir > 0) // Up
 				vert++;
-			else if (Input.GetAxis("Vertical") < 0) // Down
+			else if (verticDir < 0) // Down
 				vert--;
-			else // Clear out buttons if let go
-			{
-				horiz = 0;
-				vert = 0;
-			}
 
+		}
+
+		public static void initialAudio(AudioClip initial)
+		{
+			source.clip = initial;
+			source.Play();
+		}
+
+// Getters
+
+// Setters
+		public static void setAudioSource(AudioSource audSource)
+		{
+			source = audSource;
+		}
+
+
+// Private Functions
+
+		private static void playDirectionalSound(AudioClip clip)
+		{
+			source.Stop();
+			source.clip = clip;
+			source.Play();
 		}
 
 

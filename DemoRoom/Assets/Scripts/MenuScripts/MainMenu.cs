@@ -17,13 +17,14 @@ public class MainMenu : MonoBehaviour {
 
 	void Start () {
 		source = GetComponent<AudioSource>();
-		source.clip = MenuSound;
-		source.Play();
+		MenuLogic.setAudioSource(source);
+
+		MenuLogic.initialAudio(MenuSound);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		MenuLogic.directionalMenuLogic(Left, Right, Up, Down);
+		MenuLogic.directionalMenuLogic(Left, Right, Up, Down, RightSound, LeftSound, UpSound, DownSound);
 	}
 
 
@@ -39,7 +40,7 @@ public class MainMenu : MonoBehaviour {
 //		source.clip = RightSound;
 //		source.Play();
 		// Ask User if they wish to exit application (currently just quits without asking)
-		Application.Quit();
+		Application.LoadLevel("Exit");
 	}
 
 	void Up ()

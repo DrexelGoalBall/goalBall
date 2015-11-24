@@ -15,13 +15,14 @@ public class Tutorial : MonoBehaviour {
 
 	void Start () {
 		source = GetComponent<AudioSource>();
-		source.clip = MenuSound;
-		source.Play();
+		MenuLogic.setAudioSource(source);
+
+		MenuLogic.initialAudio(MenuSound);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		MenuLogic.directionalMenuLogic(Left, Right, Up, Down);
+		MenuLogic.directionalMenuLogic(Left, Right, Up, Down, RightSound, LeftSound, UpSound, DownSound);
 	}
 
 	void Left ()

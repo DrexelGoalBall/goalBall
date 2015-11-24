@@ -3,7 +3,7 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the networking menu
-public class Networking : MonoBehaviour {
+public class Exit : MonoBehaviour {
 
 	public AudioClip LeftSound;
 	public AudioClip RightSound;
@@ -27,21 +27,22 @@ public class Networking : MonoBehaviour {
 
 	void Left ()
 	{
-		// Navigate to Quick Match Menu
+		Application.LoadLevel("MainMenu");
 	}
 
 	void Right ()
 	{
-		// Navigate to Joining Menu
+		Application.Quit();
+
 	}
 
 	void Up ()
 	{
-		Application.LoadLevel("MainMenu");
+		// Undefined
 	}
 
 	void Down ()
 	{
-		// Navigate to Host Menu
+		// Undefined
 	}
 }
