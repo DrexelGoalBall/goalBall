@@ -24,7 +24,8 @@ public class CatchThrowV2 : MonoBehaviour {
     private float maxtime = 3f;
 
     //Controls
-    public string pickUpThrowButton = "Throw";
+    public string catchButton = "Catch";
+    public string throwButton = "Throw";
     public string horizontalAim = "horizontalAim";
     public string verticalAim = "verticalAim";
 
@@ -81,10 +82,9 @@ public class CatchThrowV2 : MonoBehaviour {
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
-        if (Input.GetButtonDown(pickUpThrowButton) && (ballInRange || ballheld))
+        if (Input.GetButtonDown(catchButton) && (ballInRange || ballheld))
         {
             ballheld = true;
-            charging = true;
             if (gameObject.tag == "BluePlayer")
             {
                 ball.GetComponent<Possession>().BlueTeamPossession();
@@ -98,7 +98,12 @@ public class CatchThrowV2 : MonoBehaviour {
             ball.transform.localPosition = new Vector3(0, 0, 0);
         }
 
-        if (Input.GetButtonUp(pickUpThrowButton) && ballheld)
+        if (Input.GetButtonDown(throwButton) && ballheld)
+        {
+            charging = true;
+        }
+
+        if (Input.GetButtonUp(throwButton) && ballheld)
         {
             ballheld = false;
             ball.transform.parent = null;
