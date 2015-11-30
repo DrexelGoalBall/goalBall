@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class ScoreKeeper: MonoBehaviour {
 
     //Display Variables
-	int BlueTeamScore;
-    int RedTeamScore;
+	public int BlueTeamScore;
+    public int RedTeamScore;
 
     //MessagesToUpdate
     private BallReset BR;

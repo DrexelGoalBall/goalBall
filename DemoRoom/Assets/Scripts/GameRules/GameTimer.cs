@@ -46,8 +46,9 @@ public class GameTimer : MonoBehaviour {
 	void nextHalf(){
         if (half >= 2)
         {
-            timeText.text = "GAME OVER";
-            endGame = true;
+            /*timeText.text = "GAME OVER";
+            endGame = true;*/
+            Application.LoadLevel("GameOver");
             return;
         }
         player1.transform.position = player1Start;
