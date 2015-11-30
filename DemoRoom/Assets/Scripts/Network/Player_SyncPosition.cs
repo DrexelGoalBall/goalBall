@@ -66,7 +66,7 @@ public class Player_SyncPosition : NetworkBehaviour {
 	void CmdProvidePositionToServer (Vector3 pos)
 	{
 		syncPos = pos;
-		//Debug.Log("Command called");
+		Debug.Log("Command called");
 	}
 
 	[ClientCallback]

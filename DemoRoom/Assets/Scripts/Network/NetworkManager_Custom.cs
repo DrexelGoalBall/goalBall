@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
@@ -8,32 +9,118 @@ using UnityEngine.UI;
 public class NetworkManager_Custom : NetworkManager
 {
     // Main Menu Components
-    private Button localButton, onlineButton;
-    private GameObject localPanel, onlinePanel;
-    private bool local = false, online = false, joining = false;
+    private Button directButton, onlineButton;
+    private GameObject directPanel, onlinePanel;
+    private bool direct = false, online = false, joining = false;
     private GameObject roomsPanel;
     public Button roomsListButton;
     private Text networkInfoText;
 
     // Game Components
     private Button disconnectButton;
+    private Text capacityText;
+    public Text playerElementText;
+    private Text connInfoText;
+
+    int playerCount = 0;
 
     void Start()
     {
         OnLevelWasLoaded(Application.loadedLevel);
-
+        NetworkManager.singleton.maxConnections = 6;
         NetworkManager.singleton.matchSize = 6;
     }
 
-    public void HostLocal()
+    void Update()
+    {
+        if (NetworkManager.singleton.isNetworkActive)
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+            if (capacityText != null)
+            {
+                //capacityText.text = GetPlayerCount();
+                capacityText.text = string.Format("{0}/{1}", players.Length, NetworkManager.singleton.maxConnections);
+            }
+
+            if (connInfoText != null)
+            {
+                if (NetworkServer.active)
+                {
+                    string conn = "Server";
+                    if (NetworkClient.active)
+                        conn = "Host";
+                    connInfoText.text = string.Format("{0}  |  Address = {1}  |  Port = {2}", conn, Network.player.ipAddress, NetworkManager.singleton.networkPort) ;
+                }
+                else if (NetworkClient.active)
+                {
+                    connInfoText.text = string.Format("Client  |  Address = {0}  |  Port = {1}", NetworkManager.singleton.networkAddress, NetworkManager.singleton.networkPort);
+                }
+            }
+
+            /*if (players.Length != playerCount)
+            {
+                GameObject playerList = GameObject.Find("PlayerList");
+
+                var children = new List<GameObject>();
+                foreach (Transform child in playerList.transform) children.Add(child.gameObject);
+                children.ForEach(child => Destroy(child));
+
+                for (int i = 0; i < players.Length; i++)
+                {
+                    Player_ID id = players[i].GetComponent<Player_ID>();
+                    string pinfo = string.Format("Player {0}", id.netId.Value);
+                    if (id.isLocalPlayer)
+                        pinfo = string.Format("*** {0} ***", pinfo);
+                    Text txt = Instantiate(playerElementText);
+                    txt.text = pinfo;
+                    txt.transform.SetParent(playerList.transform);
+                }
+
+                playerCount = players.Length;
+            }*/
+
+            /*if (NetworkServer.connections != null && NetworkServer.connections.Count > players)
+            {
+                GameObject playerList = GameObject.Find("PlayerList");
+
+                var children = new List<GameObject>();
+                foreach (Transform child in playerList.transform) children.Add(child.gameObject);
+                children.ForEach(child => Destroy(child));
+
+                foreach (var connection in NetworkServer.connections)
+                {
+                    if (connection != null)
+                    {
+                        Text txt = Instantiate(playerElementText);
+                        Debug.Log(connection.address);
+                        txt.text = connection.address;
+                        txt.transform.SetParent(playerList.transform);
+                    }
+                }
+
+                players = NetworkServer.connections.Count;
+            }*/
+        }
+    }
+
+    public void ServerDirect()
     {
         networkInfoText.text = "Creating local match...";
+        NetworkManager.singleton.networkAddress = "localhost";
+        //NetworkManager.singleton.networkPort = 7777;
+        NetworkManager.singleton.StartServer();
+    }
+
+    public void HostDirect()
+    {
+        networkInfoText.text = "Hosting local match...";
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartHost();
     }
 
-    public void JoinLocal()
+    public void JoinDirect()
     {
         if (!joining)
         {
@@ -136,14 +223,14 @@ public class NetworkManager_Custom : NetworkManager
         //    Debug.Log(t.name);
         Quaternion spawnRot = Quaternion.identity;
         int sideCorrection = 1;
-        Debug.Log(spawnLoc.name);
+        //Debug.Log(spawnLoc.name);
         if (spawnLoc.name.StartsWith("Red"))
         {
             spawnRot = Quaternion.Euler(new Vector3(0, 180, 0));
             sideCorrection = -1;
         }
         GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, spawnLoc.position, spawnRot);
-        Debug.Log(sideCorrection);
+        //Debug.Log(sideCorrection);
         player.GetComponent<GoalBallPlayerMovementV1>().sideCorrection = sideCorrection;
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
     }
@@ -175,7 +262,7 @@ public class NetworkManager_Custom : NetworkManager
             networkInfoText.text = "Failed to join.";
             Debug.Log(conn.address + " - " + conn.hostId);
             //if (conn.address.Trim().Equals("127.0.0.1"))
-            //    HostLocal();
+            //    HostDirect();
         }
         joining = false;
         Debug.Log("Client Disconnect");
@@ -265,19 +352,19 @@ public class NetworkManager_Custom : NetworkManager
 
         networkInfoText = GameObject.Find("NetworkInfoText").GetComponent<Text>();
 
-        local = false;
+        direct = false;
         online = false;
 
-        localButton = GameObject.Find("Local").GetComponent<Button>();
-        localButton.onClick.RemoveAllListeners();
-        localButton.onClick.AddListener(ShowLocalMenu);
+        directButton = GameObject.Find("Direct").GetComponent<Button>();
+        directButton.onClick.RemoveAllListeners();
+        directButton.onClick.AddListener(ShowDirectMenu);
 
         onlineButton = GameObject.Find("Online").GetComponent<Button>();
         onlineButton.onClick.RemoveAllListeners();
         onlineButton.onClick.AddListener(ShowOnlineMenu);
 
-        localPanel = GameObject.Find("LocalPanel");
-        localPanel.SetActive(false);
+        directPanel = GameObject.Find("DirectPanel");
+        directPanel.SetActive(false);
         onlinePanel = GameObject.Find("OnlinePanel");
         onlinePanel.SetActive(false);
     }
@@ -287,19 +374,23 @@ public class NetworkManager_Custom : NetworkManager
         disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
         disconnectButton.onClick.RemoveAllListeners();
         disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
+
+        capacityText = GameObject.Find("Capacity").GetComponent<Text>();
+
+        connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
     }
 
-    void ShowLocalMenu()
+    void ShowDirectMenu()
     {
-        if (local)
+        if (direct)
         {
-            local = false;
-            localPanel.SetActive(false);
+            direct = false;
+            directPanel.SetActive(false);
         }
         else
         {
-            local = true;
-            localPanel.SetActive(true);
+            direct = true;
+            directPanel.SetActive(true);
 
             if (online)
             {
@@ -308,11 +399,14 @@ public class NetworkManager_Custom : NetworkManager
                 StopMatchMaker();
             }
 
+            GameObject.Find("ServerButton").GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("ServerButton").GetComponent<Button>().onClick.AddListener(ServerDirect);
+
             GameObject.Find("HostButton").GetComponent<Button>().onClick.RemoveAllListeners();
-            GameObject.Find("HostButton").GetComponent<Button>().onClick.AddListener(HostLocal);
+            GameObject.Find("HostButton").GetComponent<Button>().onClick.AddListener(HostDirect);
 
             GameObject.Find("JoinButton").GetComponent<Button>().onClick.RemoveAllListeners();
-            GameObject.Find("JoinButton").GetComponent<Button>().onClick.AddListener(JoinLocal);
+            GameObject.Find("JoinButton").GetComponent<Button>().onClick.AddListener(JoinDirect);
         }
     }
 
@@ -330,10 +424,10 @@ public class NetworkManager_Custom : NetworkManager
             onlinePanel.SetActive(true);
             StartMatchMaker();
 
-            if (local)
+            if (direct)
             {
-                local = false;
-                localPanel.SetActive(false);
+                direct = false;
+                directPanel.SetActive(false);
             }
 
             GameObject.Find("CreateButton").GetComponent<Button>().onClick.RemoveAllListeners();
@@ -344,5 +438,10 @@ public class NetworkManager_Custom : NetworkManager
 
             roomsPanel = GameObject.Find("RoomsPanel");
         }
+    }
+
+    public string GetPlayerCount()
+    {
+        return string.Format("{0}/{1}", NetworkManager.singleton.numPlayers, NetworkManager.singleton.maxConnections);
     }
 }
