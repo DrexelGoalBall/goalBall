@@ -5,21 +5,16 @@ using UnityEngine.UI;
 
 public class ScoreDisplay : MonoBehaviour {
 
-    //Display Variables
 	public Text p1score;
     public Text p2score;
 	int scorep1;
     int scorep2;
-
-    //MessagesToUpdate
-    private BallStartAndReset BSAR;
 
 	// Use this for initialization
 	void Start ()
     {
 		scorep1 = 0;
         scorep2 = 0;
-        BSAR = gameObject.GetComponent<BallStartAndReset>();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +29,6 @@ public class ScoreDisplay : MonoBehaviour {
 	public void addScoreP1()
     {
 		scorep1++;
-        BSAR.ScoreWasMade(0);
 		print("Added: " + scorep1);
 	}
 
@@ -46,7 +40,6 @@ public class ScoreDisplay : MonoBehaviour {
     public void addScoreP2()
     {
         scorep2++;
-        BSAR.ScoreWasMade(1);
         print("Added: " + scorep2);
     }
 
