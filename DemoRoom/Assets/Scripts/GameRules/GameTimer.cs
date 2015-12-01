@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GameTimer : MonoBehaviour {
+    /// <summary>
+    /// This script controls the game times and knows when it should be going and knows when it should be stopped.
+    /// </summary>
 
     //GUI Objects
     public Text timeText;
@@ -23,6 +26,11 @@ public class GameTimer : MonoBehaviour {
     int half = 1;
     bool endGame = false;
     bool gameGoing = false;
+    bool fifteenSecondsCheck = false;
+
+    //Other Objects
+    private ScoreKeeper scoreKeeper;
+    private Referee referee;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +40,8 @@ public class GameTimer : MonoBehaviour {
         player1Start = player1.transform.position;
         player2Start = player2.transform.position;
         ballStart = ball.transform.position;
+        scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
+        referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 	}
 	
 	// Update is called once per frame
@@ -39,8 +49,24 @@ public class GameTimer : MonoBehaviour {
         if (endGame) return;
         timeText.text = timer.getTimeString();
 		if(timer.getTime() <= 0){
+           
 			nextHalf();
 		}
+
+        if (referee.refereeSpeaking())
+        {
+            StopGame();
+        }
+        else if (!gameGoing)
+        {
+            StartGame();
+        }
+
+        if ( timer.getTime() <= 15 && !fifteenSecondsCheck)
+        {
+            referee.PlayFifteenSeconds();
+            fifteenSecondsCheck = true;
+        }
 	}
 
 	void nextHalf(){
@@ -48,6 +74,7 @@ public class GameTimer : MonoBehaviour {
         {
             timeText.text = "GAME OVER";
             endGame = true;
+            referee.PlayGame();
             return;
         }
         player1.transform.position = player1Start;
@@ -56,7 +83,8 @@ public class GameTimer : MonoBehaviour {
 
         ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         timer.Reset();
-
+        referee.PlayHalfTime();
+        referee.PlayPlay();
         //Determine what half it is
         half = half + 1;
     }

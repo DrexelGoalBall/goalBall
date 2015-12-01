@@ -11,6 +11,7 @@ public class ScoreKeeper: MonoBehaviour {
 
     //MessagesToUpdate
     private BallReset BR;
+    private Referee Ref;
 
 	// Use this for initialization
 	void Start ()
@@ -18,12 +19,16 @@ public class ScoreKeeper: MonoBehaviour {
 		BlueTeamScore = 0;
         RedTeamScore = 0;
         BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
+        Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 	}
 	
     //Setters
 	public void BlueTeamScored()
     {
 		BlueTeamScore++;
+        Ref.PlayGoal();
+        Ref.PlayBlueTeam();
+        Ref.PlayPlay();
         BR.placeBallRSC();
 		print("Added: " + BlueTeamScore);
 	}
@@ -36,6 +41,9 @@ public class ScoreKeeper: MonoBehaviour {
     public void RedTeamScored()
     {
         RedTeamScore++;
+        Ref.PlayGoal();
+        Ref.PlayRedTeam();
+        Ref.PlayPlay();
         BR.placeBallBSC();
         print("Added: " + RedTeamScore);
     }
