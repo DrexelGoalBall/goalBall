@@ -22,6 +22,7 @@ public class GameStart : MonoBehaviour {
     bool check = true;
     bool setupDone = false;
 
+    int startPos;
 	// Use this for initialization
 	void Start ()
     {
@@ -36,6 +37,7 @@ public class GameStart : MonoBehaviour {
         {
             BR.placeBallRSC();
             ball.GetComponent<Possession>().RedTeamPossession();
+            startPos = 0;
             Ref.PlayRedTeam();
             Ref.PlayCenter();
             Ref.PlayPlay();
@@ -44,6 +46,7 @@ public class GameStart : MonoBehaviour {
         {
             BR.placeBallBSC();
             ball.GetComponent<Possession>().BlueTeamPossession();
+            startPos = 1;
             Ref.PlayBlueTeam();
             Ref.PlayCenter();
             Ref.PlayPlay();

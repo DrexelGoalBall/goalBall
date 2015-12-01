@@ -72,9 +72,9 @@ public class GameTimer : MonoBehaviour {
 	void nextHalf(){
         if (half >= 2)
         {
-            timeText.text = "GAME OVER";
+            //timeText.text = "GAME OVER";
             endGame = true;
-            referee.PlayGame();
+            Application.LoadLevel("GameOver");
             return;
         }
         player1.transform.position = player1Start;
