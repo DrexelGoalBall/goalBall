@@ -9,7 +9,7 @@ public class CoinFlip : ScriptableObject {
 	
     // 0 = heads
     // 1 = tails
-
+	//this is a test
     public bool Flip()
     {
         actual = Random.Range(0, 2);
