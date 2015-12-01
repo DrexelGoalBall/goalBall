@@ -66,6 +66,8 @@ public class BallReset : MonoBehaviour {
         RB.velocity = new Vector3(0, 0, 0);
         RB.angularVelocity = new Vector3(0, 0, 0);
         Ball.transform.parent = null;
+        RB.useGravity = true;
+        RB.constraints = RigidbodyConstraints.None;
     }
 
 }

@@ -32,6 +32,7 @@ public class Referee : MonoBehaviour {
     public AudioClip RedTeam;
     public AudioClip BlueTeam;
     public AudioClip Goal;
+    public AudioClip Foul;
 
     private List<AudioClip> queue;
 
@@ -51,6 +52,7 @@ public class Referee : MonoBehaviour {
                 queue.RemoveAt(0);
                 AS.clip = audio;
                 AS.Play();
+                Debug.Log(AS.clip.name);
             }
         }
     }
@@ -166,6 +168,11 @@ public class Referee : MonoBehaviour {
     public void PlayGoal()
     {
         queue.Add(Goal);
+    }
+
+    public void PlayFoul()
+    {
+        queue.Add(Foul);
     }
 
 }

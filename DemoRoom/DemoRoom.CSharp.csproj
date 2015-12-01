@@ -51,17 +51,11 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
@@ -86,12 +80,19 @@
     <Compile Include="Assets\Scripts\GameRules\RedGoal.cs" />
     <Compile Include="Assets\Scripts\GameRules\ScoreKeeper.cs" />
     <Compile Include="Assets\Scripts\GameRules\Timer.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\Exit.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\MenuLogic.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\Networking.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\Settings.cs" />
+    <Compile Include="Assets\Scripts\MenuScripts\Tutorial.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\ScoreDisplay.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV1.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV2.cs" />
+    <Compile Include="Assets\Scripts\PlayerPhysics\Dive.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
     <Compile Include="Assets\Scripts\SoundScripts\BallInnerSounds.cs" />
     <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
