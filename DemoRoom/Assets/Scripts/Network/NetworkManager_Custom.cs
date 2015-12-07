@@ -22,7 +22,7 @@ public class NetworkManager_Custom : NetworkManager
     public Text playerElementText;
     private Text connInfoText;
 
-    int playerCount = 0;
+    //int playerCount = 0;
 
     void Start()
     {

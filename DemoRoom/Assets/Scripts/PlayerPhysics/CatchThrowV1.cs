@@ -23,13 +23,16 @@ public class CatchThrowV1 : NetworkBehaviour
 
     void Start()
     {
-        ball = GameObject.FindGameObjectWithTag("Ball");
+        
     }
 
 	// Update is called once per frame
 	void Update ()
     {
         Vector3 playerPos = gameObject.transform.position;
+        
+        if (ball == null)
+            ball = GameObject.FindGameObjectWithTag("Ball");    
         Vector3 ballPos = ball.transform.position;
 
         //Determine if you can pickup the ball
@@ -85,12 +88,9 @@ public class CatchThrowV1 : NetworkBehaviour
     {
         balldrop = drop;
         ballheld = held;
-        //Debug.Log("Command called");
-    }
-
-    void OnDestroy()
-    {
-        Debug.Log("NOOOOOO");
+        if (isServer && !isClient)
+            ChangeBallHold(held);
+        Debug.Log("Command called");
     }
 
     [ClientCallback]
@@ -113,6 +113,7 @@ public class CatchThrowV1 : NetworkBehaviour
     {
         if (ballheld)
         {
+            Debug.Log("Drop Ball");
             TransmitBallChange(false, true);
         }
     }

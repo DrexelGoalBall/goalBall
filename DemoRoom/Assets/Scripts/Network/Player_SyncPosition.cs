@@ -26,11 +26,15 @@ public class Player_SyncPosition : NetworkBehaviour {
 	[SerializeField] private bool useHistoricalLerping = false;
 	private float closeEnough = 0.11f;
 
+    //private Transform playerStartTransform;
+
 	void Start ()
 	{
 		nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
 		latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
 		lerpRate = normalLerpRate;
+
+        //playerStartTransform = transform;
 	}
 
 	void Update ()
@@ -42,7 +46,6 @@ public class Player_SyncPosition : NetworkBehaviour {
 	void FixedUpdate () 
 	{
 		TransmitPosition();
-
 	}
 
 	void LerpPosition ()

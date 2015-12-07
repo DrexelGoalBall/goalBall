@@ -16,10 +16,12 @@ public class Ball_MotionSync : NetworkBehaviour
     private float posThreshold = 0.5f;
     private float rotThreshold = 5;
 
+    private Transform startTrans;
+
     // Use this for initialization
     void Start()
     {
-        myTransform = transform;
+        startTrans = myTransform = transform;
     }
 
     // Update is called once per frame
@@ -27,6 +29,14 @@ public class Ball_MotionSync : NetworkBehaviour
     {
         TransmitMotion();
         LerpMotion();
+    }
+
+    public void Reset()
+    {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Debug.Log("Reset Ball");
+        myTransform.position = startTrans.position;
+        myTransform.rotation = startTrans.rotation;
     }
 
     void TransmitMotion()

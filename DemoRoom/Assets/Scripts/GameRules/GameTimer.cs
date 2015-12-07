@@ -9,10 +9,7 @@ public class GameTimer : NetworkBehaviour {
     int time;
 
 	public Text timeText;
-	public GameObject player1;
-	public GameObject player2;
-	public GameObject ball;
-	float xp1, xp2, xp3, yp1, yp2, yp3, zp1, zp2, zp3;
+	public GameObject ball, ballSpawn;
     //int time;
 	int frameCounter = 0;
 
@@ -22,22 +19,17 @@ public class GameTimer : NetworkBehaviour {
         {
             time = 120;
         }
-		xp1 = player1.transform.position.x;
-		xp2 = player2.transform.position.x;
-		xp3 = ball.transform.position.x;
-		yp1 = player1.transform.position.y;
-		yp2 = player2.transform.position.y;
-		yp3 = ball.transform.position.y;
-		zp1 = player1.transform.position.z;
-		zp2 = player2.transform.position.z;
-		zp3 = ball.transform.position.z;
+        ballSpawn = GameObject.Find("BallSpawn");
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (isServer)
         {
-            if (frameCounter == 60)
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    time = 5;
+
+            if (frameCounter >= 60)
             {
                 frameCounter = 0;
                 time--;
@@ -46,11 +38,11 @@ public class GameTimer : NetworkBehaviour {
             {
                 frameCounter++;
             }
+        }
 
-            if (time <= 0)
-            {
-                reset();
-            }
+        if (time <= 0 || (!isServer && isClient && time <= 1))
+        {
+            reset();
         }
 
         string mins;
@@ -97,15 +89,30 @@ public class GameTimer : NetworkBehaviour {
 	}
 
 	void reset(){
-		Vector3 newP1 = new Vector3(xp1, yp1, zp1);
-		Vector3 newP2 = new Vector3(xp2, yp2, zp2);
-		Vector3 newB = new Vector3(xp3, yp3, zp3);
-
-		player1.transform.position = newP1;
-		player2.transform.position = newP2;
         ball.transform.parent = null;
-		ball.transform.position = newB;
-		time = 120;
-		frameCounter = 0;
+        if (isServer)
+        {
+            GameObject obj = GameObject.Instantiate(ball, ballSpawn.transform.position, ballSpawn.transform.rotation) as GameObject;
+            NetworkServer.Destroy(ball);
+            NetworkServer.Spawn(obj);
+            obj.name = "Ball";
+            ball = obj;
+
+            time = 120;
+            frameCounter = 0;
+        }
+
+        // There must be an easier way.....
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Debug.Log(players.Length);
+        foreach(GameObject player in players)
+        {
+            if (player.GetComponent<NetworkIdentity>().isLocalPlayer)
+            {
+                Debug.Log("Found");
+                player.GetComponent<CatchThrowV1>().DropBall();
+                break;
+            }
+        }
 	}
 }

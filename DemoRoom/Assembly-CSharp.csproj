@@ -59,7 +59,6 @@
      <Compile Include="Assets\Scripts\Network\Ball_MotionSync.cs" />
      <Compile Include="Assets\Scripts\Network\FPS.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkManager_Custom.cs" />
-     <Compile Include="Assets\Scripts\Network\NetworkMenu.cs" />
      <Compile Include="Assets\Scripts\Network\Player_ID.cs" />
      <Compile Include="Assets\Scripts\Network\Player_Latency.cs" />
      <Compile Include="Assets\Scripts\Network\Player_NetworkSetup.cs" />
