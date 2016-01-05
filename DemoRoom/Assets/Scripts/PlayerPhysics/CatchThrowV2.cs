@@ -55,17 +55,17 @@ public class CatchThrowV2 : MonoBehaviour {
         //Aiming direction of throw
         if (xAim > 0)
         {
-            horizonTilt = maxLeftAngle * xAim;
+            horizonTilt = maxLeftAngle * Mathf.Pow(xAim,2);
         } else if (xAim < 0)
         {
-            horizonTilt = maxRightAngle * xAim;
+            horizonTilt = maxRightAngle *-1* Mathf.Pow(xAim, 2);
         }
         if (yAim > 0)
         {
-            verticalTilt = maxHighAngle * yAim;
+            verticalTilt = maxHighAngle * Mathf.Pow(yAim, 2);
         } else if (yAim < 0)
         {
-            verticalTilt = maxLowAngle * yAim;
+            verticalTilt = maxLowAngle * -1 * Mathf.Pow(yAim, 2);
         }
 
         aim.transform.localRotation = Quaternion.Euler(verticalTilt, horizonTilt, 0);

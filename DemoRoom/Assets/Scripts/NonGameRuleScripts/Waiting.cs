@@ -9,7 +9,7 @@ public class Waiting : MonoBehaviour {
 	//		StartCoroutine(WaitFor(<number of seconds to wait (float value)>))
 	//DO NOT CALL DURING UPDATE
 	
-	IEnumerator WaitFor(float toWait){
-		yield return WaitForSeconds(toWait);
-	}
+	//IEnumerator WaitFor(float toWait){
+		//yield return WaitForSeconds(toWait);
+	//}
 }

@@ -27,21 +27,26 @@ public class Networking : MonoBehaviour {
 
 	void Left ()
 	{
+        Application.LoadLevel("DetailedGame");
 		// Navigate to Quick Match Menu
 	}
 
 	void Right ()
 	{
-		// Navigate to Joining Menu
-	}
+        Application.LoadLevel("DetailedGame");
 
-	void Up ()
+        // Navigate to Joining Menu
+    }
+
+    void Up ()
 	{
+
 		Application.LoadLevel("MainMenu");
 	}
 
 	void Down ()
 	{
-		// Navigate to Host Menu
-	}
+        Application.LoadLevel("DetailedGame");
+        // Navigate to Host Menu
+    }
 }

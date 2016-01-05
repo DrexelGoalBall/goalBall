@@ -12,8 +12,8 @@ namespace MenuTools
 
 		private static int HOLDLIMIT = 30; // How many frames button must be held to run function
 
-		private static string HorizontalButton = "Horizontal";
-		private static string VerticalButton = "Vertical";
+		private static string HorizontalButton = "HorizontalP1";
+		private static string VerticalButton = "VerticalP1";
 
 		private static AudioSource source;
 
