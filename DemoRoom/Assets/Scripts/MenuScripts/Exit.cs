@@ -3,45 +3,29 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the networking menu
-public class Exit : MonoBehaviour {
+public class Exit : MenuLogic {
 
-	public AudioClip LeftSound;
-	public AudioClip RightSound;
-	public AudioClip UpSound;
-	public AudioClip DownSound;
-	public AudioClip MenuSound;
-
-	private AudioSource source;
-
-	void Start () {
-		source = GetComponent<AudioSource>();
-		MenuLogic.setAudioSource(source);
-
-		MenuLogic.initialAudio(MenuSound);
-	}
-	
-	// Update is called once per frame
 	void Update () {
-		MenuLogic.directionalMenuLogic(Left, Right, Up, Down, RightSound, LeftSound, UpSound, DownSound);
+		directionalMenuLogic(Left, Right, Up, Down);
 	}
 
-	void Left ()
+	new private void Left ()
 	{
 		Application.LoadLevel("MainMenu");
 	}
 
-	void Right ()
+	new private void Right ()
 	{
 		Application.Quit();
 
 	}
 
-	void Up ()
+	new private void Up ()
 	{
 		// Undefined
 	}
 
-	void Down ()
+	new private void Down ()
 	{
 		// Undefined
 	}

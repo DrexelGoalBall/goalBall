@@ -3,44 +3,28 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the settings menu
-public class Settings : MonoBehaviour {
+public class Settings : MenuLogic {
 
-	public AudioClip LeftSound;
-	public AudioClip RightSound;
-	public AudioClip UpSound;
-	public AudioClip DownSound;
-	public AudioClip MenuSound;
-
-	private AudioSource source;
-
-	void Start () {
-		source = GetComponent<AudioSource>();
-		MenuLogic.setAudioSource(source);
-
-		MenuLogic.initialAudio(MenuSound);
+	void Update () {
+		directionalMenuLogic(Left, Right, Up, Down);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		MenuLogic.directionalMenuLogic(Left, Right, Up, Down, RightSound, LeftSound, UpSound, DownSound);
-	}
-
-	void Left ()
+	new private void Left ()
 	{
 		// Undefined
 	}
 
-	void Right ()
+	new private void Right ()
 	{
 		// Undefined
 	}
 
-	void Up ()
+	new private void Up ()
 	{
 		// Undefined
 	}
 
-	void Down ()
+	new private void Down ()
 	{
 		Application.LoadLevel("MainMenu");
 	}
