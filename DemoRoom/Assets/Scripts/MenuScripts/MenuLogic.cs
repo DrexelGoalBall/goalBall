@@ -64,7 +64,7 @@ namespace MenuTools
 
 			// Audio for each option if user holds down key for long enough
 		//	if (!hasSounded) // To be used if the welcome instructions should be skippable if the user presses a button
-			if (!source.IsPlaying() && !hasSounded) // To be used if the welcome instructions are supposed to be unskippable
+			if (!source.isPlaying && !hasSounded) // To be used if the welcome instructions are supposed to be unskippable
 			{
 				if (horiz >= HOLDLIMIT) // Right
 				{
