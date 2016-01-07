@@ -11,22 +11,22 @@ public class Player_Latency : NetworkBehaviour {
 
 	public override void OnStartLocalPlayer ()
 	{
-		nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
-		latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
+		//nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
+		//latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		ShowLatency();
+		//ShowLatency();
 	}
 
 	void ShowLatency ()
 	{
 		if(isLocalPlayer)
 		{
-			latency = nClient.GetRTT();
-			latencyText.text = latency.ToString();
+			//latency = nClient.GetRTT();
+			//latencyText.text = latency.ToString();
 		}
 	}
 }

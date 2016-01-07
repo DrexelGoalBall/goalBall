@@ -14,7 +14,7 @@ public class Player_NetworkSetup : NetworkBehaviour
         //sc.SetActive(false);
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
         gbpm.enabled = true;
-        //CameraBox cameraBox = GameObject.Find("CameraBox").GetComponent<CameraBox>();
+        CameraBox cameraBox = GameObject.Find("CameraBox").GetComponent<CameraBox>();
         //cameraBox.cams.Add(playerCamera);
         playerCamera.enabled = true;
 		audioListener.enabled = true;

@@ -371,13 +371,13 @@ public class NetworkManager_Custom : NetworkManager
 
     void SetupOtherSceneButtons()
     {
-        disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
-        disconnectButton.onClick.RemoveAllListeners();
-        disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
+        //disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
+        //disconnectButton.onClick.RemoveAllListeners();
+        //disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
 
-        capacityText = GameObject.Find("Capacity").GetComponent<Text>();
+        //capacityText = GameObject.Find("Capacity").GetComponent<Text>();
 
-        connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
+        //connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
     }
 
     void ShowDirectMenu()

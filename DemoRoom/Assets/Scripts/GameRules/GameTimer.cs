@@ -37,8 +37,8 @@ public class GameTimer : MonoBehaviour {
         timer = gameObject.AddComponent<Timer>();
         timer.SetLengthOfTimer(halfLength + 1);
         timer.Pause();
-        player1Start = player1.transform.position;
-        player2Start = player2.transform.position;
+        //player1Start = player1.transform.position;
+        //player2Start = player2.transform.position;
         ballStart = ball.transform.position;
         scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
