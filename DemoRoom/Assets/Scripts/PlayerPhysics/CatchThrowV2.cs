@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class CatchThrowV2 : MonoBehaviour {
+
+public class CatchThrowV2 : NetworkBehaviour {
 
     /// <summary>
     /// CatchThrowV2
@@ -16,7 +18,12 @@ public class CatchThrowV2 : MonoBehaviour {
 
     //Throw Options
     public float throwForce = 10f;
+    [SyncVar]
+    public float serverForce = 10f;
+    [SyncVar]
+    private Vector3 serverDirection;
     private bool ballInRange = false;
+    [SyncVar(hook = "ChangeBallHold")]
     private bool ballheld = false;
     public float pickupDistance = 5f;
     private bool charging = false;
@@ -84,6 +91,54 @@ public class CatchThrowV2 : MonoBehaviour {
 
         if (Input.GetButtonDown(catchButton) && (ballInRange || ballheld))
         {
+            TransmitBallChange(true);
+
+        }
+
+        if (Input.GetButtonDown(throwButton) && ballheld)
+        {
+            charging = true;
+        }
+
+        if (Input.GetButtonUp(throwButton) && ballheld)
+        {
+            TransmitBallChange(false);
+        }
+	}
+
+    void FixedUpdate()
+    {
+        if (charging)
+        {
+            timer += .05f;
+        }
+    }
+
+    /*
+    Networked Functions
+    */
+    void ChangeBallHold(bool held)
+    {
+        Debug.Log("Ball held = " + held);
+
+        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+
+        if (!held)
+        {
+
+            ball.transform.parent = null;
+            ballRB.constraints = RigidbodyConstraints.None;
+            float charge = timer / maxtime;
+            if (charge > 1) charge = 1;
+            serverForce = throwForce * charge;
+            serverDirection = aim.transform.forward;
+            ballRB.AddForce(serverDirection * serverForce + playerRB.velocity);
+            charging = false;
+            timer = 0f;
+        }
+        else
+        {
+
             ballheld = true;
             if (gameObject.tag == "BluePlayer")
             {
@@ -97,34 +152,40 @@ public class CatchThrowV2 : MonoBehaviour {
             ballRB.constraints = RigidbodyConstraints.FreezeAll;
             ball.transform.localPosition = new Vector3(0, 0, 0);
         }
+    }
 
-        if (Input.GetButtonDown(throwButton) && ballheld)
-        {
-            charging = true;
-        }
-
-        if (Input.GetButtonUp(throwButton) && ballheld)
-        {
-            ballheld = false;
-            ball.transform.parent = null;
-            ballRB.constraints = RigidbodyConstraints.None;
-            float charge = timer / maxtime;
-            if (charge > 1) charge = 1;
-            float force = throwForce * charge;
-            ballRB.AddForce(aim.transform.forward * force + playerRB.velocity);
-            charging = false;
-            timer = 0f;
-        }
-	}
-
-    void FixedUpdate()
+    [Command]
+    void CmdBallUpdates(bool held)
     {
-        if (charging)
+        ballheld = held;
+        if (isServer && !isClient)
+            ChangeBallHold(held);
+        Debug.Log("Command called");
+    }
+
+    [ClientCallback]
+    void TransmitBallChange(bool held)
+    {
+        if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
         {
-            timer += .05f;
+            Debug.Log("Send");
+            CmdBallUpdates(held);
+            Debug.Log("Back");
+            if (!isServer)
+            {
+                ballheld = held;
+            }
         }
     }
 
-
-
+    //public void DropBall()
+    //{
+    //    if (ballheld)
+    //    {
+    //        Debug.Log("Drop Ball");
+    //        TransmitBallChange(false, true);
+    //    }
+    //}
 }
+
+
