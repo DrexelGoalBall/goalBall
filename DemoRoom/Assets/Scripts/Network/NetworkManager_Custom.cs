@@ -214,19 +214,19 @@ public class NetworkManager_Custom : NetworkManager
             roomsPanel.SetActive(false);
         }
     }
-
+    
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         Debug.Log("Add Player");
         Transform spawnLoc = this.startPositions[NetworkManager.singleton.numPlayers];
         //foreach (Transform t in this.startPositions)
         //    Debug.Log(t.name);
-        Quaternion spawnRot = Quaternion.identity;
+        Quaternion spawnRot = Quaternion.Euler(new Vector3(0, 90, 0)); ;
         int sideCorrection = 1;
         //Debug.Log(spawnLoc.name);
         if (spawnLoc.name.StartsWith("Red"))
         {
-            spawnRot = Quaternion.Euler(new Vector3(0, 180, 0));
+            spawnRot = Quaternion.Euler(new Vector3(0, 270, 0));
             sideCorrection = -1;
         }
         GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, spawnLoc.position, spawnRot);
@@ -371,13 +371,13 @@ public class NetworkManager_Custom : NetworkManager
 
     void SetupOtherSceneButtons()
     {
-        //disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
-        //disconnectButton.onClick.RemoveAllListeners();
-        //disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
+        disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
+        disconnectButton.onClick.RemoveAllListeners();
+        disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
 
-        //capacityText = GameObject.Find("Capacity").GetComponent<Text>();
+        capacityText = GameObject.Find("Capacity").GetComponent<Text>();
 
-        //connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
+        connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
     }
 
     void ShowDirectMenu()

@@ -34,7 +34,8 @@ public class GameTimer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        timer = gameObject.AddComponent<Timer>();
+        //timer = gameObject.AddComponent<Timer>();
+        timer = GetComponent<Timer>();
         timer.SetLengthOfTimer(halfLength + 1);
         timer.Pause();
         //player1Start = player1.transform.position;

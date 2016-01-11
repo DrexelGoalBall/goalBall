@@ -9,13 +9,15 @@ public class BlueGoal : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
 		inside = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (scoreKeeper == null)
+        {
+            scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
+        }
 	}
 
 	void OnTriggerEnter(Collider col){

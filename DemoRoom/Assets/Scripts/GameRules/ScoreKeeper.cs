@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-
-public class ScoreKeeper: MonoBehaviour {
+public class ScoreKeeper: NetworkBehaviour {
 
     //Display Variables
+    [SyncVar]
 	public int BlueTeamScore;
+    [SyncVar]
     public int RedTeamScore;
 
     //MessagesToUpdate
@@ -16,8 +18,11 @@ public class ScoreKeeper: MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-		BlueTeamScore = 0;
-        RedTeamScore = 0;
+        if (isServer)
+        {
+            BlueTeamScore = 0;
+            RedTeamScore = 0;
+        }
         BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 	}
@@ -25,7 +30,10 @@ public class ScoreKeeper: MonoBehaviour {
     //Setters
 	public void BlueTeamScored()
     {
-		BlueTeamScore++;
+        if (isServer)
+        {
+            BlueTeamScore++;
+        }
         Ref.PlayGoal();
         Ref.PlayBlueTeam();
         Ref.PlayPlay();
@@ -35,12 +43,18 @@ public class ScoreKeeper: MonoBehaviour {
 
 	public void BlueTeamLostPoint()
     {
-		BlueTeamScore--;
+        if (isServer)
+        {
+            BlueTeamScore--;
+        }
 	}
 
     public void RedTeamScored()
     {
-        RedTeamScore++;
+        if (isServer)
+        {
+            RedTeamScore++;
+        }
         Ref.PlayGoal();
         Ref.PlayRedTeam();
         Ref.PlayPlay();
@@ -50,7 +64,10 @@ public class ScoreKeeper: MonoBehaviour {
 
     public void RedTeamLostPoint()
     {
-        RedTeamScore--;
+        if (isServer)
+        {
+            RedTeamScore--;
+        }
     }
 
     //Getters
