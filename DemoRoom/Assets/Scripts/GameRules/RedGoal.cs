@@ -9,8 +9,15 @@ public class RedGoal : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
         inside = false;
+    }
+
+    void Update()
+    {
+        if (scoreKeeper == null)
+        {
+            scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
+        }
     }
 
     void OnTriggerEnter(Collider col)

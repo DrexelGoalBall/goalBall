@@ -51,6 +51,8 @@ public class CatchThrowV2 : NetworkBehaviour {
 	void Update ()
     {
         Vector3 playerPos = gameObject.transform.position;
+        if (ball == null)
+            ball = GameObject.FindGameObjectWithTag("Ball");
         Vector3 ballPos = ball.transform.position;
 
         //Get controller input

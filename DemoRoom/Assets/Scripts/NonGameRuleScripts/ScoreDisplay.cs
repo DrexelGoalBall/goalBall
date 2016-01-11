@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class DisplayScore : MonoBehaviour {
+public class ScoreDisplay : MonoBehaviour {
 
     //Get necessary items
     public ScoreKeeper scoreKeeper;
