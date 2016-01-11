@@ -45,6 +45,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     void Start ()
     {
         playerRB = gameObject.GetComponent<Rigidbody>();
+        ball = GameObject.FindGameObjectWithTag("Ball");
     } 
 
 	// Update is called once per frame
