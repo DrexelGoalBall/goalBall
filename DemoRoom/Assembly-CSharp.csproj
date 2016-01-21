@@ -73,6 +73,7 @@
      <Compile Include="Assets\Scripts\Network\Player_NetworkSetup.cs" />
      <Compile Include="Assets\Scripts\Network\Player_SyncPosition.cs" />
      <Compile Include="Assets\Scripts\Network\Player_SyncRotation.cs" />
+     <Compile Include="Assets\Scripts\Network\TeamPositionSelection.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
      <Compile Include="Assets\Scripts\NonGameRuleScripts\ScoreDisplay.cs" />

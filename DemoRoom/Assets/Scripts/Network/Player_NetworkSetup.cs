@@ -7,6 +7,8 @@ public class Player_NetworkSetup : NetworkBehaviour
 	[SerializeField] Camera playerCamera;
 	[SerializeField] AudioListener audioListener;
 
+    public bool positionSelected = false;
+
 	// Use this for initialization
 	public override void OnStartLocalPlayer ()
 	{
@@ -18,5 +20,7 @@ public class Player_NetworkSetup : NetworkBehaviour
         //cameraBox.cams.Add(playerCamera);
         playerCamera.enabled = true;
 		audioListener.enabled = true;
+
+
 	}
 }
