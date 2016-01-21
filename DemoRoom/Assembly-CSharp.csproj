@@ -63,8 +63,6 @@
      <Compile Include="Assets\Scripts\MenuScripts\Networking.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\Settings.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\Tutorial.cs" />
-     <Compile Include="Assets\Scripts\Network\ActivateSpawnPoints.cs" />
-     <Compile Include="Assets\Scripts\Network\AddSpawnPoints.cs" />
      <Compile Include="Assets\Scripts\Network\Ball_MotionSync.cs" />
      <Compile Include="Assets\Scripts\Network\FPS.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkManager_Custom.cs" />

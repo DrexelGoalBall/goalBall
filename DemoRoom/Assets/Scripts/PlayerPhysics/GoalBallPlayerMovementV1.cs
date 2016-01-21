@@ -15,9 +15,6 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
     //Movement Speed
     public float speed = 10f;
 
-    [SyncVar]
-    public int sideCorrection = 1;
-
 	// Use this for initialization
 	void Start ()
     {
