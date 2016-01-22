@@ -4,10 +4,10 @@ using UnityEngine.Networking;
 
 public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
+    /// <summary>
+    /// Script controls the movements of the player and the speed of the movments
+    /// </summary>
 
-    //Control names
-    public string Horizonal = "Horizontal";
-    public string Vertical = "Vertical";
 
     //Required Components
     private Rigidbody RB;
@@ -24,12 +24,11 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
         RB = gameObject.GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
-	void Update ()
+    public void Move(string Horizontal, string Vertical)
     {
-        float hinput = Input.GetAxis(Horizonal);
+        float hinput = Input.GetAxis(Horizontal);
         float vinput = Input.GetAxis(Vertical);
 
-        RB.velocity = (gameObject.transform.right * hinput * speed)  +  (gameObject.transform.forward * vinput * speed);
-	}
+        RB.velocity = (gameObject.transform.right * hinput * speed) + (gameObject.transform.forward * vinput * speed);
+    }
 }
