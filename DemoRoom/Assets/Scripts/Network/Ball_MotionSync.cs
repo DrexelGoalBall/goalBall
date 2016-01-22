@@ -8,6 +8,8 @@ public class Ball_MotionSync : NetworkBehaviour
     private Vector3 syncPos;
     [SyncVar]
     private Vector3 syncRot;
+    [SyncVar]
+    private Vector3 throwForce;
 
     private Vector3 lastPos;
     private Quaternion lastRot;
@@ -18,10 +20,15 @@ public class Ball_MotionSync : NetworkBehaviour
 
     private Transform startTrans;
 
+
+    //[SyncVar(hook = "ApplyForce")]
+    //private bool isThrown = false; 
+
     // Use this for initialization
     void Start()
     {
         startTrans = myTransform = transform;
+        throwForce = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
@@ -66,4 +73,37 @@ public class Ball_MotionSync : NetworkBehaviour
         myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
         myTransform.rotation = Quaternion.Lerp(myTransform.rotation, Quaternion.Euler(syncRot), Time.deltaTime * lerpRate);
     }
+
+   // void ApplyForce(bool isThrown)
+   // {
+   //     Debug.Log(throwForce);
+   //     Rigidbody ballRB = GetComponent<Rigidbody>();
+   //     ballRB.AddForce(throwForce);
+   //     Debug.Log("Thrown");
+   // }
+
+   // [Command]
+   // void CmdThrow(bool pIsThrown, Vector3 force)
+   // {
+   //     isThrown = pIsThrown;
+   //     if (isServer && !isClient)
+   //         throwForce = force;
+   //         ApplyForce(isThrown);
+   //     Debug.Log("Command called");
+   // }
+
+   //[ClientCallback]
+   //public void TransmitThrow(bool pIsThrown, Vector3 force)
+   // {
+   //     if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
+   //     {
+   //         Debug.Log("Send");
+   //         CmdThrow(pIsThrown,force);
+   //         Debug.Log("Back");
+   //         if (!isServer)
+   //         {
+   //             isThrown = pIsThrown;
+   //         }
+   //     }
+   // }
 }
