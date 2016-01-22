@@ -8,18 +8,17 @@ using UnityEngine.UI;
 
 public class NetworkManager_Custom : NetworkManager
 {
+    /// <summary>
+    ///     Custom NetworkManager that handles all facets of connecting and disconnecting to games
+    /// </summary>
+
     // Main Menu Components
     private Button directButton, onlineButton;
     private GameObject directPanel, onlinePanel;
     private bool direct = false, online = false, joining = false;
     private GameObject roomsPanel;
     public Button roomsListButton;
-    private GameObject positionsPanel;
-    public Button positionsListButton;
     private Text networkInfoText;
-
-    public int teamIndex = 0, positionIndex = 0;
-    public string team = "", position = "";
 
     // Game Components
     private Button disconnectButton;
@@ -27,7 +26,11 @@ public class NetworkManager_Custom : NetworkManager
     public Text playerElementText;
     private Text connInfoText;
 
+    // Keep track of the number of players currently in the game
     //int playerCount = 0;
+
+    public int teamIndex = 0, positionIndex = 0;
+    public string team = "", position = "";
 
     void Start()
     {
@@ -223,30 +226,12 @@ public class NetworkManager_Custom : NetworkManager
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         Debug.Log("Add Player");
-
-        Transform spawnLoc = this.startPositions[NetworkManager.singleton.numPlayers];    
-        foreach (Transform t in this.startPositions)
-        {
-            string tname = t.name.ToLower();
-
-            if (tname.Contains(team.ToLower()) && tname.Contains(position.ToLower()))
-            {
-                spawnLoc = t;
-                break;
-            }
-        }
-
-        Quaternion spawnRot = Quaternion.Euler(new Vector3(0, 90, 0));
-        int sideCorrection = 1;
-        Debug.Log(spawnLoc.name);
-        if (spawnLoc.name.ToLower().StartsWith("red"))
-        {
-            spawnRot = Quaternion.Euler(new Vector3(0, 270, 0));
-            sideCorrection = -1;
-        }
-
-        GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, spawnLoc.position, spawnRot);
-        player.GetComponent<GoalBallPlayerMovementV1>().sideCorrection = sideCorrection;
+        
+        // Get the landing point to spawn player
+        Transform spawnLoc = GameObject.Find("LandingPoint").transform;
+        // Create the player
+        GameObject player = (GameObject)GameObject.Instantiate(playerPrefab, spawnLoc.position, Quaternion.identity);
+        // Add the player to the game
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
     }
 
