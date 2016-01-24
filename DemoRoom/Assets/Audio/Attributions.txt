@@ -1,0 +1,12 @@
+If we use any free audio, place attributions here so we can track them. 
+
+The format is:
+NameOfFileInRepo
+OriginalCreatorOfFile
+LinkToSource
+
+~~~~~~~~~~~~~~~~~~~~~
+
+gymWalk.wav
+baidonovan
+https://freesound.org/people/baidonovan/sounds/187343/
