@@ -23,7 +23,7 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	void Start ()
 	{
 		RB = gameObject.GetComponent<Rigidbody>();
-		playerWalkSource = gameObject.GetComponent<AudioSource>();
+        playerWalkSource = gameObject.GetComponentInChildren<AudioSource>();
         playerWalkSource.clip = playerWalkSound;
 	}
 	
