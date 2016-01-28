@@ -5,14 +5,10 @@ using UnityEngine.Networking;
 
 public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
-
-	//Control names
-	public string Horizonal = "Horizontal";
-	public string Vertical = "Vertical";
-
 	//Required Components
 	private Rigidbody RB;
-	private AudioSource playerWalkSource;
+	public AudioSource playerWalkSource;
+    public AudioClip playerWalkSound;
 
 	//Movement Speed
 	public float speed = 10f;
@@ -28,25 +24,22 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	{
 		RB = gameObject.GetComponent<Rigidbody>();
 		playerWalkSource = gameObject.GetComponent<AudioSource>();
+        playerWalkSource.clip = playerWalkSound;
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	public void Move (string Horizontal, string Vertical)
 	{
-		float hinput = Input.GetAxis(Horizonal);
+		float hinput = Input.GetAxis(Horizontal);
 		float vinput = Input.GetAxis(Vertical);
 
 		RB.velocity = (gameObject.transform.right * hinput * speed)  +  (gameObject.transform.forward * vinput * speed);
 
 		if (RB.velocity.x != 0 && RB.velocity.z != 0) // Our ground speed is not zero
 		{
-//			float picthLevel = Random.Range(minPitch, maxPitch);
-//			playerWalkSource.pitch = picthLevel;
-
 			avgVel = Mathf.Abs((RB.velocity.x + RB.velocity.z) / 2);
 
 			StartCoroutine(WaitFor(avgVel / walkSoundMod));
-
 		}
 		else
 		{
