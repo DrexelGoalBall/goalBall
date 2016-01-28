@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class Timer : MonoBehaviour
+public class Timer : NetworkBehaviour
 {
-
     //KeepTrackOfTime
+    [SyncVar]
     private float time;
     public int lengthOfTimer = 120;
     private bool paused = true;
@@ -21,7 +22,8 @@ public class Timer : MonoBehaviour
         if (paused) return;
         if (time < 0) return;
 
-        time -= Time.deltaTime;
+        if (isServer)
+            time -= Time.deltaTime;
     }
 
     //Setters and getters
@@ -37,18 +39,21 @@ public class Timer : MonoBehaviour
 
     public void SetTime(float t)
     {
-        time = t;
+        if (isServer)
+            time = t;
     }
 
     public void SetLengthOfTimer(int length)
     {
         lengthOfTimer = length;
-        time = (float)length;
+        if (isServer)
+            time = (float)length;
     }
 
     public void Reset()
     {
-        time = lengthOfTimer;
+        if (isServer)
+            time = lengthOfTimer;
     }
 
     public float getTime()

@@ -147,14 +147,15 @@ public class Fouls : MonoBehaviour {
 
 	public void foul(bool isRed)
     {
-        if (isRed)
-        {
-            BR.placeBallBSC();
-        }
-        else
-        {
-            BR.placeBallRSC();
-        }
+        //WILL HAVE TO NETWORK THIS SO I AM GETTING RID OF IT FOR NOW
+       // if (isRed)
+       // {
+       //     BR.placeBallBSC();
+       // }
+       // else
+       // {
+       //     BR.placeBallRSC();
+       // }
 
         REF.PlayPlay();
     }

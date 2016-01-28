@@ -2,18 +2,24 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-
 public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
+    /// <summary>
+    /// Script controls the movements of the player and the speed of the movments
+    /// </summary>
 
+<<<<<<< HEAD
 	//Control names
 	public string Horizonal = "Horizontal";
 	public string Vertical = "Vertical";
+=======
+>>>>>>> RulesNetworkingMerger
 
 	//Required Components
 	private Rigidbody RB;
 	private AudioSource playerWalkSource;
 
+<<<<<<< HEAD
 	//Movement Speed
 	public float speed = 10f;
 
@@ -22,6 +28,10 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 
 	// Really only global so I can view the value in the Debug window.
 	private float avgVel; 
+=======
+    //Movement Speed
+    public float speed = 10f;
+>>>>>>> RulesNetworkingMerger
 
 	// Use this for initialization
 	void Start ()
@@ -30,6 +40,7 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 		playerWalkSource = gameObject.GetComponent<AudioSource>();
 	}
 	
+<<<<<<< HEAD
 	// Update is called once per frame
 	void Update ()
 	{
@@ -62,4 +73,13 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 			playerWalkSource.Play();
 		}
 	}
+=======
+    public void Move(string Horizontal, string Vertical)
+    {
+        float hinput = Input.GetAxis(Horizontal);
+        float vinput = Input.GetAxis(Vertical);
+
+        RB.velocity = (gameObject.transform.right * hinput * speed) + (gameObject.transform.forward * vinput * speed);
+    }
+>>>>>>> RulesNetworkingMerger
 }
