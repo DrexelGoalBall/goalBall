@@ -86,17 +86,34 @@
     <Compile Include="Assets\Scripts\MenuScripts\Networking.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\Settings.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\Tutorial.cs" />
+    <Compile Include="Assets\Scripts\Network\Ball_MotionSync.cs" />
+    <Compile Include="Assets\Scripts\Network\FPS.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkManager_Custom.cs" />
+    <Compile Include="Assets\Scripts\Network\Player_ID.cs" />
+    <Compile Include="Assets\Scripts\Network\Player_Latency.cs" />
+    <Compile Include="Assets\Scripts\Network\Player_NetworkSetup.cs" />
+    <Compile Include="Assets\Scripts\Network\Player_SyncPosition.cs" />
+    <Compile Include="Assets\Scripts\Network\Player_SyncRotation.cs" />
+    <Compile Include="Assets\Scripts\Network\TeamPositionSelection.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\CameraBox.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\ListObjectLocation.cs" />
     <Compile Include="Assets\Scripts\NonGameRuleScripts\ScoreDisplay.cs" />
+    <Compile Include="Assets\Scripts\NonGameRuleScripts\Waiting.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV1.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV2.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\Dive.cs" />
     <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
+    <Compile Include="Assets\Scripts\PlayerPhysics\PlayerInputController.cs" />
+    <Compile Include="Assets\Scripts\SceneScripts\RedOrBlue.cs" />
+    <Compile Include="Assets\Scripts\SceneScripts\SceneChanger.cs" />
+    <Compile Include="Assets\Scripts\SceneScripts\ScoreCarry.cs" />
     <Compile Include="Assets\Scripts\SoundScripts\BallInnerSounds.cs" />
     <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
     <Compile Include="Assets\Scripts\SoundScripts\Referee.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Audio\Attributions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
