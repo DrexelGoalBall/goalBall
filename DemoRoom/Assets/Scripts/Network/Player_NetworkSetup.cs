@@ -18,7 +18,7 @@ public class Player_NetworkSetup : NetworkBehaviour
 	{
         // Retrieve the movement script for this player and enable it
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
-        gbpm.enabled = true;
+        //gbpm.enabled = true;
         PlayerInputController controller = GetComponent<PlayerInputController>();
         controller.enabled = true;
         // Update the spawn position to the selected team and position

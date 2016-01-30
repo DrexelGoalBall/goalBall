@@ -33,10 +33,13 @@ public class CatchThrowV2 : NetworkBehaviour {
     public float maxLowAngle = 45f;
     public float maxLeftAngle = 45f;
     public float maxRightAngle = 45f;
+
+    bool stiff = false;
+    public float aimSpeed = 1f;
     #endregion
 
     #region basicUnityFunctions
-    void Start ()
+    void Start()
     {
         playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
@@ -48,7 +51,7 @@ public class CatchThrowV2 : NetworkBehaviour {
         Vector3 ballPos = ball.transform.position;
 
         //Determine if you can pickup the ball
-        if (Vector3.Distance(playerPos, ballPos) <  pickupDistance)
+        if (Vector3.Distance(playerPos, ballPos) < pickupDistance)
         {
             ballInRange = true;
         }
@@ -59,7 +62,7 @@ public class CatchThrowV2 : NetworkBehaviour {
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
-	}
+    }
     #endregion
 
     // Update is called once per frame
@@ -71,6 +74,19 @@ public class CatchThrowV2 : NetworkBehaviour {
         //Get controller input
         float xAim = Input.GetAxis(horizontalAim);
         float yAim = Input.GetAxis(verticalAim);
+
+        if (stiff)
+        {
+            stiffAim(xAim, yAim);
+        } else
+        {
+            FPSAim(xAim, yAim);
+        }
+
+    }
+
+    void stiffAim(float xAim, float yAim)
+    {
         float horizonTilt = 0;
         float verticalTilt = 0f;
 
@@ -94,6 +110,18 @@ public class CatchThrowV2 : NetworkBehaviour {
 
         aim.transform.localRotation = Quaternion.Euler(verticalTilt, horizonTilt, 0);
     }
+
+    void FPSAim(float xAim, float yAim)
+    {
+        float yRot = yAim * aimSpeed;
+        float xRot = xAim * aimSpeed;
+
+        aim.transform.localRotation *= Quaternion.Euler(yRot,xRot,0);
+        Quaternion q = aim.transform.localRotation;
+        q.eulerAngles = new Vector3(q.eulerAngles.x, q.eulerAngles.y, 0);
+        aim.transform.localRotation = q;
+    }
+
 
     public void CatchBall()
     {
