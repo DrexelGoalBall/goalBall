@@ -21,7 +21,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     private bool ballInRange = false;
     [SyncVar(hook = "ChangeBallHold")]
     private bool ballheld = false;
-    //[SyncVar(hook = "ApplyForceToBall")]
+    [SyncVar(hook = "ApplyForceToBall")]
     Vector3 Force = new Vector3(0, 0, 0);
     public float pickupDistance = 5f;
     private bool charging = false;
@@ -61,6 +61,12 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (stiff) stiff = false;
+            else stiff = true;
+        }
 
     }
     #endregion
@@ -117,9 +123,13 @@ public class CatchThrowV2 : NetworkBehaviour {
         float xRot = xAim * aimSpeed;
 
         aim.transform.localRotation *= Quaternion.Euler(yRot,xRot,0);
+        transform.localRotation *= Quaternion.Euler(yRot, xRot, 0);
         Quaternion q = aim.transform.localRotation;
-        q.eulerAngles = new Vector3(q.eulerAngles.x, q.eulerAngles.y, 0);
+        Quaternion p = transform.localRotation;
+        q.eulerAngles = new Vector3(q.eulerAngles.x,0, 0);
+        p.eulerAngles = new Vector3(0, p.eulerAngles.y, 0);
         aim.transform.localRotation = q;
+        transform.localRotation = p;
     }
 
 
@@ -158,10 +168,12 @@ public class CatchThrowV2 : NetworkBehaviour {
                 charging = false;
                 timer = 0f;
                 Debug.Log("Shoot");
+                ballheld = false;
             }
             else
             {
                 TransmitBallThrow(Force);
+                ballheld = false;
             }
         }
     }
@@ -179,14 +191,13 @@ public class CatchThrowV2 : NetworkBehaviour {
     */
     void ChangeBallHold(bool held)
     {
+        if (!held) return;
         Debug.Log("Ball held = " + held);
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
         Debug.Log(held);
         Debug.Log("Start");
-
-        ballheld = true;   
             
         if (gameObject.tag == "BluePlayer")
         {
@@ -228,6 +239,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     {
         Force = pForce;
         ApplyForceToBall(Force);
+        ballheld = false;
     }
 
     [ClientCallback]
