@@ -8,23 +8,31 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	//Required Components
 	private Rigidbody RB;
 	public AudioSource playerWalkSource;
-    public AudioClip playerWalkSound;
+   	public AudioClip playerWalkSound;
 
 	//Movement Speed
 	public float speed = 10f;
 
 	// Modifies time between walk sounds
-	public float walkSoundMod = 3f; 
+	public float walkSoundMod = 1f; 
 
-	// Really only global so I can view the value in the Debug window.
+// Timer
+	// Maximum time between foot sounds
+	public float timerLimit = 1f;
+
+	// Time between walk sounds
+	private float timer = 0;
+
+// Debug Globals
 	private float avgVel; 
+	private Vector3 RBvel;
 
 	// Use this for initialization
 	void Start ()
 	{
 		RB = gameObject.GetComponent<Rigidbody>();
-        playerWalkSource = gameObject.GetComponentInChildren<AudioSource>();
-        playerWalkSource.clip = playerWalkSound;
+		playerWalkSource = gameObject.GetComponentInChildren<AudioSource>();
+		playerWalkSource.clip = playerWalkSound;
 	}
 	
 	// Update is called once per frame
@@ -35,24 +43,18 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 
 		RB.velocity = (gameObject.transform.right * hinput * speed)  +  (gameObject.transform.forward * vinput * speed);
 
-		if (RB.velocity.x != 0 && RB.velocity.z != 0) // Our ground speed is not zero
-		{
-			avgVel = Mathf.Abs((RB.velocity.x + RB.velocity.z) / 2);
+		RBvel = RB.velocity;
 
-			StartCoroutine(WaitFor(avgVel / walkSoundMod));
-		}
-		else
-		{
-			playerWalkSource.Stop();
-		}
-	}
+		avgVel = (Mathf.Abs(RB.velocity.x) + Mathf.Abs(RB.velocity.z)) / 2;
 
-	IEnumerator WaitFor(float time)
-	{
-		yield return new WaitForSeconds(time);
-		if(!playerWalkSource.isPlaying)
+		if (avgVel > 0 && timer <= 0)
 		{
-			playerWalkSource.Play();
+			timer = walkSoundMod / avgVel;
+			if (timer > timerLimit) timer = timerLimit;
+
+			playerWalkSource.PlayOneShot(playerWalkSound);
 		}
+
+		timer -= Time.deltaTime;
 	}
 }

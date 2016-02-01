@@ -10,3 +10,7 @@ LinkToSource
 gymWalk.wav
 baidonovan
 https://freesound.org/people/baidonovan/sounds/187343/
+
+walkTwo.wav
+carrigsound
+http://freesound.org/people/carrigsound/sounds/32641/
