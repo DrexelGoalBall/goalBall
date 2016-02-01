@@ -12,6 +12,7 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 
 	//Movement Speed
 	public float speed = 10f;
+    public float slowSpeed = 1f;
 
 	// Modifies time between walk sounds
 	public float walkSoundMod = 1f; 
@@ -24,8 +25,11 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	private float timer = 0;
 
 // Debug Globals
-	private float avgVel; 
-	private Vector3 RBvel;
+	public float avgVel; 
+	public Vector3 RBvel;
+
+    //Disable Horizontal when Dived
+    public bool horizontalEnabled = true;
 
 	// Use this for initialization
 	void Start ()
@@ -40,8 +44,14 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	{
 		float hinput = Input.GetAxis(Horizontal);
 		float vinput = Input.GetAxis(Vertical);
-
-		RB.velocity = (gameObject.transform.right * hinput * speed)  +  (gameObject.transform.forward * vinput * speed);
+        if (!horizontalEnabled)
+        {
+            RB.velocity = (gameObject.transform.up * vinput * slowSpeed);
+        }
+        else
+        {
+            RB.velocity = (gameObject.transform.right * hinput * speed) + (gameObject.transform.forward * vinput * speed);
+        }
 
 		RBvel = RB.velocity;
 
