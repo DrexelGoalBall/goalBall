@@ -9,7 +9,7 @@ public class Dive : MonoBehaviour {
 	private int diveCount;
 
     public float diveSpeed = 10f;
-    public string diveCommand = "DiveP1";
+    public string diveCommand = "Dive";
     public float ballSlowdown = .333f;
 	//public GameObject diveMade;
 	// Use this for initialization
@@ -26,7 +26,7 @@ public class Dive : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate(){
+	public void DivePressed(){
 		float diveDrop = .5f / diveSpeed;
         float diveRot = 90f / diveSpeed;
 		if(diveGo && isUpright){

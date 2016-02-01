@@ -14,14 +14,17 @@ public class PlayerInputController : MonoBehaviour {
     public string Throw = "Throw";
     public string horizontalAim = "horizontalAim";
     public string verticalAim = "verticalAim";
+    public string DiveButton = "Dive";
 
     private GoalBallPlayerMovementV1 PlayerMovement;
     private CatchThrowV2 CatchThrow;
+    private Dive dive;
 	// Update is called once per frame
 	void Start ()
     {
         PlayerMovement = GetComponent<GoalBallPlayerMovementV1>();
         CatchThrow = GetComponent<CatchThrowV2>();
+        dive = GetComponent<Dive>();
 	}
 
     void Update ()
@@ -41,6 +44,10 @@ public class PlayerInputController : MonoBehaviour {
         if (Input.GetButtonUp(Throw))
         {
             CatchThrow.ThrowBall();
+        }
+        if (Input.GetButtonDown(DiveButton))
+        {
+            dive.DivePressed();
         }
     }
 }

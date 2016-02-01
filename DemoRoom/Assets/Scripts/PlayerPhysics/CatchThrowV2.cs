@@ -122,12 +122,14 @@ public class CatchThrowV2 : NetworkBehaviour {
         float yRot = yAim * aimSpeed;
         float xRot = xAim * aimSpeed;
 
+        Vector3 selfOrig = transform.eulerAngles;
+
         aim.transform.localRotation *= Quaternion.Euler(yRot,xRot,0);
         transform.localRotation *= Quaternion.Euler(yRot, xRot, 0);
         Quaternion q = aim.transform.localRotation;
         Quaternion p = transform.localRotation;
         q.eulerAngles = new Vector3(q.eulerAngles.x,0, 0);
-        p.eulerAngles = new Vector3(0, p.eulerAngles.y, 0);
+        p.eulerAngles = new Vector3(selfOrig.x, p.eulerAngles.y, selfOrig.z);
         aim.transform.localRotation = q;
         transform.localRotation = p;
     }
