@@ -30,9 +30,9 @@ public class CatchThrowV2 : NetworkBehaviour {
 
     //AimingAngles
     public float maxHighAngle = 45f;
-    public float maxLowAngle = 90f;
+    public float maxLowAngle = 45f;
     public float maxLeftAngle = 90f;
-    public float maxRightAngle = 45f;
+    public float maxRightAngle = 90f;
 
     bool stiff = false;
     public float aimSpeed = 1f;
@@ -127,19 +127,41 @@ public class CatchThrowV2 : NetworkBehaviour {
 
         Vector3 selfOrig = transform.eulerAngles;
 
-        aim.transform.localRotation *= Quaternion.Euler(yRot,xRot,0);
-        transform.localRotation *= Quaternion.Euler(yRot, xRot, 0);
-        Quaternion q = aim.transform.localRotation;
-        Quaternion p = transform.localRotation;
-        q.eulerAngles = new Vector3(q.eulerAngles.x,0, 0);
-        p.eulerAngles = new Vector3(selfOrig.x, p.eulerAngles.y, selfOrig.z);
-        aim.transform.localRotation = q;
-        transform.localRotation = p;
+        Quaternion aimTemp = aim.transform.localRotation * Quaternion.Euler(yRot, xRot, 0);
+        Quaternion selfTemp = transform.localRotation * Quaternion.Euler(yRot, xRot, 0);
+        aimTemp.eulerAngles = new Vector3(aimTemp.eulerAngles.x,0, 0);
+        selfTemp.eulerAngles = new Vector3(selfOrig.x, selfTemp.eulerAngles.y, selfOrig.z);
+
+        float differenceInAngles = Mathf.DeltaAngle(selfTemp.eulerAngles.y, initialAim);
+        if (differenceInAngles < -1 * maxRightAngle)
+        {
+            selfTemp.eulerAngles = new Vector3(selfOrig.x, maxRightAngle + initialAim, selfOrig.z);
+        }
+
+        if (differenceInAngles > maxLeftAngle)
+        {
+            selfTemp.eulerAngles = new Vector3(selfOrig.x, initialAim - maxLeftAngle , selfOrig.z);
+        }
+
+        float differenceInVertAngles = Mathf.DeltaAngle(aimTemp.eulerAngles.x, 0);
+        Debug.Log(differenceInVertAngles);
+        if (differenceInVertAngles >  maxHighAngle)
+        {
+            aimTemp.eulerAngles = new Vector3(-1 * maxHighAngle, 0, 0);
+        }
+
+        if (differenceInVertAngles < -1 *maxLowAngle)
+        {
+            aimTemp.eulerAngles = new Vector3(maxLowAngle, 0, 0);
+        }
+
+
+        aim.transform.localRotation = aimTemp;
+        transform.localRotation = selfTemp;
     }
 
     public void ResetAim()
     {
-        Debug.Log("AIM RESET");
         transform.localEulerAngles = new Vector3(0, initialAim, 0);
         aim.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
