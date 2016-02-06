@@ -30,12 +30,14 @@ public class CatchThrowV2 : NetworkBehaviour {
 
     //AimingAngles
     public float maxHighAngle = 45f;
-    public float maxLowAngle = 45f;
-    public float maxLeftAngle = 45f;
+    public float maxLowAngle = 90f;
+    public float maxLeftAngle = 90f;
     public float maxRightAngle = 45f;
 
     bool stiff = false;
     public float aimSpeed = 1f;
+
+    private float initialAim;
     #endregion
 
     #region basicUnityFunctions
@@ -43,6 +45,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     {
         playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
+        initialAim = transform.localEulerAngles.y;
     }
 
     void Update()
@@ -134,6 +137,12 @@ public class CatchThrowV2 : NetworkBehaviour {
         transform.localRotation = p;
     }
 
+    public void ResetAim()
+    {
+        Debug.Log("AIM RESET");
+        transform.localEulerAngles = new Vector3(0, initialAim, 0);
+        aim.transform.localEulerAngles = new Vector3(0, 0, 0);
+    }
 
     public void CatchBall()
     {
