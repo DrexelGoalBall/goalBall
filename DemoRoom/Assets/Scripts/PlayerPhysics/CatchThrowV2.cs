@@ -20,7 +20,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     public float throwForce = 10f;
     private bool ballInRange = false;
     [SyncVar(hook = "ChangeBallHold")]
-    private bool ballheld = false;
+    public bool ballheld = false;
     [SyncVar(hook = "ApplyForceToBall")]
     Vector3 Force = new Vector3(0, 0, 0);
     public float pickupDistance = 5f;
@@ -38,6 +38,11 @@ public class CatchThrowV2 : NetworkBehaviour {
     public float aimSpeed = 1f;
 
     private float initialAim;
+
+    private bool localDrop = false;
+    [SyncVar(hook = "DropIfHolding")]
+    public bool dropBall = false;
+
     #endregion
 
     #region basicUnityFunctions
@@ -278,6 +283,8 @@ public class CatchThrowV2 : NetworkBehaviour {
     [ClientCallback]
     void TransmitBallPickup(bool held)
     {
+        Debug.Log("TRANSMITTING");
+
         if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
         {
             Debug.Log("Send");
@@ -305,7 +312,33 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    public void Drop()
+    {
+        if (isServer && ballheld)
+        {
+            Debug.Log("Drop");
+            dropBall = !dropBall;
+            ballheld = false;
+        }
+    }
 
+    private void DropIfHolding(bool drop)
+    {
+        if (ballheld && drop != localDrop)
+        {
+            Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+            //ballRB.velocity = new Vector3(0, 0, 0);
+            //ballRB.angularVelocity = new Vector3(0, 0, 0);
+            ball.transform.parent = null;
+            ballRB.constraints = RigidbodyConstraints.None;
+
+            Debug.Log("DROPPING");
+            charging = false;
+            timer = 0f;
+            ballheld = false;
+            localDrop = drop;
+        }
+    }
 }
 
 
