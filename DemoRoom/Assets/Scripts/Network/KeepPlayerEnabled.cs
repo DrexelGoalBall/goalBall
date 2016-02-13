@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KeepPlayerEnabled : MonoBehaviour {
-
+public class KeepPlayerEnabled : MonoBehaviour 
+{
+    // Array of objects to enable
     public GameObject[] objectsToKeepOn;
 
     void Start()

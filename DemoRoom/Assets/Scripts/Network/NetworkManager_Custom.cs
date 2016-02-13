@@ -26,6 +26,9 @@ public class NetworkManager_Custom : NetworkManager
     public int teamIndex = 0, positionIndex = 0;
     public string team = "", position = "";
 
+    /// <summary>
+    ///     When started, updates the UI depending on the loaded scene and sets the maximum allowed connections
+    /// </summary>
     void Start()
     {
         // Update the UI depending on the scene that was loaded
@@ -35,21 +38,30 @@ public class NetworkManager_Custom : NetworkManager
         //NetworkManager.singleton.matchSize = 6;
     }
 
+    /// <summary>
+    ///     Updates the in-game UI to display the connection information and current number of players connected
+    /// </summary>
     void Update()
     {
+        // 
         if (NetworkManager.singleton.isNetworkActive)
         {
+            // 
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
+            // 
             if (capacityText != null)
             {
                 capacityText.text = string.Format("{0}/{1}", players.Length, NetworkManager.singleton.maxConnections);
             }
 
+            // 
             if (connInfoText != null)
             {
+                // 
                 if (NetworkServer.active)
                 {
+                    // 
                     string conn = "Server";
                     if (NetworkClient.active)
                         conn = "Host";
@@ -63,37 +75,59 @@ public class NetworkManager_Custom : NetworkManager
         }
     }
 
+    /// <summary>
+    ///     Starts a network game without a local player
+    /// </summary>
     public void ServerDirect()
     {
+        // 
         networkInfoText.text = "Creating local match...";
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
+        // 
         NetworkManager.singleton.StartServer();
     }
 
+    /// <summary>
+    ///     Starts a network game with a local player
+    /// </summary>
     public void HostDirect()
     {
+        // 
         networkInfoText.text = "Hosting local match...";
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
+        // 
         NetworkManager.singleton.StartHost();
     }
 
+    /// <summary>
+    ///     Tries to join a network game at the provided address and port with a local player
+    /// </summary>
     public void JoinDirect()
     {
+        // 
         if (!joining)
         {
+            // 
             joining = true;
+            // 
             string address = GameObject.Find("AddressField").GetComponent<InputField>().text;
             if (string.IsNullOrEmpty(address))
                 address = "localhost";
             NetworkManager.singleton.networkAddress = address;
             //NetworkManager.singleton.networkPort = 7777;
             networkInfoText.text = string.Format("Joining match on {0}...", address);
+            // 
             NetworkManager.singleton.StartClient();
         }
     }
 
+    /// <summary>
+    ///     When a client connects to the game, move it to the landing point before actually spawning in position
+    /// </summary>
+    /// <param name="conn">Connection from the client</param>
+    /// <param name="playerControllerId">Id associated with the connected client's player</param>
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         Debug.Log("Add Player");
@@ -106,18 +140,27 @@ public class NetworkManager_Custom : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
     }
 
+    /// <summary>
+    ///     Sets up the UI based on the loaded scene
+    /// </summary>
     void OnLevelWasLoaded(int level)
     {
+        // 
         if (level == 0)
         {
-            StartCoroutine(SetupMenuSceneButtons());
+            StartCoroutine(SetupMenuSceneUI());
         }
         else
         {
-            SetupOtherSceneButtons();
+            SetupGameSceneUI();
         }
     }
 
+    /// <summary>
+    ///     When client connects, sets client to ready and adds player
+    ///     Overridden to update joining bool
+    /// </summary>
+    /// <param name="conn">Connection from the client</param>
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
@@ -126,6 +169,11 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Client Connect");
     }
 
+    /// <summary>
+    ///     When client disconnects, handles moving back to menu
+    ///     Overridden to display whether join failed and update joining bool
+    /// </summary>
+    /// <param name="conn">Connection from the client</param>
     public override void OnClientDisconnect(NetworkConnection conn)
     {
         if (joining)
@@ -149,6 +197,11 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Client Error");
     }*/
 
+    /// <summary>
+    ///     On server, when client joins, add player
+    ///     Overridden to update joining bool
+    /// </summary>
+    /// <param name="conn">Connection from the client</param>
     public override void OnServerConnect(NetworkConnection conn)
     {
         base.OnServerConnect(conn);
@@ -157,6 +210,11 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Server Connect");
     }
 
+    /// <summary>
+    ///     On server, when client disconnects, remove player connection
+    ///     Overridden to update joining bool
+    /// </summary>
+    /// <param name="conn">Connection from the client</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         base.OnServerDisconnect(conn);
@@ -173,6 +231,10 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Server Error");
     }*/
 
+    /// <summary>
+    ///     Hook called when client is stopped
+    ///     Overridden to update joining bool
+    /// </summary>
     public override void OnStopClient()
     {
         GameObject ball = GameObject.FindGameObjectWithTag("Ball");
@@ -201,6 +263,10 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Stop Client");
     }
 
+    /// <summary>
+    ///     Hook called when host is stopped
+    ///     Overridden to update joining bool
+    /// </summary>
     public override void OnStopHost()
     {
         //base.OnStopHost();
@@ -209,6 +275,10 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Stop Host");
     }
 
+    /// <summary>
+    ///     Hook called when server is stopped
+    ///     Overridden to update joining bool
+    /// </summary>
     public override void OnStopServer()
     {
         base.OnStopServer();
@@ -217,28 +287,15 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Stop Server");
     }
 
-    IEnumerator SetupMenuSceneButtons()
+    /// <summary>
+    ///     Finds and sets up UI elements in the menu scene
+    /// </summary>
+    IEnumerator SetupMenuSceneUI()
     {
         yield return new WaitForSeconds(0.3f);
 
         networkInfoText = GameObject.Find("NetworkInfoText").GetComponent<Text>();
 
-        ShowDirectMenu();
-    }
-
-    void SetupOtherSceneButtons()
-    {
-        disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
-        disconnectButton.onClick.RemoveAllListeners();
-        disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
-
-        capacityText = GameObject.Find("Capacity").GetComponent<Text>();
-
-        connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
-    }
-
-    void ShowDirectMenu()
-    {
         GameObject.Find("ServerButton").GetComponent<Button>().onClick.RemoveAllListeners();
         GameObject.Find("ServerButton").GetComponent<Button>().onClick.AddListener(ServerDirect);
 
@@ -247,5 +304,19 @@ public class NetworkManager_Custom : NetworkManager
 
         GameObject.Find("JoinButton").GetComponent<Button>().onClick.RemoveAllListeners();
         GameObject.Find("JoinButton").GetComponent<Button>().onClick.AddListener(JoinDirect);
+    }
+
+    /// <summary>
+    ///     Finds and sets up UI elements in the game scene
+    /// </summary>
+    void SetupGameSceneUI()
+    {
+        disconnectButton = GameObject.Find("Disconnect").GetComponent<Button>();
+        disconnectButton.onClick.RemoveAllListeners();
+        disconnectButton.onClick.AddListener(NetworkManager.singleton.StopHost);
+
+        capacityText = GameObject.Find("Capacity").GetComponent<Text>();
+
+        connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
     }
 }

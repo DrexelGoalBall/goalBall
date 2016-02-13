@@ -13,7 +13,9 @@ public class Player_NetworkSetup : NetworkBehaviour
     // AudioListener for this player
 	[SerializeField] AudioListener audioListener;
 
-	// Use this for initialization
+    /// <summary>
+    ///     When the local player object is set up, enable the necessary components and set its spawn position
+    /// </summary>
 	public override void OnStartLocalPlayer ()
 	{
         // Retrieve the movement script for this player and enable it
@@ -28,7 +30,10 @@ public class Player_NetworkSetup : NetworkBehaviour
 		audioListener.enabled = true;
 	}
 
-    // Moves this player to the appropriate spawn based on its selected team and position
+    /// <summary>
+    ///     Moves this player to the appropriate spawn based on its selected team and position
+    /// </summary>
+    /// <param name="gbpm">Movement object to change the player's position</param>
     private void SetSpawn(GoalBallPlayerMovementV1 gbpm)
     {
         // Get the NetworkManager

@@ -18,6 +18,9 @@ public class FPS : MonoBehaviour
     // Number of times to update per second
     float updateRate = 4.0f;  // 4 updates
 
+    /// <summary>
+    ///     Counts the total number of frames since the last update to calculate the fps
+    /// </summary>
     void Update()
     {
         // Increase frame and change in time counters

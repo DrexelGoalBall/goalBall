@@ -3,27 +3,47 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the networking menu
-public class Networking : MenuLogic {
+public class Networking : MenuLogic 
+{
+    /// <summary>
+    ///     Sets up the Networking Menu for user interaction
+    /// </summary>
 
-	void Update () {
+    /// <summary>
+    ///     Updates the menu logic with the functions for this menu
+    /// </summary>
+	void Update () 
+    {
 		directionalMenuLogic(Left, Right, Up, Down);
 	}
 
-	new private void Left ()
+    /// <summary>
+    ///     Left menu option is selected
+    /// </summary>
+	new private void Left()
 	{
 		// Navigate to Quick Match Menu
 	}
 
-	new private void Right ()
+    /// <summary>
+    ///     Right menu option is selected
+    /// </summary>
+	new private void Right()
 	{
 		// Navigate to Joining Menu
 	}
 
-	new private void Up ()
+    /// <summary>
+    ///     Up menu option is selected, load Main menu
+    /// </summary>
+	new private void Up()
 	{
 		Application.LoadLevel("MainMenu");
 	}
 
+    /// <summary>
+    ///     Down menu option is selected
+    /// </summary>
 	new private void Down ()
 	{
 		// Navigate to Host Menu
