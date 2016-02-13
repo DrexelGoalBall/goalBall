@@ -2,13 +2,11 @@
 using System.Collections;
 using MenuTools;
 
-// Used to navigate and manage the networking menu
+/// <summary>
+///     Sets up the Exit menu for user interaction
+/// </summary>
 public class Exit : MenuLogic 
 {
-    /// <summary>
-    ///     Sets up the Exit menu for user interaction
-    /// </summary>
-
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>

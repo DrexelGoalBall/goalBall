@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script that simulates a coinflip.
+/// </summary>
 public class CoinFlip : ScriptableObject {
-    /// <summary>
-    /// Script that simulates a coinflip.
-    /// </summary>
+    
 
     public float odds = .5f;
     public int expected = 1;

@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+/// <summary>
+///     Enables users to select what team and position they would like to play
+/// </summary>
 public class TeamPositionSelection : MonoBehaviour 
 {
-    /// <summary>
-    ///     Enables users to select what team and position they would like to play
-    /// </summary>
-
     // 
     NetworkManager_Custom networkManager;
 

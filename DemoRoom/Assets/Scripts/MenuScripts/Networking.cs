@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MenuTools;
-
-// Used to navigate and manage the networking menu
+/// <summary>
+///     Sets up the Networking Menu for user interaction
+/// </summary>
 public class Networking : MenuLogic 
 {
-    /// <summary>
-    ///     Sets up the Networking Menu for user interaction
-    /// </summary>
-
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>

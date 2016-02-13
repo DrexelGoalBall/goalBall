@@ -2,17 +2,16 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/// <summary>
+/// Foul System
+/// This system keeps track of all of the fouls that can happen in a game and give the ball to the player that should get it.
+/// Current fouls are:
+/// Time foul (have possession of the ball for over 10 seconds)
+/// Out of bounts (throw the ball out of bounds)
+/// Dead Ball Ball stays in neutral area for longer than 3 seconds.
+/// </summary>
 public class Fouls : NetworkBehaviour 
 {
-    /// <summary>
-    /// Foul System
-    /// This system keeps track of all of the fouls that can happen in a game and give the ball to the player that should get it.
-    /// Current fouls are:
-    /// Time foul (have possession of the ball for over 10 seconds)
-    /// Out of bounts (throw the ball out of bounds)
-    /// Dead Ball Ball stays in neutral area for longer than 3 seconds.
-    /// </summary>
-
     public BallReset BR;
 	public GameObject ball;
     public Possession ballPossession;

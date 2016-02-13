@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+///<summary>
+/// This script is used for waiting.
+/// </summary>
 public class Waiting : MonoBehaviour {
-
-    ///<summary>
-    /// This script is used for waiting.
-    /// </summary>
-
 	//To Use:
 	//Call:
 	//		StopCoroutine(WaitFor())

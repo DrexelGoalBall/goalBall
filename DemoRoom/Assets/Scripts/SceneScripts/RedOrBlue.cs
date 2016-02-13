@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+///     Displays the winning team in the endgame scene
+/// </summary>
 public class RedOrBlue : MonoBehaviour 
 {
-    /// <summary>
-    ///     Displays the winning team in the endgame scene
-    /// </summary>
-
     // 
 	public Text blue;
 	public Text red;

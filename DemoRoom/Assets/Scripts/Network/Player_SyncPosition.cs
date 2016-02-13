@@ -3,14 +3,12 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+/// <summary>
+///     Synchronizes the position of the player over the network
+/// </summary>
 [NetworkSettings (channel = 0, sendInterval = 0.01f)]
 public class Player_SyncPosition : NetworkBehaviour 
 {
-    /// <summary>
-    ///     Synchronizes the position of the player over the network
-    /// </summary>
-
     // 
 	[SyncVar (hook = "SyncPositionValues")]
 	private Vector3 syncPos;

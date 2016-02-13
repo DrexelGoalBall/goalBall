@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script will determine who has possession of the ball
+/// As a ball collides with a player of a certain team, the possession of the ball will change.
+/// This will allow other scripts to know the possesion of the ball properly as if it were
+/// a real game.
+/// </summary>
 public class Possession : MonoBehaviour {
-
-    /// <summary>
-    /// This script will determine who has possession of the ball
-    /// As a ball collides with a player of a certain team, the possession of the ball will change.
-    /// This will allow other scripts to know the possesion of the ball properly as if it were
-    /// a real game.
-    /// </summary>
-
     //Player Tags
     public string bluePlayerTag = "BluePlayer";
     public string redPlayerTag = "RedPlayer";

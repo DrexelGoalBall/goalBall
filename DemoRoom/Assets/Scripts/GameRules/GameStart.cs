@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script starts up the game and activates everything that needs to be activated for a game to start.
+/// </summary>
 public class GameStart : MonoBehaviour {
-
-    /// <summary>
-    /// This script starts up the game and activates everything that needs to be activated for a game to start.
-    /// </summary>
-
     //Scripts
     private CoinFlip CF;
 

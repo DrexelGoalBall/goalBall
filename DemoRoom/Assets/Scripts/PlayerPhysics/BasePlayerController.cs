@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script is a basic player controler that is no longer used in the game.
+/// </summary>
 public class BasePlayerController : MonoBehaviour {
-    
-    /// <summary>
-    /// This script is a basic player controler that is no longer used in the game.
-    /// </summary>
-
     //Movement
     public float playerSpeed = 5;
     public float maxSpeed = 10;

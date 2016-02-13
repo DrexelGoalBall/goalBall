@@ -3,12 +3,11 @@ using System.Collections;
 using System;
 using UnityEngine.UI;
 
+/// <summary>
+///     Determines the current frames per second the game is running at
+/// </summary>
 public class FPS : MonoBehaviour 
 {
-    /// <summary>
-    ///     Determines the current frames per second the game is running at
-    /// </summary>
-
     // Number of frames since last update
     int frameCount = 0;
     // Number of milliseconds since last update

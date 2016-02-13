@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+///     Loads the desired scene
+/// </summary>
 public class SceneChanger : MonoBehaviour 
 {
-    /// <summary>
-    ///     Loads the desired scene
-    /// </summary>
-
     /// <summary>
     ///     Selected to play again, so reload game scene
     /// </summary>

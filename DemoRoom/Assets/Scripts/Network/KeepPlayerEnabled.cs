@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Debugging script.
+/// </summary>
 public class KeepPlayerEnabled : MonoBehaviour 
 {
     // Array of objects to enable

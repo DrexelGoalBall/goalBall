@@ -4,12 +4,11 @@ using System.Collections;
 // Static class with tools used for menu navigation and use
 namespace MenuTools
 {
-	public class MenuLogic : MonoBehaviour 
+    /// <summary>
+    ///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
+    /// </summary>
+    public class MenuLogic : MonoBehaviour 
     {
-        /// <summary>
-        ///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
-        /// </summary>
-
 		// Keypress trackers
 		private int horiz = 0;
 		private int vert = 0;

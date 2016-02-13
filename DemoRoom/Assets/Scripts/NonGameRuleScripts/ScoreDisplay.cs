@@ -2,12 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// This script displays the score in the GUI Text object.
+/// </summary>
 public class ScoreDisplay : MonoBehaviour {
-
-    /// <summary>
-    /// This script displays the score in the GUI Text object.
-    /// </summary>
-
     //Get necessary items
     public ScoreKeeper scoreKeeper;
     public Text RedScore;

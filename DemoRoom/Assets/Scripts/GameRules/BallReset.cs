@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script resets the ball to the proper position.  It will put the ball infront of one of the players on the team who is going to get the ball.
+/// This could be due to a penalty or a goal.
+/// </summary>
 public class BallReset : MonoBehaviour {
 
-    /// <summary>
-    /// This script resets the ball to the proper position.  It will put the ball infront of one of the players on the team who is going to get the ball.
-    /// This could be due to a penalty or a goal.
-    /// </summary>
-
+ 
     //Locations
     public GameObject RedSideCenter;
     public GameObject RedSideLeft;

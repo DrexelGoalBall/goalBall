@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script will list the last collider that an object collided with.  This is used to tell the location of an object as it enters a new trigger area.
+/// </summary>
 public class ListObjectLocation : MonoBehaviour {
-    /// <summary>
-    /// This script will list the last collider that an object collided with.  This is used to tell the location of an object as it enters a new trigger area.
-    /// </summary>
-
     public string currentArea;
 
     /// <summary>

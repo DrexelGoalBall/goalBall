@@ -2,13 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-
+/// <summary>
+/// This script controls the translation movements of the play.
+/// </summary>
 public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
-    /// <summary>
-    /// This script controls the translation movements of the play.
-    /// </summary>
-
 	//Required Components
 	private Rigidbody RB;
 	public AudioSource playerWalkSource;

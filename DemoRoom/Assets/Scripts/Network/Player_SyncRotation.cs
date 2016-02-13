@@ -3,12 +3,11 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 
+/// <summary>
+///     Synchronizes the rotation of the player over the network
+/// </summary>
 public class Player_SyncRotation : NetworkBehaviour 
 {
-    /// <summary>
-    ///     Synchronizes the rotation of the player over the network
-    /// </summary>
-
     // 
 	[SyncVar (hook = "OnPlayerRotSynced")] private float syncPlayerRotation;
     // 

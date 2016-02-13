@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/// <summary>
+///     Synchronizes the position/rotating of the ball over the network
+/// </summary>
 public class Ball_MotionSync : NetworkBehaviour
 {
-    /// <summary>
-    ///     Synchronizes the position/rotating of the ball over the network
-    /// </summary>
-
     // 
     [SyncVar]
     private Vector3 syncPos;

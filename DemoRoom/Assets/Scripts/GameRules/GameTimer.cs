@@ -2,11 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/// <summary>
+/// This script controls the game times and knows when it should be going and knows when it should be stopped.
+/// </summary>
 public class GameTimer : MonoBehaviour {
-    /// <summary>
-    /// This script controls the game times and knows when it should be going and knows when it should be stopped.
-    /// </summary>
-
     //GUI Objects
     public Text timeText;
 

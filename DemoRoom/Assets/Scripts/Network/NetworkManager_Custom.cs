@@ -6,12 +6,11 @@ using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using UnityEngine.UI;
 
+/// <summary>
+///     Custom NetworkManager that handles all facets of connecting and disconnecting to games
+/// </summary>
 public class NetworkManager_Custom : NetworkManager
 {
-    /// <summary>
-    ///     Custom NetworkManager that handles all facets of connecting and disconnecting to games
-    /// </summary>
-
     // Main Menu Components
     private bool joining = false;
     private Text networkInfoText;

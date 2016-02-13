@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// This script is in charge of making the player dive.  This accomplishes moving the player down as well as rotating their position.
+/// </summary>
 public class Dive : MonoBehaviour {
-
-    /// <summary>
-    /// This script is in charge of making the player dive.  This accomplishes moving the player down as well as rotating their position.
-    /// </summary>
-
 	public GameObject player;
 	private bool diveGo = false;
 	private bool isUpright = true;

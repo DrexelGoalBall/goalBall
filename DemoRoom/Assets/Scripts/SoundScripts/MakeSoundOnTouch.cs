@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script plays a sound when an object collides with another object.
+/// </summary>
 public class MakeSoundOnTouch : MonoBehaviour {
 
     public AudioClip ac;
@@ -9,13 +12,18 @@ public class MakeSoundOnTouch : MonoBehaviour {
     public float maxTime = 1;
     public AudioSource AS;
 
+    /// <summary>
+    /// Sets up all objects and variables that are needed to run the script.
+    /// </summary>
     void Start()
     {
         AS = gameObject.GetComponent<AudioSource>();
         AS.clip = ac;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Keeps track of the timer that regulates the frequency of the sound.
+    /// </summary>
     void FixedUpdate()
     {
         if (timer <= maxTime)
@@ -24,7 +32,10 @@ public class MakeSoundOnTouch : MonoBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Plays a sound on collision, assuming it has not already being played.
+    /// </summary>
+    /// <param name="collision"></param>
     void OnCollisionEnter(Collision collision)
     {
         if (timer >= maxTime)

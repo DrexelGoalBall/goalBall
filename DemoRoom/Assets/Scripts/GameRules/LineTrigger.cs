@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Line Trigger
+/// Throws a foul when a ball hits the out of bounds area.
+/// </summary>
 public class LineTrigger : MonoBehaviour {
-
-    /// <summary>
-    /// Line Trigger
-    /// Throws a foul when a ball hits the out of bounds area.
-    /// </summary>
-
 	public Fouls fouls;
     public string ballTag = "Ball";
 

@@ -2,13 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
-
+/// <summary>
+/// CatchThrowV2
+/// This script controls the catching and trowing of the ball and the networked capabilities associated with those actions.
+/// </summary>
 public class CatchThrowV2 : NetworkBehaviour {
-
-    /// <summary>
-    /// CatchThrowV2
-    /// This script controls the catching and trowing of the ball and the networked capabilities associated with those actions.
-    /// </summary>
     #region variables
     //Catch Colider 
     public GameObject ThrowDirection;

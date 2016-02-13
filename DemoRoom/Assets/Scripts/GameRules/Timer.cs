@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/// <summary>
+/// This is the low level timer that all other scrips use to keep track of time.
+/// </summary>
 public class Timer : NetworkBehaviour
 {
-    /// <summary>
-    /// This is the low level timer that all other scrips use to keep track of time.
-    /// </summary>
-
     //KeepTrackOfTime
     [SyncVar]
     private float time;

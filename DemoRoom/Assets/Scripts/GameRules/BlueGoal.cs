@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/// <summary>
+/// This Script is supposed to detect when a ball enters a goal and alerts the ScoreKeeper.
+/// </summary>
 public class BlueGoal : MonoBehaviour {
 
-    /// <summary>
-    /// This Script is supposed to detect when a ball enters a goal and alerts the ScoreKeeper.
-    /// </summary>
+    
 
 	public GameObject ball;
 	public ScoreKeeper scoreKeeper;

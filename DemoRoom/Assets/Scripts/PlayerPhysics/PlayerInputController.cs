@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script will manage all of the inputs for the player for any script that requires player input
+/// This is being done so that all player action scripts can be kept on while not having to worry about
+/// controlling other players due to network games.
+/// </summary>
 public class PlayerInputController : MonoBehaviour {
-    /// <summary>
-    /// This script will manage all of the inputs for the player for any script that requires player input
-    /// This is being done so that all player action scripts can be kept on while not having to worry about
-    /// controlling other players due to network games.
-    /// </summary>
-
     public string HorizontalMove = "Horizontal";
     public string VerticalMove = "Vertical";
     public string Catch = "Catch";

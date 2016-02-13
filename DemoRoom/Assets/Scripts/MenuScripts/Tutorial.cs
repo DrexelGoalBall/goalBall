@@ -2,13 +2,12 @@
 using System.Collections;
 using MenuTools;
 
+/// <summary>
+///     Sets up the Tutorial menu for user interaction
+/// </summary>
 // Used to navigate and manage the tutorial menu
 public class Tutorial : MenuLogic 
 {
-    /// <summary>
-    ///     Sets up the Tutorial menu for user interaction
-    /// </summary>
-
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>

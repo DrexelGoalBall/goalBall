@@ -2,13 +2,11 @@
 using System.Collections;
 using MenuTools;
 
-// Used to navigate and manage the main menu
+/// <summary>
+///     Sets up the Main menu for user interaction
+/// </summary>
 public class MainMenu : MenuLogic 
 {
-    /// <summary>
-    ///     Sets up the Main menu for user interaction
-    /// </summary>
-
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>

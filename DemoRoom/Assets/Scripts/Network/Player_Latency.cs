@@ -3,12 +3,11 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+/// <summary>
+///     Displays the latency for this client to the server
+/// </summary>
 public class Player_Latency : NetworkBehaviour 
 {
-    /// <summary>
-    ///     Displays the latency for this client to the server
-    /// </summary>
-
     // 
 	private NetworkClient nClient;
     // 

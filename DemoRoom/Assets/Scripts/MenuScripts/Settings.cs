@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MenuTools;
-
-// Used to navigate and manage the settings menu
+/// <summary>
+///     Sets up the Settings menu for user interaction
+/// </summary>
 public class Settings : MenuLogic 
 {
-    /// <summary>
-    ///     Sets up the Settings menu for user interaction
-    /// </summary>
-
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>

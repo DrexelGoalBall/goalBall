@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This script allows players to switch between cameras in the cams variable.
+/// NOTE: this is mainly a debugging script used to see the whole field of play.
+/// </summary>
 public class CameraBox : MonoBehaviour {
-    /// <summary>
-    /// This script allows players to switch between cameras in the cams variable.
-    /// NOTE: this is mainly a debugging script used to see the whole field of play.
-    /// </summary>
-
     //Cameras
     public Camera[] cams;
 

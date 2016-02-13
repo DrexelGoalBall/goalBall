@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+///     Keeps track of which team is winning and carries it between scenes
+/// </summary>
 public class ScoreCarry : MonoBehaviour 
 {
-    /// <summary>
-    ///     Keeps track of which team is winning and carries it between scenes
-    /// </summary>
-
     //
 	public int teamWinning;
 	

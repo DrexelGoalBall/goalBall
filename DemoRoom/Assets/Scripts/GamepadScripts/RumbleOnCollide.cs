@@ -2,13 +2,13 @@
 using System.Collections;
 using XInputDotNetPure;
 
-
-public class RumbleOnCollide : MonoBehaviour
-{
     /// <summary>
     /// This script will apply a rumble when you collide with an object with a tag.
     /// 
     /// </summary>
+public class RumbleOnCollide : MonoBehaviour
+{
+
     public float rumbleStrength = .5f;
     public string collideString = "Lines";
 	

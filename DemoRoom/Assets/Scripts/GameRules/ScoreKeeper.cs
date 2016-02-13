@@ -3,12 +3,10 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+/// <summary>
+/// This script keeps track of the score of the game and makes this information available to other objects.
+/// </summary>
 public class ScoreKeeper: NetworkBehaviour {
-
-    /// <summary>
-    /// This script keeps track of the score of the game and makes this information available to other objects.
-    /// </summary>
-
     //Display Variables
     [SyncVar]
 	public int BlueTeamScore;

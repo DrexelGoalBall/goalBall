@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Debugging script that does a coinflip on a key press.
+/// </summary>
 public class DoOnKey : MonoBehaviour
 {
 
-    /// <summary>
-    /// Debugging script that does a coinflip on a key press.
-    /// </summary>
+    
 
     CoinFlip flip = new CoinFlip();
 	

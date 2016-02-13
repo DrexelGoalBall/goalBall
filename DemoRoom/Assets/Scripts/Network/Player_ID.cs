@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/// <summary>
+///     Sets up a unique identity for the player
+/// </summary>
 public class Player_ID : NetworkBehaviour 
 {
-    /// <summary>
-    ///     Sets up a unique identity for the player
-    /// </summary>
-
     // 
 	[SyncVar] private string playerUniqueIdentity;
     // 
