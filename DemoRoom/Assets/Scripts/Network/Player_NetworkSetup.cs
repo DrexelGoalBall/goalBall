@@ -2,12 +2,11 @@
 using System.Collections;
 using UnityEngine.Networking;
 
+/// <summary>
+///     When a player joins a game, set up the necessary components for the local player
+/// </summary>
 public class Player_NetworkSetup : NetworkBehaviour 
 {
-    /// <summary>
-    ///     When a player joins a game, set up the necessary components for the local player
-    /// </summary>
-
     // Camera for this player
 	[SerializeField] Camera playerCamera;
     // AudioListener for this player

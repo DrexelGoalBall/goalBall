@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/// <summary>
+/// See blue goal
+/// </summary>
 public class RedGoal : MonoBehaviour {
-
-    /// <summary>
-    /// See blue goal
-    /// </summary>
-
     public GameObject ball;
     public ScoreKeeper scoreKeeper;
     bool inside;
