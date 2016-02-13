@@ -8,21 +8,23 @@ public class LineTrigger : MonoBehaviour {
     /// Throws a foul when a ball hits the out of bounds area.
     /// </summary>
 
-	public GameObject controller;
-	void OnTriggerEnter(Collider col){
-        Debug.Log("YO");
-
+	public Fouls fouls;
+	void OnTriggerEnter(Collider col)
+    {
         if (col.tag == "Ball")
         {
-            controller.GetComponent<Fouls>().LineOut();
+            Debug.Log("LineTrigger (Trigger)");
+
+            fouls.LineOut();
         }
     }
     void OnCollisionEnter(Collision col)
     {
-        Debug.Log("YO");
         if (col.gameObject.tag == "Ball")
         {
-            controller.GetComponent<Fouls>().LineOut();
+            Debug.Log("LineTrigger (Collision)");
+
+            fouls.LineOut();
         }
     }
 }

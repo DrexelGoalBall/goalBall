@@ -11,14 +11,6 @@ public class BlueGoal : MonoBehaviour {
     {
 		inside = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (scoreKeeper == null)
-        {
-            scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
-        }
-	}
 
 	void OnTriggerEnter(Collider col){
 		if(col.gameObject.name == "Ball" && !inside){

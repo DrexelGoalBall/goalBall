@@ -11,13 +11,13 @@ public class GameTimer : MonoBehaviour {
     public Text timeText;
 
     //Players
-    public GameObject player1;
-	public GameObject player2;
+    //public GameObject player1;
+	//public GameObject player2;
 	public GameObject ball;
 
     //Initial Player positions
-    private Vector3 player1Start;
-    private Vector3 player2Start;
+    //private Vector3 player1Start;
+    //private Vector3 player2Start;
     private Vector3 ballStart;
 
     //Timer Variables
@@ -78,8 +78,8 @@ public class GameTimer : MonoBehaviour {
             Application.LoadLevel("GameOver");
             return;
         }
-        player1.transform.position = player1Start;
-		player2.transform.position = player2Start;
+        //player1.transform.position = player1Start;
+		//player2.transform.position = player2Start;
 		ball.transform.position = ballStart;
 
         ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);

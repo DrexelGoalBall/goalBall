@@ -12,14 +12,6 @@ public class RedGoal : MonoBehaviour {
         inside = false;
     }
 
-    void Update()
-    {
-        if (scoreKeeper == null)
-        {
-            scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
-        }
-    }
-
     void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.name == "Ball" && !inside)

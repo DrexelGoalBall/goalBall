@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class Fouls : MonoBehaviour {
-
+public class Fouls : NetworkBehaviour 
+{
     /// <summary>
     /// Foul System
     /// This system keeps track of all of the fouls that can happen in a game and give the ball to the player that should get it.
@@ -36,7 +37,8 @@ public class Fouls : MonoBehaviour {
     private Referee REF;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+    {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         REF = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         BR = GameController.GetComponent<BallReset>();
@@ -53,7 +55,11 @@ public class Fouls : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
+        if (!isServer)
+            return;
+
         string location = ballLocation.currentArea;
         string possession = ballPossession.HasPossessionOfBall();
         //TIMER FOUL
@@ -63,19 +69,21 @@ public class Fouls : MonoBehaviour {
             timer.Pause();
             return;
         }
-        if (location == RedTeamArea || location == BlueTeamArea)
-        {
-            timer.Resume();
-            PreviousArea = location;
-        }
-        else if ((location == RedTeamArea && PreviousArea == BlueTeamArea) || (location == BlueTeamArea && PreviousArea == RedTeamArea))
+        if ((location == RedTeamArea && PreviousArea == BlueTeamArea) || (location == BlueTeamArea && PreviousArea == RedTeamArea))
         {
             timer.Reset();
             timer.Pause();
         }
+        else if (location == RedTeamArea || location == BlueTeamArea)
+        {
+            timer.Resume();
+            PreviousArea = location;
+        }
         if (timer.getTime() < 0)
         {
             ThrowTimeFoul();
+            timer.Reset();
+            timer.Pause();
 		}
 
         //DEADBALL
@@ -97,7 +105,11 @@ public class Fouls : MonoBehaviour {
         }
 	}
 
-	public void LineOut(){
+	public void LineOut()
+    {
+        if (!isServer)
+            return;
+
         string possession = ballPossession.HasPossessionOfBall();
         print("Line Out");
         REF.PlayLineOut();
@@ -113,7 +125,11 @@ public class Fouls : MonoBehaviour {
         }
 	}
 
-	void ThrowTimeFoul(){
+	void ThrowTimeFoul()
+    {
+        if (!isServer)
+            return;
+
 		print("Throw Time Foul");
         string possession = ballPossession.HasPossessionOfBall();
         REF.PlayFoul();
@@ -131,6 +147,9 @@ public class Fouls : MonoBehaviour {
 
     void ThrowDeadBallFoul()
     {
+        if (!isServer)
+            return;
+
         string possession = ballPossession.HasPossessionOfBall();
         REF.PlayDeadBall();
         if (possession == "Red")
@@ -147,15 +166,17 @@ public class Fouls : MonoBehaviour {
 
 	public void foul(bool isRed)
     {
-        //WILL HAVE TO NETWORK THIS SO I AM GETTING RID OF IT FOR NOW
-       // if (isRed)
-       // {
-       //     BR.placeBallBSC();
-       // }
-       // else
-       // {
-       //     BR.placeBallRSC();
-       // }
+        if (!isServer)
+            return;
+        
+        if (isRed)
+        {
+            BR.placeBallBSC();
+        }
+        else
+        {
+            BR.placeBallRSC();
+        }
 
         REF.PlayPlay();
     }

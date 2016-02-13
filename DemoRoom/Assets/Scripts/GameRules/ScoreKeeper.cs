@@ -34,10 +34,11 @@ public class ScoreKeeper: NetworkBehaviour {
         {
             BlueTeamScore++;
         }
-        Ref.PlayGoal();
-        Ref.PlayBlueTeam();
-        Ref.PlayPlay();
-        BR.placeBallRSC();
+            Ref.PlayGoal();
+            Ref.PlayBlueTeam();
+            Ref.PlayPlay();
+            BR.placeBallRSC();
+        
 		print("Added: " + BlueTeamScore);
 	}
 
@@ -55,10 +56,11 @@ public class ScoreKeeper: NetworkBehaviour {
         {
             RedTeamScore++;
         }
-        Ref.PlayGoal();
-        Ref.PlayRedTeam();
-        Ref.PlayPlay();
-        BR.placeBallBSC();
+            Ref.PlayGoal();
+            Ref.PlayRedTeam();
+            Ref.PlayPlay();
+            BR.placeBallBSC();
+        
         print("Added: " + RedTeamScore);
     }
 
