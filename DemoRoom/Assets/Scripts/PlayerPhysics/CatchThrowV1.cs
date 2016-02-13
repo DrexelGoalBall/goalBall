@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CatchThrowV1 : MonoBehaviour {
 
+    /// <summary>
+    /// This player is an old player throw controller that is no longer used.
+    /// </summary>
     //Catch Colider 
     public GameObject ThrowDirection;
     public GameObject ball;

@@ -3,27 +3,41 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class Player_Latency : NetworkBehaviour {
+public class Player_Latency : NetworkBehaviour 
+{
+    /// <summary>
+    ///     Displays the latency for this client to the server
+    /// </summary>
 
+    // 
 	private NetworkClient nClient;
+    // 
 	private int latency;
 	private Text latencyText;
 
-	public override void OnStartLocalPlayer ()
+    /// <summary>
+    ///     When the local player object is set up, find the necessary components in the scene
+    /// </summary>
+	public override void OnStartLocalPlayer()
 	{
 		nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
 		latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
 	}
 
-	// Update is called once per frame
+    /// <summary>
+    ///     Every frame, show the latency
+    /// </summary>
 	void Update () 
 	{
 		ShowLatency();
 	}
 
-	void ShowLatency ()
+    /// <summary>
+    ///     If it is the local player, determine and display the latency
+    /// </summary>
+	void ShowLatency()
 	{
-		if(isLocalPlayer)
+		if (isLocalPlayer)
 		{
 			latency = nClient.GetRTT();
 			latencyText.text = latency.ToString();

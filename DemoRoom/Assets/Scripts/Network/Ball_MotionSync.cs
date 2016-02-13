@@ -4,40 +4,58 @@ using UnityEngine.Networking;
 
 public class Ball_MotionSync : NetworkBehaviour
 {
+    /// <summary>
+    ///     Synchronizes the position/rotating of the ball over the network
+    /// </summary>
+
+    // 
     [SyncVar]
     private Vector3 syncPos;
+    // 
     [SyncVar]
     private Vector3 syncRot;
+    // 
     [SyncVar]
     private Vector3 throwForce;
 
+    // 
     private Vector3 lastPos;
     private Quaternion lastRot;
+    // 
     private Transform myTransform;
+
+    // 
     private float lerpRate = 10;
     private float posThreshold = 0.5f;
     private float rotThreshold = 5;
 
+    // 
     private Transform startTrans;
-
 
     //[SyncVar(hook = "ApplyForce")]
     //private bool isThrown = false; 
 
-    // Use this for initialization
+    /// <summary>
+    ///     Sets up the initial values
+    /// </summary>
     void Start()
     {
         startTrans = myTransform = transform;
         throwForce = new Vector3(0, 0, 0);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    ///     Every frame, send or lerp position of ball depending on client or server
+    /// </summary>
     void Update()
     {
         TransmitMotion();
         LerpMotion();
     }
 
+    /// <summary>
+    ///     Moves the ball to its intital position/rotation
+    /// </summary>
     public void Reset()
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -46,6 +64,9 @@ public class Ball_MotionSync : NetworkBehaviour
         myTransform.rotation = startTrans.rotation;
     }
 
+    /// <summary>
+    ///     If this is the server and the ball has moved/rotated significantly, update its position/rotation
+    /// </summary>
     void TransmitMotion()
     {
         if (!isServer)
@@ -62,7 +83,9 @@ public class Ball_MotionSync : NetworkBehaviour
             syncRot = myTransform.localEulerAngles;
         }
     }
-
+    /// <summary>
+    ///     On clients, lerps position/rotation of ball based on transformations provided by server
+    /// </summary>
     void LerpMotion()
     {
         if (isServer || transform.parent != null)

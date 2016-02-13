@@ -5,6 +5,10 @@ using UnityEngine.Networking;
 
 public class GoalBallPlayerMovementV1 : NetworkBehaviour
 {
+    /// <summary>
+    /// This script controls the translation movements of the play.
+    /// </summary>
+
 	//Required Components
 	private Rigidbody RB;
 	public AudioSource playerWalkSource;
@@ -31,16 +35,23 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
     //Disable Horizontal when Dived
     public bool horizontalEnabled = true;
 
-	// Use this for initialization
-	void Start ()
+    /// <summary>
+    /// initializes variables that need to be used by this script.
+    /// </summary>
+    void Start ()
 	{
 		RB = gameObject.GetComponent<Rigidbody>();
 		playerWalkSource = gameObject.GetComponentInChildren<AudioSource>();
 		playerWalkSource.clip = playerWalkSound;
 	}
-	
-	// Update is called once per frame
-	public void Move (string Horizontal, string Vertical)
+
+    /// <summary>
+    /// Gets the Horizontal and Vertical movement axis and gets their values.
+    /// Then this function increases the velocity of the player in that direction.
+    /// </summary>
+    /// <param name="Horizontal"></param>
+    /// <param name="Vertical"></param>
+    public void Move (string Horizontal, string Vertical)
 	{
 		float hinput = Input.GetAxis(Horizontal);
 		float vinput = Input.GetAxis(Vertical);

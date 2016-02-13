@@ -3,28 +3,48 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the tutorial menu
-public class Tutorial : MenuLogic {
+public class Tutorial : MenuLogic 
+{
+    /// <summary>
+    ///     Sets up the Tutorial menu for user interaction
+    /// </summary>
 
-	void Update () {
+    /// <summary>
+    ///     Updates the menu logic with the functions for this menu
+    /// </summary>
+	void Update() 
+    {
 		directionalMenuLogic(Left, Right, Up, Down);
 	}
 
+    /// <summary>
+    ///     Left menu option is selected
+    /// </summary>
 	new private void Left ()
 	{
 		// Undefined
 	}
 
-	new private void Right ()
+    /// <summary>
+    ///     Right menu option is selected, load Main menu
+    /// </summary>
+	new private void Right()
 	{
 		Application.LoadLevel("MainMenu");
 	}
 
-	new private void Up ()
+    /// <summary>
+    ///     Up menu option is selected
+    /// </summary>
+	new private void Up()
 	{
 		// Undefined
 	}
 
-	new private void Down ()
+    /// <summary>
+    ///     Down menu option is selected
+    /// </summary>
+	new private void Down()
 	{
 		// Undefined
 	}

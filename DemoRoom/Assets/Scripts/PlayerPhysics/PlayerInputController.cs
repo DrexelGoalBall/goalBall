@@ -20,14 +20,20 @@ public class PlayerInputController : MonoBehaviour {
     private GoalBallPlayerMovementV1 PlayerMovement;
     private CatchThrowV2 CatchThrow;
     private Dive dive;
-	// Update is called once per frame
-	void Start ()
+
+    /// <summary>
+    /// Initializes the variables and objects that are needed by this script.
+    /// </summary>
+    void Start ()
     {
         PlayerMovement = GetComponent<GoalBallPlayerMovementV1>();
         CatchThrow = GetComponent<CatchThrowV2>();
         dive = GetComponent<Dive>();
 	}
 
+    /// <summary>
+    /// Detects when the player uses an input on the controller and sends a message to the scripts that are affected by this change.
+    /// </summary>
     void Update ()
     {
         PlayerMovement.Move(HorizontalMove, VerticalMove);

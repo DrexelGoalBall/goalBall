@@ -4,7 +4,11 @@ using System.Collections;
 // Static class with tools used for menu navigation and use
 namespace MenuTools
 {
-	public class MenuLogic : MonoBehaviour {
+	public class MenuLogic : MonoBehaviour 
+    {
+        /// <summary>
+        ///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
+        /// </summary>
 
 		// Keypress trackers
 		private int horiz = 0;
@@ -34,21 +38,33 @@ namespace MenuTools
 		public delegate void UpFunc();
 		public delegate void DownFunc();
 
-
 		private AudioSource source;
 
-		void Start () {
+        /// <summary>
+        ///     Get the AudioSource for the menu when the scene starts
+        /// </summary>
+		void Start() 
+        {
 			source = GetComponent<AudioSource>();
 		}
 	
-		// Update is called once per frame
-		void Update () {
+		/// <summary>
+		///     Every frame, check for user input on menu
+		/// </summary>
+		void Update() 
+        {
 			directionalMenuLogic(Left, Right, Up, Down);
 		}
 
 // Protected Functions
 
-		// To be called once per frame. Checks for user button presses, calls respective function
+        /// <summary>
+        ///     Checks for user button presses and calls respective function
+        /// </summary>
+        /// <param name="left">Defined Left function</param>
+        /// <param name="right">Defined Right function</param>
+        /// <param name="up">Defined Up function</param>
+        /// <param name="down">Defined Down function</param>
 		protected void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down)
 		{
 			if (Input.GetButtonUp(HorizontalButton))
@@ -124,24 +140,45 @@ namespace MenuTools
 		}
 
 	// These instances should only ever be called if a menu is missing functions
-		protected void Left ()
+
+        /// <summary>
+        ///     Left menu option is selected (only called if menu is missing Left function)
+        /// </summary>
+        protected void Left()
 		{
 			print ("UNDEFINEDLEFT");
 		}
-		protected void Right ()
+
+        /// <summary>
+        ///     Right menu option is selected (only called if menu is missing Right function)
+        /// </summary>
+        protected void Right()
 		{
 			print ("UNDEFINEDRIGHT");
 		}
-		protected void Up ()
+
+        /// <summary>
+        ///     Up menu option is selected (only called if menu is missing Up function)
+        /// </summary>
+		protected void Up()
 		{
 			print ("UNDEFINEDUP");
 		}
-		protected void Down ()
+
+        /// <summary>
+        ///     Down menu option is selected (only called if menu is missing Down function)
+        /// </summary>
+		protected void Down()
 		{
 			print ("UNDEFINEDDOWN");
 		}
 
 // Private Functions
+
+        /// <summary>
+        ///     Plays clip when direction is pressed
+        /// </summary>
+        /// <param name="clip">Clip to play</param>
 		private void playDirectionalSound(AudioClip clip)
 		{
 			source.Stop();

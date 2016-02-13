@@ -32,8 +32,10 @@ public class GameTimer : MonoBehaviour {
     private ScoreKeeper scoreKeeper;
     private Referee referee;
 
-	// Use this for initialization
-	void Start () {
+    /// <summary>
+    /// Initialize all variables needed for this script to run.
+    /// </summary>
+    void Start () {
         //timer = gameObject.AddComponent<Timer>();
         timer = GetComponent<Timer>();
         timer.SetLengthOfTimer(halfLength + 1);
@@ -44,9 +46,11 @@ public class GameTimer : MonoBehaviour {
         scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    /// <summary>
+    /// Keeps track of the Timer and causes referee to say certain things as the time progresses.
+    /// </summary>
+    void Update () {
         if (endGame) return;
         timeText.text = timer.getTimeString();
 		if(timer.getTime() <= 0){
@@ -70,6 +74,9 @@ public class GameTimer : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// Resets the timer and increments the half variable.
+    /// </summary>
 	void nextHalf(){
         if (half >= 2)
         {
@@ -90,18 +97,28 @@ public class GameTimer : MonoBehaviour {
         half = half + 1;
     }
 
+    /// <summary>
+    /// Starts the Timer.
+    /// </summary>
     public void StartGame()
     {
         timer.Resume();
         gameGoing = true;
     }
 
+    /// <summary>
+    /// Stops the Timer.
+    /// </summary>
     public void StopGame()
     {
         timer.Pause();
         gameGoing = false;
     }
 
+    /// <summary>
+    /// Check if game is going.
+    /// </summary>
+    /// <returns></returns>
     public bool GameIsGoing()
     {
         return gameGoing;

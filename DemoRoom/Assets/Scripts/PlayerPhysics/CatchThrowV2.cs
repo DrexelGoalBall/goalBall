@@ -7,7 +7,7 @@ public class CatchThrowV2 : NetworkBehaviour {
 
     /// <summary>
     /// CatchThrowV2
-    /// This script
+    /// This script controls the catching and trowing of the ball and the networked capabilities associated with those actions.
     /// </summary>
     #region variables
     //Catch Colider 
@@ -46,6 +46,10 @@ public class CatchThrowV2 : NetworkBehaviour {
     #endregion
 
     #region basicUnityFunctions
+
+    /// <summary>
+    /// This function initializes all of the variables needed for the script.
+    /// </summary>
     void Start()
     {
         playerRB = gameObject.GetComponent<Rigidbody>();
@@ -53,6 +57,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         initialAim = transform.localEulerAngles.y;
     }
 
+    /// <summary>
+    /// Detects the distance between the player and the ball and determines if the player is in range to pick up the ball.
+    /// DEBUGGING: can be used to change the player controls when the M key is pressed.
+    /// </summary>
     void Update()
     {
         Vector3 playerPos = gameObject.transform.position;
@@ -79,7 +87,11 @@ public class CatchThrowV2 : NetworkBehaviour {
     }
     #endregion
 
-    // Update is called once per frame
+    /// <summary>
+    /// Controls the Aim of the player based on the horizontalAim and verticalAim parameters.
+    /// </summary>
+    /// <param name="horizontalAim"></param>
+    /// <param name="verticalAim"></param>
     public void Aim(string horizontalAim, string verticalAim)
     {
         if (ball == null)
@@ -99,6 +111,12 @@ public class CatchThrowV2 : NetworkBehaviour {
 
     }
 
+    /// <summary>
+    /// Stiff aim is when the player uses the control stick to change the direction of the ball from the center of their initial view.  
+    /// When the control stick is released the aim will center.
+    /// </summary>
+    /// <param name="xAim"></param>
+    /// <param name="yAim"></param>
     void stiffAim(float xAim, float yAim)
     {
         float horizonTilt = 0;
@@ -125,6 +143,11 @@ public class CatchThrowV2 : NetworkBehaviour {
         aim.transform.localRotation = Quaternion.Euler(verticalTilt, horizonTilt, 0);
     }
 
+    /// <summary>
+    /// Classic first person shooter aiming that allows the palyers to look around and not have their view reset to the origonal position.
+    /// </summary>
+    /// <param name="xAim"></param>
+    /// <param name="yAim"></param>
     void FPSAim(float xAim, float yAim)
     {
         float yRot = yAim * aimSpeed;
@@ -165,12 +188,18 @@ public class CatchThrowV2 : NetworkBehaviour {
         transform.localRotation = selfTemp;
     }
 
+    /// <summary>
+    /// Resets the aim to the initial aim on a button click.
+    /// </summary>
     public void ResetAim()
     {
         transform.localEulerAngles = new Vector3(0, initialAim, 0);
         aim.transform.localEulerAngles = new Vector3(0, 0, 0);
     }
 
+    /// <summary>
+    /// Makes the calls to Catch the ball.
+    /// </summary>
     public void CatchBall()
     {
         if (ballInRange || ballheld)
@@ -179,7 +208,9 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Makes the calls to charge the ball.
+    /// </summary>
     public void ChargeBall()
     {
         if (ballheld)
@@ -188,6 +219,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// Makes the call to throw the ball.
+    /// Differentiates calls depending on whether the player is hosing or a client.
+    /// </summary>
     public void ThrowBall()
     {
         if (ballheld)
@@ -216,6 +251,9 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// Increments the value of the charging variable.
+    /// </summary>
     void FixedUpdate()
     {
         if (charging)
@@ -227,6 +265,10 @@ public class CatchThrowV2 : NetworkBehaviour {
     /*
     Networked Functions
     */
+    /// <summary>
+    /// Changes whos has the ball in a given game.
+    /// </summary>
+    /// <param name="held"></param>
     void ChangeBallHold(bool held)
     {
         if (!held) return;
@@ -251,6 +293,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         Debug.Log("Grab");
     }
 
+    /// <summary>
+    /// Throws the ball from a given player at a given position.
+    /// </summary>
+    /// <param name="Force"></param>
     void ApplyForceToBall(Vector3 Force)
     {
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
@@ -264,6 +310,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         Debug.Log("Shoot");
     }
 
+    /// <summary>
+    /// Command sent to server to let the server know that the player has picked up the ball.
+    /// </summary>
+    /// <param name="held"></param>
     [Command]
     void CmdBallPickup(bool held)
     {
@@ -272,6 +322,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         ChangeBallHold(held);
     }
 
+    /// <summary>
+    /// Command sent to the server to let the server know that the player has thrown the ball.
+    /// </summary>
+    /// <param name="pForce"></param>
     [Command]
     void CmdBallThrow(Vector3 pForce)
     {
@@ -280,6 +334,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         ballheld = false;
     }
 
+    /// <summary>
+    /// Client transmits that they have picked up the ball.
+    /// </summary>
+    /// <param name="held"></param>
     [ClientCallback]
     void TransmitBallPickup(bool held)
     {
@@ -297,6 +355,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// CLient transmits that they have thrown the ball.
+    /// </summary>
+    /// <param name="pForce"></param>
     [ClientCallback]
     void TransmitBallThrow(Vector3 pForce)
     {
@@ -312,6 +374,9 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// Detect when the ball is dropped.
+    /// </summary>
     public void Drop()
     {
         if (isServer && ballheld)
@@ -322,6 +387,10 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// If the player is holding the ball and it needs to be dropped it will drop it.
+    /// </summary>
+    /// <param name="drop"></param>
     private void DropIfHolding(bool drop)
     {
         if (ballheld && drop != localDrop)

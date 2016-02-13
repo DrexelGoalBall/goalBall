@@ -3,6 +3,10 @@ using System.Collections;
 
 public class GameStart : MonoBehaviour {
 
+    /// <summary>
+    /// This script starts up the game and activates everything that needs to be activated for a game to start.
+    /// </summary>
+
     //Scripts
     private CoinFlip CF;
 
@@ -23,8 +27,11 @@ public class GameStart : MonoBehaviour {
     bool setupDone = false;
 
     int startPos;
-	// Use this for initialization
-	void Start ()
+
+    /// <summary>
+    /// Initializes all variables needed to run the script.
+    /// </summary>
+    void Start ()
     {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         BR = GameController.GetComponent<BallReset>();
@@ -54,11 +61,13 @@ public class GameStart : MonoBehaviour {
         setupDone = true;
     }
 
+    /// <summary>
+    /// Checks if the game is ready to start and the referee has finished speaking.
+    /// </summary>
     void Update()
     {
         if (!Ref.refereeSpeaking() && check && setupDone)
         {
-            Debug.Log("YO");
             GT.StartGame();
             check = false;
         }

@@ -17,6 +17,10 @@ public class Possession : MonoBehaviour {
     //Possesion Variables
     public string possessionOfBall = "Blue";
 
+    /// <summary>
+    /// Detects when a red or blue player collides with the ball and sets the possesion variable accordingly.
+    /// </summary>
+    /// <param name="col"></param>
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == bluePlayerTag)
@@ -29,15 +33,26 @@ public class Possession : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Check who has posession of the ball.
+    /// </summary>
+    /// <returns></returns>
     public string HasPossessionOfBall()
     {
         return possessionOfBall;
     }
 
+    /// <summary>
+    /// Gives possesion of the ball to the blue team.
+    /// </summary>
     public void BlueTeamPossession()
     {
         possessionOfBall = "Blue";
     }
+
+    /// <summary>
+    /// Gives possesion of the ball to the red team.
+    /// </summary>
     public void RedTeamPossession()
     {
         possessionOfBall = "Red";

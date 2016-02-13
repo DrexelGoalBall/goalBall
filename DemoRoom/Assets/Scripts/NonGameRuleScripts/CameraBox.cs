@@ -2,6 +2,10 @@
 using System.Collections;
 
 public class CameraBox : MonoBehaviour {
+    /// <summary>
+    /// This script allows players to switch between cameras in the cams variable.
+    /// NOTE: this is mainly a debugging script used to see the whole field of play.
+    /// </summary>
 
     //Cameras
     public Camera[] cams;
@@ -9,8 +13,10 @@ public class CameraBox : MonoBehaviour {
     //Indexs
     int currentIndex = 0;
 
-	// Use this for initialization
-	void Start ()
+    /// <summary>
+    /// Initiazes all of the variables that need to be initialized and makes sure only one camera is on.
+    /// </summary>
+    void Start ()
     {
 	   foreach (Camera c in cams)
        {
@@ -18,9 +24,11 @@ public class CameraBox : MonoBehaviour {
        }
         cams[currentIndex].enabled = true;
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    /// <summary>
+    /// Detects when player presses the K key and switches the camera.
+    /// </summary>
+    void Update ()
     {
 	    if (Input.GetKeyDown(KeyCode.K))
         {

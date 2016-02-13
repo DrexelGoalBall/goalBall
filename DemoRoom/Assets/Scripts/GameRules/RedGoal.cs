@@ -3,6 +3,10 @@ using System.Collections;
 
 public class RedGoal : MonoBehaviour {
 
+    /// <summary>
+    /// See blue goal
+    /// </summary>
+
     public GameObject ball;
     public ScoreKeeper scoreKeeper;
     bool inside;

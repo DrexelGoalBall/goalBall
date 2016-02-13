@@ -4,6 +4,10 @@ using System.Collections;
 public class DoOnKey : MonoBehaviour
 {
 
+    /// <summary>
+    /// Debugging script that does a coinflip on a key press.
+    /// </summary>
+
     CoinFlip flip = new CoinFlip();
 	
 	// Update is called once per frame

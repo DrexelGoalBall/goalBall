@@ -5,54 +5,73 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 [NetworkSettings (channel = 0, sendInterval = 0.01f)]
-public class Player_SyncPosition : NetworkBehaviour {
+public class Player_SyncPosition : NetworkBehaviour 
+{
+    /// <summary>
+    ///     Synchronizes the position of the player over the network
+    /// </summary>
 
+    // 
 	[SyncVar (hook = "SyncPositionValues")]
 	private Vector3 syncPos;
 
+    // 
 	[SerializeField] Transform myTransform;
-	private float lerpRate;
+	
+    // 
+    private float lerpRate;
 	private float normalLerpRate = 16;
 	private float fasterLerpRate = 27;
 
+    // 
 	private Vector3 lastPos;
+    // 
 	private float threshold = 0.1f;
 
-	private NetworkClient nClient;
-	private int latency;
-	private Text latencyText;
-
+    // 
 	private List<Vector3> syncPosList = new List<Vector3>();
+    // 
 	[SerializeField] private bool useHistoricalLerping = false;
+    // 
 	private float closeEnough = 0.11f;
 
+    // 
     //private Transform playerStartTransform;
 
-	void Start ()
+    /// <summary>
+    ///     Sets up the initial values
+    /// </summary>
+	void Start()
 	{
-		nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
-		latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
 		lerpRate = normalLerpRate;
 
         //playerStartTransform = transform;
 	}
 
-	void Update ()
+    /// <summary>
+    ///     Every frame, lerp the position of this non-local player
+    /// </summary>
+	void Update()
 	{
 		LerpPosition();
-		ShowLatency();
 	}
 
-	void FixedUpdate () 
+    /// <summary>
+    ///     Every fixed frame, send significant changes in position of local player to server
+    /// </summary>
+	void FixedUpdate() 
 	{
 		TransmitPosition();
 	}
 
-	void LerpPosition ()
+    /// <summary>
+    ///     If not the local player, lerp to display correct position
+    /// </summary>
+	void LerpPosition()
 	{
-		if(!isLocalPlayer)
+		if (!isLocalPlayer)
 		{
-			if(useHistoricalLerping)
+			if (useHistoricalLerping)
 			{
 				HistoricalLerping();
 			}
@@ -65,6 +84,10 @@ public class Player_SyncPosition : NetworkBehaviour {
 		}
 	}
 
+    /// <summary>
+    ///     On server, updates the position for this player so all clients can lerp this player to it
+    /// </summary>
+    /// <param name="pos">Position sent from client to populate to others</param>
 	[Command]
 	void CmdProvidePositionToServer (Vector3 pos)
 	{
@@ -72,48 +95,56 @@ public class Player_SyncPosition : NetworkBehaviour {
 		Debug.Log("Command called");
 	}
 
+    /// <summary>
+    ///     On the local client, sends significant position changes to server to be populated for ordinary lerping
+    /// </summary>
 	[ClientCallback]
-	void TransmitPosition ()
+	void TransmitPosition()
 	{
-		if(isLocalPlayer && Vector3.Distance(myTransform.position, lastPos) > threshold)
+		if (isLocalPlayer && Vector3.Distance(myTransform.position, lastPos) > threshold)
 		{
 			CmdProvidePositionToServer(myTransform.position);
 			lastPos = myTransform.position;
 		}
 	}
 
+    /// <summary>
+    ///     On the client, adds the provided position to the list for historical lerping
+    /// </summary>
+    /// <param name="latestPos">Latest position of player</param>
 	[Client]
-	void SyncPositionValues (Vector3 latestPos)
+	void SyncPositionValues(Vector3 latestPos)
 	{
 		syncPos = latestPos;
 		syncPosList.Add(syncPos);
 	}
 
-	void ShowLatency ()
-	{
-		if (isLocalPlayer)
-		{
-			latency = nClient.GetRTT();
-			latencyText.text = latency.ToString();
-		}
-	}
-
-	void OrdinaryLerping ()
+    /// <summary>
+    ///     Lerps the player by providing it the most recent position everytime
+    /// </summary>
+	void OrdinaryLerping()
 	{
 		myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
 	}
 
-	void HistoricalLerping ()
+    /// <summary>
+    ///     Lerps the player using a list of all positions needed to lerp through
+    /// </summary>
+	void HistoricalLerping()
 	{
+        // 
 		if(syncPosList.Count > 0)
 		{
+            // 
 			myTransform.position = Vector3.Lerp(myTransform.position, syncPosList[0], Time.deltaTime * lerpRate);
 
+            // 
 			if(Vector3.Distance(myTransform.position, syncPosList[0]) < closeEnough)
 			{
 				syncPosList.RemoveAt(0);
 			}
 
+            // 
 			if(syncPosList.Count > 10)
 			{
 				lerpRate = fasterLerpRate;

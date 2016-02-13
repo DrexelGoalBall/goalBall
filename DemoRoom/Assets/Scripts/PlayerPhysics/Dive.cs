@@ -17,17 +17,21 @@ public class Dive : MonoBehaviour {
     public float ballSlowdown = .333f;
     private GoalBallPlayerMovementV1 GBPM;
 
-	//public GameObject diveMade;
-	// Use this for initialization
+	
+    /// <summary>
+    /// Initializes all of the variables needed for this script.
+    /// </summary>
 	void Start ()
     {
         GBPM = GetComponent<GoalBallPlayerMovementV1>();
 		diveCount = 0;
         player = gameObject;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    /// <summary>
+    /// Makes diving smother when a dive is detected.  Animates the player diving.
+    /// </summary>
+    void Update () {
         float diveDrop = .5f / diveSpeed;
         float diveRot = 90f / diveSpeed;
         if (diveGo && isUpright)
@@ -68,6 +72,9 @@ public class Dive : MonoBehaviour {
 
 	}
 
+    /// <summary>
+    /// Activates a dive action to occur.
+    /// </summary>
 	public void DivePressed(){
         if (Input.GetButtonDown(diveCommand))
         {
@@ -76,6 +83,10 @@ public class Dive : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// When the player collieds with the ball, decrease the speed of the ball.
+    /// </summary>
+    /// <param name="col"></param>
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ball" && !isUpright)

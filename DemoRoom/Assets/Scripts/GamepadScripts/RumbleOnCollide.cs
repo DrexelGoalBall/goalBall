@@ -12,17 +12,27 @@ public class RumbleOnCollide : MonoBehaviour
     public float rumbleStrength = .5f;
     public string collideString = "Lines";
 	
-	// Update is called once per frame
+	/// <summary>
+    /// Detect when the player enters a collider with the tag collideString and activates the Rubmle Function.
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerEnter(Collider col)
     {
         if(col.gameObject.tag == collideString) Rumble();
     }
 
+    /// <summary>
+    /// Detect when the player enters a trigger with the tag collideString and Activates the Rumble Function.
+    /// </summary>
+    /// <param name="col"></param>
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == collideString) Rumble();
     }
 
+    /// <summary>
+    /// Rumbles an xbox controller.
+    /// </summary>
     public void Rumble()
     {
         GamePad.SetVibration(PlayerIndex.One, rumbleStrength, rumbleStrength);

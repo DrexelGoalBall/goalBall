@@ -36,8 +36,10 @@ public class Fouls : NetworkBehaviour
     //Other GameObjects Scripts
     private Referee REF;
 
-	// Use this for initialization
-	void Start () 
+    /// <summary>
+    /// Initializes all of the objects and variables needed for this script.
+    /// </summary>
+    void Start () 
     {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         REF = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
@@ -53,9 +55,11 @@ public class Fouls : NetworkBehaviour
         DeadBallTimer.SetLengthOfTimer(DeadBallTime);
         DeadBallTimer.Pause();
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+    /// <summary>
+    /// Main function that checks whether a foul has been made in real time.  Keeps a timer running for checking fouls.
+    /// </summary>
+    void Update () 
     {
         if (!isServer)
             return;
@@ -105,6 +109,9 @@ public class Fouls : NetworkBehaviour
         }
 	}
 
+    /// <summary>
+    /// Calls the LineOut foul and all associated actions.
+    /// </summary>
 	public void LineOut()
     {
         if (!isServer)
@@ -125,6 +132,9 @@ public class Fouls : NetworkBehaviour
         }
 	}
 
+    /// <summary>
+    /// Throw the time Foul and all associated actions.
+    /// </summary>
 	void ThrowTimeFoul()
     {
         if (!isServer)
@@ -145,6 +155,9 @@ public class Fouls : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Throw DeadBall Foul and all associated actions.
+    /// </summary>
     void ThrowDeadBallFoul()
     {
         if (!isServer)
@@ -164,6 +177,10 @@ public class Fouls : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Activates the move of the foul and makes the Referee call play at the end.ss
+    /// </summary>
+    /// <param name="isRed"></param>
 	public void foul(bool isRed)
     {
         if (!isServer)

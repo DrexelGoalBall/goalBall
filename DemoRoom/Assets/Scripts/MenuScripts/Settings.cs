@@ -3,28 +3,48 @@ using System.Collections;
 using MenuTools;
 
 // Used to navigate and manage the settings menu
-public class Settings : MenuLogic {
+public class Settings : MenuLogic 
+{
+    /// <summary>
+    ///     Sets up the Settings menu for user interaction
+    /// </summary>
 
-	void Update () {
+    /// <summary>
+    ///     Updates the menu logic with the functions for this menu
+    /// </summary>
+	void Update() 
+    {
 		directionalMenuLogic(Left, Right, Up, Down);
 	}
-	
-	new private void Left ()
+
+    /// <summary>
+    ///     Left menu option is selected
+    /// </summary>
+	new private void Left()
 	{
 		// Undefined
 	}
 
-	new private void Right ()
+    /// <summary>
+    ///     Right menu option is selected
+    /// </summary>
+	new private void Right()
 	{
 		// Undefined
 	}
 
-	new private void Up ()
+    /// <summary>
+    ///     Up menu option is selected
+    /// </summary>
+	new private void Up()
 	{
 		// Undefined
 	}
 
-	new private void Down ()
+    /// <summary>
+    ///     Down menu option is selected, load Main menu
+    /// </summary>
+	new private void Down()
 	{
 		Application.LoadLevel("MainMenu");
 	}

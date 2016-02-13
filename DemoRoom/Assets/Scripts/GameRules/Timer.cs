@@ -4,19 +4,29 @@ using UnityEngine.Networking;
 
 public class Timer : NetworkBehaviour
 {
+    /// <summary>
+    /// This is the low level timer that all other scrips use to keep track of time.
+    /// </summary>
+
     //KeepTrackOfTime
     [SyncVar]
     private float time;
     public int lengthOfTimer = 120;
     private bool paused = true;
 
+    /// <summary>
+    /// Initialize a time that will run a given length.
+    /// </summary>
+    /// <param name="pLengthOfTimer"></param>
     public Timer(int pLengthOfTimer)
     {
         lengthOfTimer = pLengthOfTimer;
         time = lengthOfTimer;
-    } 
+    }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Uses Time.deltatime to update the timer.
+    /// </summary>
     void Update()
     {
         if (paused) return;
@@ -26,23 +36,36 @@ public class Timer : NetworkBehaviour
             time -= Time.deltaTime;
     }
 
-    //Setters and getters
+    /// <summary>
+    /// Pauses the timer.
+    /// </summary>
     public void Pause()
     {
         paused = true;
     }
 
+    /// <summary>
+    /// Resumes the timer.
+    /// </summary>
     public void Resume()
     {
         paused = false;
     }
 
+    /// <summary>
+    /// Sets the current value of the timer to the value t.
+    /// </summary>
+    /// <param name="t"></param>
     public void SetTime(float t)
     {
         if (isServer)
             time = t;
     }
 
+    /// <summary>
+    /// Sets the length of the timer to the value of length.
+    /// </summary>
+    /// <param name="length"></param>
     public void SetLengthOfTimer(int length)
     {
         lengthOfTimer = length;
@@ -50,17 +73,26 @@ public class Timer : NetworkBehaviour
             time = (float)length;
     }
 
+    //Resets the timer to its current length.
     public void Reset()
     {
         if (isServer)
             time = lengthOfTimer;
     }
 
+    /// <summary>
+    /// Gets the current time of the timer as a float.
+    /// </summary>
+    /// <returns></returns>
     public float getTime()
     {
         return time;
     }
 
+    /// <summary>
+    /// Gets the current length of the timer in a formated time string.
+    /// </summary>
+    /// <returns></returns>
     public string getTimeString()
     {
         int minutes = (int)(time / 60);

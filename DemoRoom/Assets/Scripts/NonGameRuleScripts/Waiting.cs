@@ -3,6 +3,10 @@ using System.Collections;
 
 public class Waiting : MonoBehaviour {
 
+    ///<summary>
+    /// This script is used for waiting.
+    /// </summary>
+
 	//To Use:
 	//Call:
 	//		StopCoroutine(WaitFor())

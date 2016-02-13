@@ -5,6 +5,10 @@ using UnityEngine.Networking;
 
 public class ScoreKeeper: NetworkBehaviour {
 
+    /// <summary>
+    /// This script keeps track of the score of the game and makes this information available to other objects.
+    /// </summary>
+
     //Display Variables
     [SyncVar]
 	public int BlueTeamScore;
@@ -15,8 +19,10 @@ public class ScoreKeeper: NetworkBehaviour {
     private BallReset BR;
     private Referee Ref;
 
-	// Use this for initialization
-	void Start ()
+    /// <summary>
+    /// Gets the objects and initializes the variables to their proper values.
+    /// </summary>
+    void Start ()
     {
         if (isServer)
         {
@@ -26,9 +32,11 @@ public class ScoreKeeper: NetworkBehaviour {
         BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 	}
-	
-    //Setters
-	public void BlueTeamScored()
+
+    /// <summary>
+    /// Adds points for the blue team and has the Referee tell the players who scored.
+    /// </summary>
+    public void BlueTeamScored()
     {
         if (isServer)
         {
@@ -42,6 +50,9 @@ public class ScoreKeeper: NetworkBehaviour {
 		print("Added: " + BlueTeamScore);
 	}
 
+    /// <summary>
+    /// Subract a point from the blue team.
+    /// </summary>
 	public void BlueTeamLostPoint()
     {
         if (isServer)
@@ -50,6 +61,9 @@ public class ScoreKeeper: NetworkBehaviour {
         }
 	}
 
+    /// <summary>
+    /// Adds points for the red team and has the Referee tell the players who scored.
+    /// </summary>
     public void RedTeamScored()
     {
         if (isServer)
@@ -64,6 +78,9 @@ public class ScoreKeeper: NetworkBehaviour {
         print("Added: " + RedTeamScore);
     }
 
+    /// <summary>
+    /// Subrtacts a point from the red teams score.
+    /// </summary>
     public void RedTeamLostPoint()
     {
         if (isServer)
@@ -73,18 +90,37 @@ public class ScoreKeeper: NetworkBehaviour {
     }
 
     //Getters
+    /// <summary>
+    /// Returns the Score of the red team as a string.
+    /// </summary>
+    /// <returns></returns>
     public string RedScoreString()
     {
         return RedTeamScore.ToString();
     }
+
+    /// <summary>
+    /// Returns the score of the blue team as a string.
+    /// </summary>
+    /// <returns></returns>
     public string BlueScoreString()
     {
         return BlueTeamScore.ToString();
     }
+
+    /// <summary>
+    /// Returns the score of the red team as an int.
+    /// </summary>
+    /// <returns></returns>
     public int RedScore()
     {
         return RedTeamScore;
     }
+
+    /// <summary>
+    /// Returns the score of the blue team as an int.
+    /// </summary>
+    /// <returns></returns>
     public int BlueScore()
     {
         return BlueTeamScore;
