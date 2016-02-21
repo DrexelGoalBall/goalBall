@@ -279,11 +279,11 @@ public class CatchThrowV2 : NetworkBehaviour {
             
         if (gameObject.tag == "BluePlayer")
         {
-            GetComponent<Possession>().BlueTeamPossession();
+            ball.GetComponent<Possession>().BlueTeamPossession();
         }
         else if (gameObject.tag == "RedPlayer")
         {
-            GetComponent<Possession>().RedTeamPossession();
+            ball.GetComponent<Possession>().RedTeamPossession();
         }
         ball.transform.parent = ThrowDirection.transform;
         ballRB.constraints = RigidbodyConstraints.FreezeAll;

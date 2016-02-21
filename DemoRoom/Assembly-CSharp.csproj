@@ -90,9 +90,12 @@
      <Compile Include="Assets\Scripts\SoundScripts\BallInnerSounds.cs" />
      <Compile Include="Assets\Scripts\SoundScripts\MakeSoundOnTouch.cs" />
      <Compile Include="Assets\Scripts\SoundScripts\Referee.cs" />
+     <Compile Include="Assets\Scripts\SoundScripts\WalkSound.cs" />
      <Compile Include="Assets\XInputDotNet\Examples\XInputTestCS.cs" />
      <None Include="Assets\Audio\Attributions.txt" />
      <None Include="Assets\XInputDotNet\MITLicense.txt" />
+     <None Include="Assets\Editor\Doxygen\Resources\BaseDoxyfile.txt" />
+     <None Include="Assets\Editor\Doxygen\ReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

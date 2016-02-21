@@ -40,6 +40,7 @@ public class GameStart : MonoBehaviour {
         CF = new CoinFlip();
         if (CF.Flip())
         {
+            GT.SetStartedWithBall(Possession.Team.red);
             BR.placeBallRSC();
             ball.GetComponent<Possession>().RedTeamPossession();
             startPos = 0;
@@ -49,6 +50,7 @@ public class GameStart : MonoBehaviour {
         }
         else
         {
+            GT.SetStartedWithBall(Possession.Team.blue);
             BR.placeBallBSC();
             ball.GetComponent<Possession>().BlueTeamPossession();
             startPos = 1;

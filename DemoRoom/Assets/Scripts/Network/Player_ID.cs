@@ -13,6 +13,11 @@ public class Player_ID : NetworkBehaviour
 	private NetworkInstanceId playerNetID;
     // 
 	private Transform myTransform;
+    // 
+    public string prefabName = "PlayerV2";
+
+    [SyncVar]
+    private string playerTeamTag;
 
     /// <summary>
     ///     When the local player object is set up, get and set its unique identity
@@ -34,18 +39,23 @@ public class Player_ID : NetworkBehaviour
     /// <summary>
     ///     Checks whether identity is not unique and updates it accordingly
     /// </summary>
-	void Update () 
+	void Update() 
 	{
-		if(myTransform.name == "" || myTransform.name == "PlayerV2(Clone)")
+		if (myTransform.name == "" || myTransform.name == string.Format("{0}(Clone)", prefabName))
 		{
 			SetIdentity();
 		}
+
+        if (gameObject.tag.Equals("Player") && !string.IsNullOrEmpty(playerTeamTag))
+        {
+            gameObject.tag = playerTeamTag;
+        }
 	}
 
     /// <summary>
     ///     On server, update the identity for this player so all clients will as well
     /// </summary>
-    /// <param name="name">Name of player set from client to populate to others</param>
+    /// <param name="name">Name of player sent from client to populate to others</param>
     [Command]
     void CmdTellServerMyIdentity(string name)
     {
@@ -85,4 +95,24 @@ public class Player_ID : NetworkBehaviour
 		string uniqueName = "Player " + playerNetID.ToString();
 		return uniqueName;
 	}
+
+    /// <summary>
+    ///     On server, update the tag for this player so all clients will as well
+    /// </summary>
+    /// <param name="tag">Team tag of player sent from client to populate to others</param>
+    [Command]
+    void CmdTellServerMyTeamTag(string tag)
+    {
+        playerTeamTag = tag;
+    }
+
+    /// <summary>
+    ///     On client, get the network identity for this player
+    /// </summary>
+    [Client]
+    public void SetTeamTag(string tag)
+    {
+        if (isLocalPlayer)
+            CmdTellServerMyTeamTag(tag);
+    }
 }

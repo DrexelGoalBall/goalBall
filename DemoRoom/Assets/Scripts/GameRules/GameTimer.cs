@@ -17,7 +17,7 @@ public class GameTimer : MonoBehaviour {
     //Initial Player positions
     //private Vector3 player1Start;
     //private Vector3 player2Start;
-    private Vector3 ballStart;
+    //private Vector3 ballStart;
 
     //Timer Variables
     Timer timer;
@@ -26,10 +26,12 @@ public class GameTimer : MonoBehaviour {
     bool endGame = false;
     bool gameGoing = false;
     bool fifteenSecondsCheck = false;
+    Possession.Team startedWithBall = Possession.Team.blue;
 
     //Other Objects
     private ScoreKeeper scoreKeeper;
     private Referee referee;
+    private BallReset ballReset;
 
     /// <summary>
     /// Initialize all variables needed for this script to run.
@@ -41,9 +43,10 @@ public class GameTimer : MonoBehaviour {
         timer.Pause();
         //player1Start = player1.transform.position;
         //player2Start = player2.transform.position;
-        ballStart = ball.transform.position;
+        //ballStart = ball.transform.position;
         scoreKeeper = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreKeeper>();
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
+        ballReset = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
 	}
 
     /// <summary>
@@ -86,7 +89,10 @@ public class GameTimer : MonoBehaviour {
         }
         //player1.transform.position = player1Start;
 		//player2.transform.position = player2Start;
-		ball.transform.position = ballStart;
+        if (startedWithBall == Possession.Team.red)
+            ballReset.placeBallBSC();
+        else
+            ballReset.placeBallRSC();
 
         ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         timer.Reset();
@@ -121,5 +127,14 @@ public class GameTimer : MonoBehaviour {
     public bool GameIsGoing()
     {
         return gameGoing;
+    }
+
+    /// <summary>
+    /// Set the team who started with the ball
+    /// </summary>
+    /// <param name="team">Team that started with ball</param>
+    public void SetStartedWithBall(Possession.Team team)
+    {
+        startedWithBall = team;
     }
 }
