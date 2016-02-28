@@ -54,13 +54,20 @@ public class Player_NetworkSetup : NetworkBehaviour
             }
         }
 
-        // Rotation at which to spawn player and correction  (defaults to rotation for blue team)
+        // Tag for the current team
+        string teamTag = "BluePlayer";
+
+        // Rotation at which to spawn player and correction (defaults to rotation for blue team)
         Quaternion spawnRot = Quaternion.Euler(new Vector3(0, 90, 0));
         if (spawnLoc.name.ToLower().StartsWith("red"))
         {
             // Turn around if on the red team
             spawnRot = Quaternion.Euler(new Vector3(0, 270, 0));
+
+            teamTag = "RedPlayer";
         }
+
+        GetComponent<Player_ID>().SetTeamTag(teamTag);
 
         // Move the player to the correct position and rotation
         gbpm.transform.position = spawnLoc.position;

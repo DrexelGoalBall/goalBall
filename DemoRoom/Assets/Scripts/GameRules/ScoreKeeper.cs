@@ -39,11 +39,11 @@ public class ScoreKeeper: NetworkBehaviour {
         if (isServer)
         {
             BlueTeamScore++;
-        }
             Ref.PlayGoal();
             Ref.PlayBlueTeam();
             Ref.PlayPlay();
-            BR.placeBallRSC();
+            BR.resetToClosestPoint(true);
+        }
         
 		print("Added: " + BlueTeamScore);
 	}
@@ -67,11 +67,11 @@ public class ScoreKeeper: NetworkBehaviour {
         if (isServer)
         {
             RedTeamScore++;
-        }
             Ref.PlayGoal();
             Ref.PlayRedTeam();
             Ref.PlayPlay();
-            BR.placeBallBSC();
+            BR.resetToClosestPoint(false);
+        }
         
         print("Added: " + RedTeamScore);
     }

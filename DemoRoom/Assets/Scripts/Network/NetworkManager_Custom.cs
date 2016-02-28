@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.Types;
 using UnityEngine.Networking.Match;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>
 ///     Custom NetworkManager that handles all facets of connecting and disconnecting to games
@@ -20,6 +21,8 @@ public class NetworkManager_Custom : NetworkManager
     private Text capacityText;
     public Text playerElementText;
     private Text connInfoText;
+
+    public GameObject ball;
 
     // Indices and corresponding strings of selected team and position
     public int teamIndex = 0, positionIndex = 0;
@@ -45,8 +48,14 @@ public class NetworkManager_Custom : NetworkManager
         // 
         if (NetworkManager.singleton.isNetworkActive)
         {
+            // Spawn new ball if one is not there
+            //if (NetworkServer.active && GameObject.FindGameObjectWithTag("Ball") == null)
+            //    NetworkServer.Spawn(ball);
+
             // 
-            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            GameObject[] redPlayers = GameObject.FindGameObjectsWithTag("RedPlayer");
+            GameObject[] bluePlayers = GameObject.FindGameObjectsWithTag("BluePlayer");
+            GameObject[] players = redPlayers.Concat(bluePlayers).ToArray();
 
             // 
             if (capacityText != null)
@@ -216,6 +225,27 @@ public class NetworkManager_Custom : NetworkManager
     /// <param name="conn">Connection from the client</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
+        //GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        //if (ball != null)
+        //{
+        //    GameObject g = ball;
+        //    while (g.transform.parent != null)
+        //    {
+        //        g = g.transform.parent.gameObject;
+        //    }
+
+        //    CatchThrowV2 ct = g.GetComponent<CatchThrowV2>();
+        //    if (ct != null)
+        //    {
+        //        Debug.Log("Ball is going to be deleted, save it!");
+        //        ball.transform.parent = null;
+        //        ct.Drop();
+        //    }
+        //    //NetworkIdentity ni = g.GetComponent<NetworkIdentity>();
+        //    //if (ni != null && ni.isLocalPlayer)
+        //    //    g.transform.parent = null;
+        //}
+
         base.OnServerDisconnect(conn);
 
         joining = false;
@@ -236,26 +266,6 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public override void OnStopClient()
     {
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        if (ball != null)
-        {
-            GameObject g = ball;
-            while (g.transform.parent != null)
-            {
-                g = g.transform.parent.gameObject;
-            }
-
-            CatchThrowV2 ct = g.GetComponent<CatchThrowV2>();
-            if (ct != null && ct.isLocalPlayer)
-            {
-                Debug.Log("Ball is going to be deleted, save it!");
-                //ct.DropBall();
-            }
-            //NetworkIdentity ni = g.GetComponent<NetworkIdentity>();
-            //if (ni != null && ni.isLocalPlayer)
-            //    g.transform.parent = null;
-        }
-
         //base.OnStopClient();
 
         joining = false;
