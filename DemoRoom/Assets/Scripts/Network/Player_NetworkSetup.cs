@@ -27,6 +27,8 @@ public class Player_NetworkSetup : NetworkBehaviour
         // Enable the camera and audiolistener
         playerCamera.enabled = true;
 		audioListener.enabled = true;
+
+        gameObject.layer = LayerMask.NameToLayer("Player");
 	}
 
     /// <summary>
