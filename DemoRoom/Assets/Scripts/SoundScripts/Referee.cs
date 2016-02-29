@@ -300,4 +300,128 @@ public class Referee : NetworkBehaviour
         if (isServer)
             queue.Add("Foul");
     }
+
+
+    /// <summary>
+    /// Ref says: numbers from zero to nine.
+    /// </summary>
+
+    public void PlayZero()
+    {
+        if (isServer)
+            queue.Add("TempZero");    
+    }
+
+    public void PlayOne()
+    {
+        if (isServer)
+            queue.Add("TempOne");    
+    }
+
+    public void PlayTwo()
+    {
+        if (isServer)
+            queue.Add("Two");    
+    }
+
+    public void PlayThree()
+    {
+        if (isServer)
+            queue.Add("Three");    
+    }
+
+    public void PlayFour()
+    {
+        if (isServer)
+            queue.Add("Four");    
+    }
+
+    public void PlayFive()
+    {
+        if (isServer)
+            queue.Add("Five");    
+    }
+
+    public void PlaySix()
+    {
+        if (isServer)
+            queue.Add("Six");    
+    }
+
+    public void PlaySeven()
+    {
+        if (isServer)
+            queue.Add("Seven");    
+    }
+
+    public void PlayEight()
+    {
+        if (isServer)
+            queue.Add("Eight");    
+    }
+
+    public void PlayNine()
+    {
+        if (isServer)
+            queue.Add("Nine");    
+    }
+
+
+    /// <summary>
+    /// Ref says: numbers from ten to ninety.
+    /// </summary>
+
+    public void PlayTen()
+    {
+        if (isServer)
+            queue.Add("Ten");    
+    }
+
+    public void PlayTwenty()
+    {
+        if (isServer)
+            queue.Add("Twenty");    
+    }
+
+    public void PlayThirty()
+    {
+        if (isServer)
+            queue.Add("Thirty");    
+    }
+
+    public void PlayFourty()
+    {
+        if (isServer)
+            queue.Add("Fourty");    
+    }
+
+    public void PlayFifty()
+    {
+        if (isServer)
+            queue.Add("Fifty");    
+    }
+
+    public void PlaySixty()
+    {
+        if (isServer)
+            queue.Add("Sixty");    
+    }
+
+    public void PlaySeventy()
+    {
+        if (isServer)
+            queue.Add("Seventy");    
+    }
+
+    public void PlayEighty()
+    {
+        if (isServer)
+            queue.Add("Eighty");    
+    }
+
+    public void PlayNinety()
+    {
+        if (isServer)
+            queue.Add("Ninety");    
+    }
 }

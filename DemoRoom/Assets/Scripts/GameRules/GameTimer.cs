@@ -26,6 +26,7 @@ public class GameTimer : MonoBehaviour {
 	bool endGame = false;
 	bool gameGoing = false;
 	bool fifteenSecondsCheck = false;
+	bool halfTime = false;
 
 	//Other Objects
 	private ScoreKeeper scoreKeeper;
@@ -55,8 +56,12 @@ public class GameTimer : MonoBehaviour {
 		if (endGame) return;
 		timeText.text = timer.getTimeString();
 		if(timer.getTime() <= 0){
-		   
-			nextHalf();
+			if (halfTime) // Halftime over, begin second half of game
+			{
+				halfTime = false;
+			}
+			else
+				nextHalf();
 		}
 
 		if (referee.refereeSpeaking())
@@ -92,12 +97,13 @@ public class GameTimer : MonoBehaviour {
 		ball.transform.position = ballStart;
 
 		ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-		timer.Reset();
+//		timer.Reset();
 		referee.PlayHalfTime();
 
 		pauseEvent.HalfTime();
+		halfTime = true;
 		
-		referee.PlayPlay();
+//		referee.PlayPlay();
 		//Determine what half it is
 		half = half + 1;
 	}
