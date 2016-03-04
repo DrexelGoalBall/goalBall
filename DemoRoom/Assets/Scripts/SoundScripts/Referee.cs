@@ -306,42 +306,70 @@ public class Referee : NetworkBehaviour
     /// </summary>
     public void ReadScore(int scoreToRead)
     {
-        Dictionary <int, string> numMap = new Dictionary <int, string>()
+        if (isServer)
         {
-            {0, "Zero"},
-            {1, "One"},
-            {2, "Two"},
-            {3, "Three"},
-            {4, "Four"},
-            {5, "Five"},
-            {6, "Six"},
-            {7, "Seven"},
-            {8, "Eight"},
-            {9, "Nine"},
-            {10, "Ten"},
-            {20, "Twenty"},
-            {30, "Thirty"},
-            {40, "Fourty"},
-            {50, "Fifty"},
-            {60, "Sixty"},
-            {70, "Seventy"},
-            {80, "Eighty"},
-            {90, "Ninety"}
-        };
-        string fullScore = scoreToRead.ToString();
-        int ones = fullScore[fullScore.Length-1] - '0';
-        int tens = fullScore.Length > 1 ? fullScore[fullScore.Length-2] - '0' : 0;
+            Dictionary <int, string> numMap = new Dictionary <int, string>()
+            {
+                {0, "Zero"},
+                {1, "One"},
+                {2, "Two"},
+                {3, "Three"},
+                {4, "Four"},
+                {5, "Five"},
+                {6, "Six"},
+                {7, "Seven"},
+                {8, "Eight"},
+                {9, "Nine"},
+                {10, "Ten"},
+                {11, "Eleven"},
+                {12, "Twelve"},
+    //          {13, "Thirteen"},
+    //          {14, "Fourteen"},
+    //          {15, "Fifteen"},
+    //          {16, "Sixteen"},
+    //          {17, "Seventeen"},
+    //          {18, "Eighteen"},
+    //          {19, "Nineteen"},
+                {20, "Twenty"},
+                {30, "Thirty"},
+                {40, "Fourty"},
+                {50, "Fifty"},
+                {60, "Sixty"},
+                {70, "Seventy"},
+                {80, "Eighty"},
+                {90, "Ninety"}
+            };
+            string fullScore = scoreToRead.ToString();
+            int ones = fullScore[fullScore.Length-1] - '0';
+            int tens = fullScore.Length > 1 ? fullScore[fullScore.Length-2] - '0' : 0;
 
-        tens = tens * 10; // Allows reading directly into the dictionary above
+            tens = tens * 10; // Allows reading directly into the dictionary above
 
-        if (tens != 0)
-        {
-             if (isServer)
-                queue.Add(numMap[tens]);    
+    //       print ("TENS: " + tens);
+    //       print("ONES: " + ones);
+            if (tens > 10)
+            {
+                    queue.Add(numMap[tens]);    
+            }
+            
+            if (tens == 10 && ones != 0) // Tens are different because english is a beautiful language
+            {
+                if (ones == 1 || ones == 2) // Special cases
+                {
+                     queue.Add(numMap[ones + 10]);
+                }
+                else
+                {
+                    queue.Add(numMap[ones]);
+                    queue.Add("Teen");
+                }
+            }
+            else if (tens == 0 || ones != 0) // Only use zero if tens is zero
+            {
+                queue.Add(numMap[ones]);
+            }
         }
 
-        if (tens == 0 || ones != 0) // Only use zero if tens is zero
-        if (isServer)
-            queue.Add(numMap[ones]);    
     }
+
 }

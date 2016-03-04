@@ -48,12 +48,12 @@ public class HalfTimePause : MonoBehaviour {
 
 		// Read red score
 		referee.PlayRedTeam();
-		referee.ReadScore(13);
+		referee.ReadScore(15);
 	//	ReadScore(scoreKeeper.RedScore());
 
 		// Read blue score
 		referee.PlayBlueTeam();
-		referee.ReadScore(21);
+		referee.ReadScore(11);
 	//	ReadScore(scoreKeeper.BlueScore());	
 	}
 
