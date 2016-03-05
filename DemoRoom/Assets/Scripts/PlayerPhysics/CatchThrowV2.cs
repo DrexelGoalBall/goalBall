@@ -170,7 +170,6 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
 
         float differenceInVertAngles = Mathf.DeltaAngle(aimTemp.eulerAngles.x, 0);
-        Debug.Log(differenceInVertAngles);
         if (differenceInVertAngles >  maxHighAngle)
         {
             aimTemp.eulerAngles = new Vector3(-1 * maxHighAngle, 0, 0);
@@ -202,7 +201,9 @@ public class CatchThrowV2 : NetworkBehaviour {
     {
         if (ballInRange || ballheld)
         {
-            TransmitBallPickup(true);
+            //TransmitBallPickup(true);
+            ChangeBallHold(true);
+            ballheld = true;
         }
     }
 
@@ -228,24 +229,25 @@ public class CatchThrowV2 : NetworkBehaviour {
             float charge = timer / maxtime;
             if (charge > 1) charge = 1;
             Vector3 Force = aim.transform.forward * throwForce * charge;
+            ApplyForceToBall(Force);
 
-            if (isServer)
-            {
-                Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-                ball.transform.parent = null;
-                ballRB.constraints = RigidbodyConstraints.None;
+            //if (isServer)
+            //{
+            //    Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+            //    ball.transform.parent = null;
+            //    ballRB.constraints = RigidbodyConstraints.None;
 
-                ballRB.AddForce(Force);
-                charging = false;
-                timer = 0f;
-                Debug.Log("Shoot");
-                ballheld = false;
-            }
-            else
-            {
-                TransmitBallThrow(Force);
-                ballheld = false;
-            }
+            //    ballRB.AddForce(Force);
+            //    charging = false;
+            //    timer = 0f;
+            //    Debug.Log("Shoot");
+            //    ballheld = false;
+            //}
+            //else
+            //{
+            //    TransmitBallThrow(Force);
+            //    ballheld = false;
+            //}
         }
     }
 

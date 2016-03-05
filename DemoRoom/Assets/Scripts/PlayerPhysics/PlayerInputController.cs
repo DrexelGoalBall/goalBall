@@ -15,6 +15,7 @@ public class PlayerInputController : MonoBehaviour {
     public string verticalAim = "verticalAim";
     public string DiveButton = "Dive";
     public string ResetAim = "ResetAim";
+    public string ResetPos = "ResetPos";
 
     private GoalBallPlayerMovementV1 PlayerMovement;
     private CatchThrowV2 CatchThrow;
@@ -58,6 +59,10 @@ public class PlayerInputController : MonoBehaviour {
         if (Input.GetButtonDown(ResetAim))
         {
             CatchThrow.ResetAim();
+        }
+        if (Input.GetButtonDown(ResetPos))
+        {
+            PlayerMovement.AutoMove();
         }
     }
 }

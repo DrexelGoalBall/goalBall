@@ -21,12 +21,14 @@ public class Player_NetworkSetup : NetworkBehaviour
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
         //gbpm.enabled = true;
         PlayerInputController controller = GetComponent<PlayerInputController>();
+        DebugSwapLayer DSL = GetComponent<DebugSwapLayer>();
         controller.enabled = true;
         // Update the spawn position to the selected team and position
         SetSpawn(gbpm);
         // Enable the camera and audiolistener
         playerCamera.enabled = true;
 		audioListener.enabled = true;
+        DSL.enabled = true;
 
         gameObject.layer = LayerMask.NameToLayer("Player");
 	}
@@ -50,6 +52,7 @@ public class Player_NetworkSetup : NetworkBehaviour
             {
                 // This is the position we want
                 spawnLoc = startPosition;
+                gbpm.currentPosition = startPosition.position;
                 break;
             }
         }

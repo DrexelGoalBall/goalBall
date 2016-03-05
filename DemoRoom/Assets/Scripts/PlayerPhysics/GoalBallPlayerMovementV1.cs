@@ -17,6 +17,10 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	//Disable Horizontal when Dived
 	public bool horizontalEnabled = true;
 
+    //For moving back to start position.
+    public Vector3 currentPosition = new Vector3(0,0,0);
+    public bool goBack = false;
+
 	/// <summary>
 	/// initializes variables that need to be used by this script.
 	/// </summary>
@@ -24,6 +28,23 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	{
 		RB = gameObject.GetComponent<Rigidbody>();
 	}
+
+    /// <summary>
+    /// if goback is true, then it will move it back to its origonal position.
+    /// </summary>
+    void Update()
+    {
+        if (goBack)
+        {
+            if (Mathf.Abs(Vector3.Distance(currentPosition, gameObject.transform.position)) < 1)
+            {
+                goBack = false;
+            }
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, currentPosition, step);
+            
+        }
+    }
 
 	/// <summary>
 	/// Gets the Horizontal and Vertical movement axis and gets their values.
@@ -35,7 +56,12 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 	{
 		float hinput = Input.GetAxis(Horizontal);
 		float vinput = Input.GetAxis(Vertical);
-		if (!horizontalEnabled)
+        if (Mathf.Abs(hinput) + Mathf.Abs(vinput) > .1)
+        {
+            goBack = false;
+        }
+
+            if (!horizontalEnabled)
 		{
 			RB.velocity = (gameObject.transform.up * vinput * slowSpeed);
 		}
@@ -44,4 +70,12 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
 			RB.velocity = (gameObject.transform.right * hinput * speed) + (gameObject.transform.forward * vinput * speed);
 		}
 	}
+
+    /// <summary>
+    /// Set goback to true which should move the player back to his origonal position
+    /// </summary>
+    public void AutoMove()
+    {
+        goBack = true;
+    }
 }

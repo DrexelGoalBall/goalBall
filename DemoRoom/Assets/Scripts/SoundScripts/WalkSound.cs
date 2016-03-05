@@ -62,7 +62,7 @@ public class WalkSound : MonoBehaviour {
 
 		if (avgVel > 0 && walkTimer <= 0)
 		{
-			walkTimer = walkSoundMod / avgVel;
+			walkTimer = walkSoundMod / (avgVel*100);
 			if (walkTimer > walkTimerLimit) walkTimer = walkTimerLimit;
 
 			playerWalkSource.PlayOneShot(playerWalkSound);
