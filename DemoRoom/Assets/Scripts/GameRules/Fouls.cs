@@ -17,6 +17,7 @@ public class Fouls : NetworkBehaviour
     public Possession ballPossession;
     public ListObjectLocation ballLocation;
     public GameTimer GT;
+    public BreakTimer BT;
 
     //AreaNames
     public string RedTeamArea = "RedTeamArea";
@@ -44,6 +45,7 @@ public class Fouls : NetworkBehaviour
         REF = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
+        BT = GameController.GetComponent<BreakTimer>();
         
         ballPossession = ball.GetComponent<Possession>();
         ballLocation = ball.GetComponent<ListObjectLocation>();
@@ -124,6 +126,8 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
+        BT.StartBreak(BreakTimer.Type.foul);
+
         Possession.Team possession = ballPossession.HasPossessionOfBall();
         print("Line Out");
         REF.PlayLineOut();
@@ -148,6 +152,8 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
+        BT.StartBreak(BreakTimer.Type.foul);
+
 		print("Throw Time Foul");
         REF.PlayFoul();
         if (inRedZone)
@@ -169,6 +175,8 @@ public class Fouls : NetworkBehaviour
     {
         if (!isServer)
             return;
+
+        BT.StartBreak(BreakTimer.Type.foul);
 
         Possession.Team possession = ballPossession.HasPossessionOfBall();
         REF.PlayDeadBall();
@@ -196,8 +204,6 @@ public class Fouls : NetworkBehaviour
         
         if (isRed)
         {
-            ballPossession.BlueTeamPossession();
-
             if (resetToClosest)
                 BR.resetToClosestPoint(false);
             else
@@ -205,14 +211,12 @@ public class Fouls : NetworkBehaviour
         }
         else
         {
-            ballPossession.RedTeamPossession();
-
             if (resetToClosest)
                 BR.resetToClosestPoint(true);
             else
                 BR.placeBallRSC();
         }
 
-        REF.PlayPlay();
+        //REF.PlayPlay();
     }
 }

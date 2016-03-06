@@ -201,9 +201,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     {
         if (ballInRange || ballheld)
         {
-            //TransmitBallPickup(true);
-            ChangeBallHold(true);
-            ballheld = true;
+            TransmitBallPickup(true);
         }
     }
 
@@ -229,25 +227,24 @@ public class CatchThrowV2 : NetworkBehaviour {
             float charge = timer / maxtime;
             if (charge > 1) charge = 1;
             Vector3 Force = aim.transform.forward * throwForce * charge;
-            ApplyForceToBall(Force);
 
-            //if (isServer)
-            //{
-            //    Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-            //    ball.transform.parent = null;
-            //    ballRB.constraints = RigidbodyConstraints.None;
+            if (isServer)
+            {
+                Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+                ball.transform.parent = null;
+                ballRB.constraints = RigidbodyConstraints.None;
 
-            //    ballRB.AddForce(Force);
-            //    charging = false;
-            //    timer = 0f;
-            //    Debug.Log("Shoot");
-            //    ballheld = false;
-            //}
-            //else
-            //{
-            //    TransmitBallThrow(Force);
-            //    ballheld = false;
-            //}
+                ballRB.AddForce(Force);
+                charging = false;
+                timer = 0f;
+                Debug.Log("Shoot");
+                ballheld = false;
+            }
+            else
+            {
+                TransmitBallThrow(Force);
+                ballheld = false;
+            }
         }
     }
 

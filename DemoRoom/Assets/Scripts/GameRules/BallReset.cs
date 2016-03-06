@@ -35,6 +35,7 @@ public class BallReset : MonoBehaviour
     public void placeBallRSC()
     {
         Ball.transform.position = RedSideCenter.transform.position;
+        Ball.GetComponent<Possession>().RedTeamPossession();
         StopBall();
     }
 
@@ -44,6 +45,7 @@ public class BallReset : MonoBehaviour
     public void placeBallRSL()
     {
         Ball.transform.position = RedSideLeft.transform.position;
+        Ball.GetComponent<Possession>().RedTeamPossession();
         StopBall();
     }
 
@@ -53,6 +55,7 @@ public class BallReset : MonoBehaviour
     public void placeBallRSR()
     {
         Ball.transform.position = RedSideRight.transform.position;
+        Ball.GetComponent<Possession>().RedTeamPossession();
         StopBall();
     }
 
@@ -62,6 +65,7 @@ public class BallReset : MonoBehaviour
     public void placeBallBSC()
     {
         Ball.transform.position = BlueSideCenter.transform.position;
+        Ball.GetComponent<Possession>().BlueTeamPossession();
         StopBall();
     }
 
@@ -71,6 +75,7 @@ public class BallReset : MonoBehaviour
     public void placeBallBSL()
     {
         Ball.transform.position = BlueSideLeft.transform.position;
+        Ball.GetComponent<Possession>().BlueTeamPossession();
         StopBall();
     }
 
@@ -80,6 +85,7 @@ public class BallReset : MonoBehaviour
     public void placeBallBSR()
     {
         Ball.transform.position = BlueSideRight.transform.position;
+        Ball.GetComponent<Possession>().BlueTeamPossession();
         StopBall();
     }
 
@@ -93,6 +99,8 @@ public class BallReset : MonoBehaviour
 
         if (redTeamPositions)
         {
+            Ball.GetComponent<Possession>().RedTeamPossession();
+
             // Red
             distances.Add(RedSideCenter, Vector3.Distance(Ball.transform.position, RedSideCenter.transform.position));
             distances.Add(RedSideLeft, Vector3.Distance(Ball.transform.position, RedSideLeft.transform.position));
@@ -100,6 +108,8 @@ public class BallReset : MonoBehaviour
         }
         else
         {
+            Ball.GetComponent<Possession>().BlueTeamPossession();
+
             // Blue
             distances.Add(BlueSideCenter, Vector3.Distance(Ball.transform.position, BlueSideCenter.transform.position));
             distances.Add(BlueSideLeft, Vector3.Distance(Ball.transform.position, BlueSideLeft.transform.position));
@@ -132,6 +142,7 @@ public class BallReset : MonoBehaviour
         RB.angularVelocity = new Vector3(0, 0, 0);
         Ball.transform.parent = null;
         RB.useGravity = true;
-        RB.constraints = RigidbodyConstraints.None;
+        //RB.constraints = RigidbodyConstraints.None;
+        RB.constraints = RigidbodyConstraints.FreezeAll;
     }
 }

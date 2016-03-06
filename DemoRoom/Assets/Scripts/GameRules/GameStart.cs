@@ -12,6 +12,7 @@ public class GameStart : MonoBehaviour {
     private BallReset BR;
     private Referee Ref;
     private GameTimer GT;
+    private BreakTimer BT;
 
     //Ball
     public GameObject ball;
@@ -24,8 +25,6 @@ public class GameStart : MonoBehaviour {
     bool check = true;
     bool setupDone = false;
 
-    int startPos;
-
     /// <summary>
     /// Initializes all variables needed to run the script.
     /// </summary>
@@ -34,29 +33,32 @@ public class GameStart : MonoBehaviour {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
+        BT = GameController.GetComponent<BreakTimer>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         Ref.PlayQuietPlease();
 
         CF = new CoinFlip();
         if (CF.Flip())
         {
-            GT.SetStartedWithBall(Possession.Team.red);
+            // Red team won toss, blue will get ball next half
+            ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.blue);
+            // Give the ball to the red team
             BR.placeBallRSC();
-            ball.GetComponent<Possession>().RedTeamPossession();
-            startPos = 0;
             Ref.PlayRedTeam();
             Ref.PlayCenter();
-            Ref.PlayPlay();
+            //Ref.PlayPlay();
+            BT.StartBreak(BreakTimer.Type.gameStart);
         }
         else
         {
-            GT.SetStartedWithBall(Possession.Team.blue);
+            // Blue team won toss, red will get the ball next half
+            ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.red);
+            // Give the ball to the blue team
             BR.placeBallBSC();
-            ball.GetComponent<Possession>().BlueTeamPossession();
-            startPos = 1;
             Ref.PlayBlueTeam();
             Ref.PlayCenter();
-            Ref.PlayPlay();
+            //Ref.PlayPlay();
+            BT.StartBreak(BreakTimer.Type.gameStart);
         }
         setupDone = true;
     }

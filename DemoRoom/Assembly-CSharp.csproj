@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameRules\BallReset.cs" />
      <Compile Include="Assets\Scripts\GameRules\BlueGoal.cs" />
+     <Compile Include="Assets\Scripts\GameRules\BreakTimer.cs" />
      <Compile Include="Assets\Scripts\GameRules\CoinFlip.cs" />
      <Compile Include="Assets\Scripts\GameRules\DoOnKey.cs" />
      <Compile Include="Assets\Scripts\GameRules\Fouls.cs" />
@@ -81,6 +82,7 @@
      <Compile Include="Assets\Scripts\PlayerPhysics\BasePlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV1.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\CatchThrowV2.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\DebugSwapLayer.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\Dive.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\PlayerInputController.cs" />
