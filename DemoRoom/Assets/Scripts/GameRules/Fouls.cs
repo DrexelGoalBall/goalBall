@@ -45,7 +45,7 @@ public class Fouls : NetworkBehaviour
         REF = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
-        BT = GameController.GetComponent<BreakTimer>();
+        BT = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
         
         ballPossession = ball.GetComponent<Possession>();
         ballLocation = ball.GetComponent<ListObjectLocation>();

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 /// <summary>
 /// This script controls the game times and knows when it should be going and knows when it should be stopped.
 /// </summary>
-public class GameTimer : MonoBehaviour 
+public class GameTimer : NetworkBehaviour 
 {
     //GUI Objects
     public Text timeText;
@@ -18,11 +19,14 @@ public class GameTimer : MonoBehaviour
     public int halfLength = 240;
     public int overtimeHalfLength = 180;
     int half = 1;
-    bool endGame = false;
-    public bool gameGoing = false;
     bool overtime = false;
     bool fifteenSecondsCheck = false;
-    
+
+    [SyncVar]
+    bool gameGoing = false;
+    [SyncVar(hook = "ClientGameEnd")]
+    bool endGame = false;
+
     //Other Objects
     private Referee referee;
     private ScoreKeeper scoreKeeper;
@@ -41,7 +45,7 @@ public class GameTimer : MonoBehaviour
         GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
         scoreKeeper = gameController.GetComponent<ScoreKeeper>();
         ballReset = gameController.GetComponent<BallReset>();
-        breakTimer = gameController.GetComponent<BreakTimer>();
+        breakTimer = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
 	}
 
     /// <summary>
@@ -52,33 +56,31 @@ public class GameTimer : MonoBehaviour
         if (endGame) 
             return;
 
-        if (breakTimer.OnBreak())
+        timeText.text = timer.getTimeString();
+
+        if (isServer)
         {
-            StopGame();
-        }
-        else
-        {
-            timeText.text = timer.getTimeString();
-
-            if (timer.getTime() <= 0)
+            if (breakTimer.OnBreak())
             {
-                nextHalf();
+                StopGame();
             }
-
-            //if (referee.refereeSpeaking())
-            //{
-            //    StopGame();
-            //}
-            //else if (!gameGoing)
-            if (!gameGoing)
+            else
             {
-                StartGame();
-            }
+                if (!gameGoing)
+                {
+                    StartGame();
+                }
 
-            if (timer.getTime() <= 15 && !fifteenSecondsCheck)
-            {
-                referee.PlayFifteenSeconds();
-                fifteenSecondsCheck = true;
+                if (timer.getTime() <= 0)
+                {
+                    nextHalf();
+                }
+
+                if (timer.getTime() <= 15 && !fifteenSecondsCheck)
+                {
+                    referee.PlayFifteenSeconds();
+                    fifteenSecondsCheck = true;
+                }
             }
         }
 	}
@@ -120,9 +122,7 @@ public class GameTimer : MonoBehaviour
             }
             else
             {
-                //timeText.text = "GAME OVER";
-                endGame = true;
-                Application.LoadLevel("GameOver");
+                ServerEndTheGame();
                 return;
             }
         }
@@ -140,9 +140,7 @@ public class GameTimer : MonoBehaviour
             referee.PlayHalfTime();
         }
 
-        ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         timer.Reset();
-        //referee.PlayPlay();
     }
 
     /// <summary>
@@ -170,5 +168,40 @@ public class GameTimer : MonoBehaviour
     public bool GameIsGoing()
     {
         return gameGoing;
+    }
+
+    /// <summary>
+    /// Check if game is in overtime.
+    /// </summary>
+    /// <returns></returns>
+    public bool InOvertime()
+    {
+        return overtime;
+    }
+
+    /// <summary>
+    /// The game is over so let all the clients know
+    /// </summary>
+    public void ServerEndTheGame()
+    {
+        if (isServer)
+        {
+            timeText.text = "GAME OVER";
+            endGame = true;
+        }
+    }
+
+    /// <summary>
+    /// Server said the game is over.
+    /// </summary>
+    public void ClientGameEnd(bool end)
+    {
+        if (end)
+        {
+            timeText.text = "GAME OVER";
+            //Application.LoadLevel("GameOver");
+        }
+
+        endGame = end;
     }
 }

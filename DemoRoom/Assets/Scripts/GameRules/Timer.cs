@@ -11,6 +11,7 @@ public class Timer : NetworkBehaviour
     [SyncVar]
     private float time;
     public int lengthOfTimer = 120;
+    [SyncVar]
     private bool paused = true;
 
     /// <summary>
@@ -40,7 +41,8 @@ public class Timer : NetworkBehaviour
     /// </summary>
     public void Pause()
     {
-        paused = true;
+        if (isServer)
+            paused = true;
     }
 
     /// <summary>
@@ -48,7 +50,8 @@ public class Timer : NetworkBehaviour
     /// </summary>
     public void Resume()
     {
-        paused = false;
+        if (isServer)
+            paused = false;
     }
 
     /// <summary>

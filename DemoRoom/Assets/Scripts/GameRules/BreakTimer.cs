@@ -5,6 +5,9 @@ using UnityEngine.Networking;
 
 public class BreakTimer : NetworkBehaviour 
 {
+    public GameObject ball;
+    private Referee referee;
+
     public enum Type
     {
         none,
@@ -15,11 +18,8 @@ public class BreakTimer : NetworkBehaviour
         foul,
     }
 
-    // Hook is not working for some reason, getting around with local flag for now
-    //[SyncVar(hook = "BreakChange")]
-    [SyncVar]
+    [SyncVar(hook = "BreakChange")]
     public bool onBreak = false;
-    private bool clientPreviousBreak;
     
     private Type currentBreakType = Type.none;
 
@@ -38,32 +38,22 @@ public class BreakTimer : NetworkBehaviour
 	// Use this for initialization
 	void Start()
     {
-        timer = gameObject.AddComponent<Timer>();
+        referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
 
-        clientPreviousBreak = onBreak;
+        timer = gameObject.GetComponent<Timer>();
 	}
 	
 	// Update is called once per frame
 	void Update()
     {
-	    if (onBreak && (timer.isPaused() || timer.getTime() <= 0))
+        if (onBreak && (timer.isPaused() || timer.getTime() <= 0))
         {
             EndBreak();
         }
         else
         {
-            if (debug)
+            //if (debug && isServer)
                 breakText.text = timer.getTimeString();
-        }
-
-        // Since hook is not working, here is a work around to check for change in syncvar flag
-        if (isClient)
-        {
-            if (clientPreviousBreak != onBreak)
-            {
-                BreakChange(onBreak);
-                clientPreviousBreak = onBreak;
-            }
         }
 	}
 
@@ -73,7 +63,7 @@ public class BreakTimer : NetworkBehaviour
         {
             onBreak = true;
             currentBreakType = type;
-            GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             timer.SetLengthOfTimer(GetLengthFromType(currentBreakType));
             timer.Resume();
         }
@@ -87,9 +77,8 @@ public class BreakTimer : NetworkBehaviour
             timer.Pause();
             timer.SetLengthOfTimer(0);
 
-            GameObject ball = GameObject.FindGameObjectWithTag("Ball");
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            Referee referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();         
+            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
             switch (currentBreakType)
             {
                 case Type.gameStart:
@@ -123,12 +112,15 @@ public class BreakTimer : NetworkBehaviour
     {
         if (brk)
         {
-            GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
         else
         {
-            GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         }
+
+        onBreak = brk;
     }
 
     private int GetLengthFromType(Type type)
