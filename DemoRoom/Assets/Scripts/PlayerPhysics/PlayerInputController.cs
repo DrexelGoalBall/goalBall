@@ -15,10 +15,12 @@ public class PlayerInputController : MonoBehaviour {
     public string verticalAim = "verticalAim";
     public string DiveButton = "Dive";
     public string ResetAim = "ResetAim";
+    public string ResetPos = "ResetPos";
 
     private GoalBallPlayerMovementV1 PlayerMovement;
     private CatchThrowV2 CatchThrow;
     private Dive dive;
+    private GameTimer gameTimer;
 
     /// <summary>
     /// Initializes the variables and objects that are needed by this script.
@@ -28,6 +30,7 @@ public class PlayerInputController : MonoBehaviour {
         PlayerMovement = GetComponent<GoalBallPlayerMovementV1>();
         CatchThrow = GetComponent<CatchThrowV2>();
         dive = GetComponent<Dive>();
+        gameTimer = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameTimer>();
 	}
 
     /// <summary>
@@ -35,29 +38,40 @@ public class PlayerInputController : MonoBehaviour {
     /// </summary>
     void Update ()
     {
-        PlayerMovement.Move(HorizontalMove, VerticalMove);
-        CatchThrow.Aim(horizontalAim, verticalAim);
+        if (gameTimer.GameIsGoing())
+        {
+            PlayerMovement.Move(HorizontalMove, VerticalMove);
+            CatchThrow.Aim(horizontalAim, verticalAim);
 
-        if (Input.GetButtonDown(Catch))
-        {
-            CatchThrow.CatchBall();
-        }
+            if (Input.GetButtonDown(Catch))
+            {
+                CatchThrow.CatchBall();
+            }
 
-        if (Input.GetButtonDown(Throw))
-        {
-            CatchThrow.ChargeBall();
+            if (Input.GetButtonDown(Throw))
+            {
+                CatchThrow.ChargeBall();
+            }
+            if (Input.GetButtonUp(Throw))
+            {
+                CatchThrow.ThrowBall();
+            }
+            if (Input.GetButtonDown(DiveButton))
+            {
+                dive.DivePressed();
+            }
+            if (Input.GetButtonDown(ResetAim))
+            {
+                CatchThrow.ResetAim();
+            }
+            if (Input.GetButtonDown(ResetPos))
+            {
+                PlayerMovement.AutoMove();
+            }
         }
-        if (Input.GetButtonUp(Throw))
+        else
         {
-            CatchThrow.ThrowBall();
-        }
-        if (Input.GetButtonDown(DiveButton))
-        {
-            dive.DivePressed();
-        }
-        if (Input.GetButtonDown(ResetAim))
-        {
-            CatchThrow.ResetAim();
+            PlayerMovement.AutoMove();
         }
     }
 }

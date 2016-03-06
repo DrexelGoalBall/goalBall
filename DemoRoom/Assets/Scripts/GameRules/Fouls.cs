@@ -17,6 +17,7 @@ public class Fouls : NetworkBehaviour
     public Possession ballPossession;
     public ListObjectLocation ballLocation;
     public GameTimer GT;
+    public BreakTimer BT;
 
     //AreaNames
     public string RedTeamArea = "RedTeamArea";
@@ -44,6 +45,7 @@ public class Fouls : NetworkBehaviour
         REF = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
+        BT = GameController.GetComponent<BreakTimer>();
         
         ballPossession = ball.GetComponent<Possession>();
         ballLocation = ball.GetComponent<ListObjectLocation>();
@@ -64,7 +66,7 @@ public class Fouls : NetworkBehaviour
             return;
 
         string location = ballLocation.currentArea;
-        string possession = ballPossession.HasPossessionOfBall();
+        Possession.Team possession = ballPossession.HasPossessionOfBall();
         //TIMER FOUL
         if (!GT.GameIsGoing())
         {
@@ -74,35 +76,43 @@ public class Fouls : NetworkBehaviour
         }
         if ((location == RedTeamArea && PreviousArea == BlueTeamArea) || (location == BlueTeamArea && PreviousArea == RedTeamArea))
         {
+            // Reset timer if ball has moved from red to blue/blue to red zone
             timer.Reset();
             timer.Pause();
         }
         else if (location == RedTeamArea || location == BlueTeamArea)
         {
+            // Continue timer while in the same zone
             timer.Resume();
             PreviousArea = location;
+
+            if (timer.getTime() < 0)
+            {
+                ThrowTimeFoul(location == RedTeamArea);
+                timer.Reset();
+                timer.Pause();
+            }
         }
-        if (timer.getTime() < 0)
+        else
         {
-            ThrowTimeFoul();
-            timer.Reset();
+            // Pause the timer when the ball is not in either team's zone
             timer.Pause();
-		}
+        }
 
         //DEADBALL
         if (location == RedNeutralArea || location == BlueNeutralArea)
         {
             DeadBallTimer.Resume();
+
+            if (DeadBallTimer.getTime() < 0)
+            {
+                ThrowDeadBallFoul();
+                DeadBallTimer.Pause();
+                DeadBallTimer.Reset();
+            }
         }
         else
         {
-            DeadBallTimer.Pause();
-            DeadBallTimer.Reset();
-
-        }
-        if (DeadBallTimer.getTime() < 0)
-        {
-            ThrowDeadBallFoul();
             DeadBallTimer.Pause();
             DeadBallTimer.Reset();
         }
@@ -116,41 +126,45 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        string possession = ballPossession.HasPossessionOfBall();
+        BT.StartBreak(BreakTimer.Type.foul);
+
+        Possession.Team possession = ballPossession.HasPossessionOfBall();
         print("Line Out");
         REF.PlayLineOut();
-        if (possession == "Red")
+        if (possession == Possession.Team.red)
         {
             REF.PlayRedTeam();
-            foul(true);
+            foul(true, true);
         }
-        if (possession == "Blue")
+        if (possession == Possession.Team.blue)
         {
             REF.PlayBlueTeam();
-            foul(false);
+            foul(false, true);
         }
 	}
 
     /// <summary>
     /// Throw the time Foul and all associated actions.
     /// </summary>
-	void ThrowTimeFoul()
+    /// <param name="inRedZone">Whether the foul took place in the red zone or not</param>
+	void ThrowTimeFoul(bool inRedZone)
     {
         if (!isServer)
             return;
 
+        BT.StartBreak(BreakTimer.Type.foul);
+
 		print("Throw Time Foul");
-        string possession = ballPossession.HasPossessionOfBall();
         REF.PlayFoul();
-        if (possession == "Red")
+        if (inRedZone)
         {
             REF.PlayRedTeam();
-            foul(true);
+            foul(true, false);
         }
-        if (possession == "Blue")
+        else
         {
             REF.PlayBlueTeam();
-            foul(false);
+            foul(false, false);
         }
     }
 
@@ -162,17 +176,19 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        string possession = ballPossession.HasPossessionOfBall();
+        BT.StartBreak(BreakTimer.Type.foul);
+
+        Possession.Team possession = ballPossession.HasPossessionOfBall();
         REF.PlayDeadBall();
-        if (possession == "Red")
+        if (possession == Possession.Team.red)
         {
             REF.PlayRedTeam();
-            foul(true);
+            foul(true, false);
         }
-        if (possession == "Blue")
+        if (possession == Possession.Team.blue)
         {
             REF.PlayBlueTeam();
-            foul(false);
+            foul(false, false);
         }
     }
 
@@ -180,20 +196,27 @@ public class Fouls : NetworkBehaviour
     /// Activates the move of the foul and makes the Referee call play at the end.ss
     /// </summary>
     /// <param name="isRed"></param>
-	public void foul(bool isRed)
+    /// <param name="resetToClosest">Whether to reset ball to closest position or center</param>
+	public void foul(bool isRed, bool resetToClosest)
     {
         if (!isServer)
             return;
         
         if (isRed)
         {
-            BR.placeBallBSC();
+            if (resetToClosest)
+                BR.resetToClosestPoint(false);
+            else
+                BR.placeBallBSC();
         }
         else
         {
-            BR.placeBallRSC();
+            if (resetToClosest)
+                BR.resetToClosestPoint(true);
+            else
+                BR.placeBallRSC();
         }
 
-        REF.PlayPlay();
+        //REF.PlayPlay();
     }
 }

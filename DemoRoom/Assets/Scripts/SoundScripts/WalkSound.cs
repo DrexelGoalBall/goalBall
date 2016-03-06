@@ -7,20 +7,17 @@ using System.Collections;
 
 public class WalkSound : MonoBehaviour {
 
-	// Audio Components
+// Audio Components
 	public AudioSource playerWalkSource;
 	public AudioClip playerWalkSound;
 
 	// Modifies time between walk sounds
 	public float walkSoundMod = 1f; 
 
-//Position Timer - Keeps track of change in position to update speed
+	// Modifies speed needed to trigger audio
+	public float zeroMod = 0.0005f;
 
-	// Total seconds between position update
-	private float posUpdate = 0.00005f; 
-
-	private float posTimer = 0; 
-
+	// Last position transform was found at. Used to compare to current position
 	private Vector3 prevPos;
 
 // Walk Timer - Tracks time between footstep sounds
@@ -46,23 +43,17 @@ public class WalkSound : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		posTimer += Time.deltaTime;
+		Vector3 currPos =  gameObject.transform.position;
 
-		if (posTimer >= posUpdate)
+		RBvel = currPos - prevPos;
+
+		avgVel = (Mathf.Abs(RBvel.x) + Mathf.Abs(RBvel.z)) / 2; // Networked method of finding velocity
+
+		prevPos = currPos; // Update the previous position
+
+		if (avgVel > zeroMod && walkTimer <= 0)
 		{
-			Vector3 currPos =  gameObject.transform.position;
-
-			RBvel = currPos - prevPos;
-
-			avgVel = (Mathf.Abs(RBvel.x) + Mathf.Abs(RBvel.z)) / 2; // Networked method of finding velocity
-
-			prevPos = currPos; // Update the previous position
-			posTimer = 0;
-		}
-
-		if (avgVel > 0 && walkTimer <= 0)
-		{
-			walkTimer = walkSoundMod / avgVel;
+			walkTimer = walkSoundMod / (avgVel*100);
 			if (walkTimer > walkTimerLimit) walkTimer = walkTimerLimit;
 
 			playerWalkSource.PlayOneShot(playerWalkSound);

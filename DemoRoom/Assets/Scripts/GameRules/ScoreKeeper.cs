@@ -16,6 +16,7 @@ public class ScoreKeeper: NetworkBehaviour {
     //MessagesToUpdate
     private BallReset BR;
     private Referee Ref;
+    private BreakTimer BT;
 
     /// <summary>
     /// Gets the objects and initializes the variables to their proper values.
@@ -29,6 +30,7 @@ public class ScoreKeeper: NetworkBehaviour {
         }
         BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
+        BT = GameObject.FindGameObjectWithTag("GameController").GetComponent<BreakTimer>();
 	}
 
     /// <summary>
@@ -39,11 +41,12 @@ public class ScoreKeeper: NetworkBehaviour {
         if (isServer)
         {
             BlueTeamScore++;
-        }
             Ref.PlayGoal();
             Ref.PlayBlueTeam();
-            Ref.PlayPlay();
-            BR.placeBallRSC();
+            //Ref.PlayPlay();
+            BR.resetToClosestPoint(true);
+            BT.StartBreak(BreakTimer.Type.goal);
+        }
         
 		print("Added: " + BlueTeamScore);
 	}
@@ -67,11 +70,12 @@ public class ScoreKeeper: NetworkBehaviour {
         if (isServer)
         {
             RedTeamScore++;
-        }
             Ref.PlayGoal();
             Ref.PlayRedTeam();
-            Ref.PlayPlay();
-            BR.placeBallBSC();
+            //Ref.PlayPlay();
+            BR.resetToClosestPoint(false);
+            BT.StartBreak(BreakTimer.Type.goal);
+        }
         
         print("Added: " + RedTeamScore);
     }

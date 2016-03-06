@@ -98,4 +98,13 @@ public class Timer : NetworkBehaviour
         int seconds = (int)(time % 60);
         return string.Format("{0}:{1:00}", minutes, seconds);
     }
+
+    /// <summary>
+    /// Gets whether the timer is paused
+    /// </summary>
+    /// <returns></returns>
+    public bool isPaused()
+    {
+        return paused;
+    }
 }

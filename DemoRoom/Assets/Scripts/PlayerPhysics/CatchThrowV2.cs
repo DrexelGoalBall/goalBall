@@ -170,7 +170,6 @@ public class CatchThrowV2 : NetworkBehaviour {
         }
 
         float differenceInVertAngles = Mathf.DeltaAngle(aimTemp.eulerAngles.x, 0);
-        Debug.Log(differenceInVertAngles);
         if (differenceInVertAngles >  maxHighAngle)
         {
             aimTemp.eulerAngles = new Vector3(-1 * maxHighAngle, 0, 0);
@@ -279,11 +278,11 @@ public class CatchThrowV2 : NetworkBehaviour {
             
         if (gameObject.tag == "BluePlayer")
         {
-            GetComponent<Possession>().BlueTeamPossession();
+            ball.GetComponent<Possession>().BlueTeamPossession();
         }
         else if (gameObject.tag == "RedPlayer")
         {
-            GetComponent<Possession>().RedTeamPossession();
+            ball.GetComponent<Possession>().RedTeamPossession();
         }
         ball.transform.parent = ThrowDirection.transform;
         ballRB.constraints = RigidbodyConstraints.FreezeAll;
