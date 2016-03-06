@@ -44,17 +44,14 @@ public class HalfTimePause : MonoBehaviour {
 		halfTime = true;
 		timer.SetTime(maxPauseTime);
 
-//		ball.SetActive(false);
-
 		// Read red score
 		referee.PlayRedTeam();
-		referee.ReadScore(15);
-	//	ReadScore(scoreKeeper.RedScore());
+		referee.ReadScore(scoreKeeper.RedScore());
 
 		// Read blue score
 		referee.PlayBlueTeam();
-		referee.ReadScore(11);
-	//	ReadScore(scoreKeeper.BlueScore());	
+		referee.ReadScore(scoreKeeper.BlueScore());
+	
 	}
 
 	

@@ -30,6 +30,7 @@ public class GameTimer : NetworkBehaviour
     //Other Objects
     private Referee referee;
     private ScoreKeeper scoreKeeper;
+    private HalfTimePause halfTimeHandler;
     private BallReset ballReset;
     private BreakTimer breakTimer;
 
@@ -44,6 +45,7 @@ public class GameTimer : NetworkBehaviour
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
         scoreKeeper = gameController.GetComponent<ScoreKeeper>();
+        halfTimeHandler = gameController.GetComponent<HalfTimePause>();
         ballReset = gameController.GetComponent<BallReset>();
         breakTimer = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
 	}
@@ -137,7 +139,10 @@ public class GameTimer : NetworkBehaviour
             half++;
 
             breakTimer.StartBreak(BreakTimer.Type.halftime);
+
             referee.PlayHalfTime();
+            halfTimeHandler.HalfTime();
+
         }
 
         timer.Reset();
