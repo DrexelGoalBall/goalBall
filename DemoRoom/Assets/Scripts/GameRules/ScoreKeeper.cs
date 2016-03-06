@@ -14,6 +14,7 @@ public class ScoreKeeper: NetworkBehaviour {
     public int RedTeamScore;
 
     //MessagesToUpdate
+    private GameTimer GT;
     private BallReset BR;
     private Referee Ref;
     private BreakTimer BT;
@@ -28,9 +29,12 @@ public class ScoreKeeper: NetworkBehaviour {
             BlueTeamScore = 0;
             RedTeamScore = 0;
         }
-        BR = GameObject.FindGameObjectWithTag("GameController").GetComponent<BallReset>();
+        GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
+
+        GT = gameController.GetComponent<GameTimer>();
+        BR = gameController.GetComponent<BallReset>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
-        BT = GameObject.FindGameObjectWithTag("GameController").GetComponent<BreakTimer>();
+        BT = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
 	}
 
     /// <summary>
@@ -45,7 +49,14 @@ public class ScoreKeeper: NetworkBehaviour {
             Ref.PlayBlueTeam();
             //Ref.PlayPlay();
             BR.resetToClosestPoint(true);
-            BT.StartBreak(BreakTimer.Type.goal);
+            if (GT.InOvertime())
+            {
+                GT.ServerEndTheGame();
+            }
+            else
+            {
+                BT.StartBreak(BreakTimer.Type.goal);
+            }
         }
         
 		print("Added: " + BlueTeamScore);
@@ -74,7 +85,14 @@ public class ScoreKeeper: NetworkBehaviour {
             Ref.PlayRedTeam();
             //Ref.PlayPlay();
             BR.resetToClosestPoint(false);
-            BT.StartBreak(BreakTimer.Type.goal);
+            if (GT.InOvertime())
+            {
+                GT.ServerEndTheGame();
+            }
+            else
+            {
+                BT.StartBreak(BreakTimer.Type.goal);
+            }
         }
         
         print("Added: " + RedTeamScore);

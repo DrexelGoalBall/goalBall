@@ -33,7 +33,7 @@ public class GameStart : MonoBehaviour {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
-        BT = GameController.GetComponent<BreakTimer>();
+        BT = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         Ref.PlayQuietPlease();
 
