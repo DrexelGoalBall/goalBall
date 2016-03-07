@@ -10,7 +10,7 @@ public class RumbleOnCollide : MonoBehaviour
 {
 
     public float rumbleStrength = .5f;
-    public string collideString = "Lines";
+    public string collideString = "Limits";
 	
 	/// <summary>
     /// Detect when the player enters a collider with the tag collideString and activates the Rubmle Function.
