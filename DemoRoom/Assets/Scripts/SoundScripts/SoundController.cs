@@ -8,6 +8,8 @@ public class SoundController : MonoBehaviour
     public AudioClip bounce;
     public AudioClip block;
     public AudioClip roll;
+    public AudioClip hold;
+    public AudioClip thro;
     //public float timer = 0;
     //public float increment = 0.05f;
     //public float maxTime = 1;
@@ -19,26 +21,22 @@ public class SoundController : MonoBehaviour
     void Start()
     {
         loc = gameObject.GetComponent<ListObjectLocation>();
+        //ct = gameObject.GetComponent<CatchThrowV2s>();
         AS = gameObject.GetComponent<AudioSource>();
         AS.clip = roll;
     }
 
-    /// <summary>
-    /// Keeps track of the timer that regulates the frequency of the sound.
-    /// </summary>
-    /*void FixedUpdate()
-    {
-        if (timer <= maxTime)
-        {
-            timer += increment;
-        }
-    }*/
 
     void Update()
     {
         if (!AS.isPlaying)
         {
             AS.clip = roll;
+            if (transform.parent != null)
+            {
+                AS.clip = hold;
+            }
+
             if (loc.isMoving)
             {
                 AS.Play();
@@ -46,11 +44,6 @@ public class SoundController : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// Plays a sound on collision, assuming it has not already being played.
-    /// </summary>
-    /// <param name="collision"></param>
     void OnCollisionEnter(Collision collision)
     {
         /*if (timer >= maxTime)
@@ -72,5 +65,11 @@ public class SoundController : MonoBehaviour
         }
 
 
+    }
+
+   public void Shoot()
+    {
+        AS.clip = thro;
+        AS.Play();
     }
 }
