@@ -71,6 +71,7 @@ public class PlayerInputController : MonoBehaviour {
         }
         else
         {
+            CatchThrow.ResetAim();
             PlayerMovement.AutoMove();
         }
     }
