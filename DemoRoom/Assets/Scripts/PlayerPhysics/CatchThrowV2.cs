@@ -243,6 +243,7 @@ public class CatchThrowV2 : NetworkBehaviour {
             else
             {
                 TransmitBallThrow(Force);
+                ball.GetComponent<SoundController>().Shoot();
                 ballheld = false;
             }
         }
