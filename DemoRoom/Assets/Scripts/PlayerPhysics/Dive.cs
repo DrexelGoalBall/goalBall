@@ -64,8 +64,7 @@ public class Dive : MonoBehaviour {
             }
             else if (!isUpright)
             {
-                isUpright = true;
-                GBPM.horizontalEnabled = true;
+                StandUp();
             }
         }
 
@@ -80,6 +79,15 @@ public class Dive : MonoBehaviour {
             if (!diveGo)
                 diveGo = true;
         }
+    }
+
+    /// <summary>
+    /// Allows outside classes to reset standing parameters (specifically ResetAim)
+    /// </summary>
+    public void StandUp()
+    {
+        isUpright = true;
+        GBPM.horizontalEnabled = true;
     }
 
     /// <summary>

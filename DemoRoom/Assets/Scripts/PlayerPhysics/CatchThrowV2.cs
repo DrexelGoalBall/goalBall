@@ -192,6 +192,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     {
         transform.localEulerAngles = new Vector3(0, initialAim, 0);
         aim.transform.localEulerAngles = new Vector3(0, 0, 0);
+        GetComponent<Dive>().StandUp();
     }
 
     /// <summary>
