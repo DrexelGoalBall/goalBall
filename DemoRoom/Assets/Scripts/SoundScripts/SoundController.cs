@@ -10,6 +10,8 @@ public class SoundController : MonoBehaviour
     public AudioClip roll;
     public AudioClip hold;
     public AudioClip thro;
+	public AudioClip idle;
+	public AudioClip grab;
     //public float timer = 0;
     //public float increment = 0.05f;
     //public float maxTime = 1;
@@ -41,7 +43,12 @@ public class SoundController : MonoBehaviour
             {
                 AS.Play();
             }
-        }
+			else
+			{
+				AS.clip = idle;
+				AS.Play();
+        	}
+		}
     }
 
     void OnCollisionEnter(Collision collision)
