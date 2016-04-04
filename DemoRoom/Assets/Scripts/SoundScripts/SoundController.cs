@@ -54,6 +54,7 @@ public class SoundController : MonoBehaviour
 
         if (collision.gameObject.name == "Floor")
         {
+            Debug.Log("Bounce");
             AS.clip = bounce;
             AS.Play();
         }
