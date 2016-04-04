@@ -275,8 +275,7 @@ public class CatchThrowV2 : NetworkBehaviour {
 
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
-        Debug.Log(held);
-        Debug.Log("Start");
+        ballheld = held;
             
         if (gameObject.tag == "BluePlayer")
         {
@@ -316,8 +315,6 @@ public class CatchThrowV2 : NetworkBehaviour {
     [Command]
     void CmdBallPickup(bool held)
     {
-        ballheld = held;
-
         ChangeBallHold(held);
     }
 
@@ -344,13 +341,9 @@ public class CatchThrowV2 : NetworkBehaviour {
 
         if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
         {
-            Debug.Log("Send");
+            //Debug.Log("Send");
             CmdBallPickup(held);
-            Debug.Log("Back");
-            if (!isServer)
-            {
-               ballheld = held;
-            }
+            //Debug.Log("Back");
         }
     }
 
