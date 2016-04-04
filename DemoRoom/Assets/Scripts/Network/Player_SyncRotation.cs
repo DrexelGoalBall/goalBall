@@ -91,9 +91,9 @@ public class Player_SyncRotation : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            if (CheckIfBeyondThreshold(playerTransform.localEulerAngles.y, lastPlayerRot) || CheckIfBeyondThreshold(camTransform.localEulerAngles.x, lastCamRot))
+            if (CheckIfBeyondThreshold(playerTransform.localEulerAngles.z, lastPlayerRot) || CheckIfBeyondThreshold(camTransform.localEulerAngles.x, lastCamRot))
             {
-                lastPlayerRot = playerTransform.localEulerAngles.y;
+                lastPlayerRot = playerTransform.localEulerAngles.z;
                 lastCamRot = camTransform.localEulerAngles.x;
                 CmdProvideRotationsToServer(lastPlayerRot, lastCamRot);
             }
@@ -143,7 +143,7 @@ public class Player_SyncRotation : NetworkBehaviour
 			LerpPlayerRotation(syncPlayerRotList[0]);
 
             // 
-			if(Mathf.Abs(playerTransform.localEulerAngles.y - syncPlayerRotList[0]) < closeEnough)
+			if(Mathf.Abs(playerTransform.localEulerAngles.z - syncPlayerRotList[0]) < closeEnough)
 			{
 				syncPlayerRotList.RemoveAt(0);
 			}

@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.Networking;
 
 /// <summary>
 /// This script is in charge of making the player dive.  This accomplishes moving the player down as well as rotating their position.
 /// </summary>
-public class Dive : MonoBehaviour {
+public class Dive : NetworkBehaviour {
 	public GameObject player;
 	private bool diveGo = false;
 	private bool isUpright = true;
@@ -31,43 +31,42 @@ public class Dive : MonoBehaviour {
     /// Makes diving smother when a dive is detected.  Animates the player diving.
     /// </summary>
     void Update () {
-        float diveDrop = .5f / diveSpeed;
-        float diveRot = 90f / diveSpeed;
-        if (diveGo && isUpright)
-        {
-            player.transform.eulerAngles = new Vector3(player.transform.eulerAngles.x,
-                                                        player.transform.eulerAngles.y,
-                                                    player.transform.eulerAngles.z + diveRot);
-            player.transform.position = new Vector3(player.transform.position.x,
-                                                    player.transform.position.y - diveDrop,
-                                                    player.transform.position.z);
-            diveCount++;
-        }
-        if (diveGo && !isUpright)
-        {
-            player.transform.eulerAngles = new Vector3(player.transform.eulerAngles.x,
-                                                        player.transform.eulerAngles.y,
-                                                        player.transform.eulerAngles.z - diveRot);
-            player.transform.position = new Vector3(player.transform.position.x,
-                                        player.transform.position.y + diveDrop,
-                                        player.transform.position.z);
-            diveCount++;
-        }
-        if (diveCount == (int)diveSpeed)
-        {
-            diveGo = false;
-            diveCount = 0;
-            if (isUpright)
+            float diveDrop = .5f / diveSpeed;
+            float diveRot = 90f / diveSpeed;
+            if (diveGo && isUpright)
             {
-                isUpright = false;
-                GBPM.horizontalEnabled = false;
+                player.transform.eulerAngles = new Vector3(player.transform.eulerAngles.x,
+                                                            player.transform.eulerAngles.y,
+                                                        player.transform.eulerAngles.z + diveRot);
+                player.transform.position = new Vector3(player.transform.position.x,
+                                                        player.transform.position.y - diveDrop,
+                                                        player.transform.position.z);
+                diveCount++;
             }
-            else if (!isUpright)
+            if (diveGo && !isUpright)
             {
-                StandUp();
+                player.transform.eulerAngles = new Vector3(player.transform.eulerAngles.x,
+                                                            player.transform.eulerAngles.y,
+                                                            player.transform.eulerAngles.z - diveRot);
+                player.transform.position = new Vector3(player.transform.position.x,
+                                            player.transform.position.y + diveDrop,
+                                            player.transform.position.z);
+                diveCount++;
             }
-        }
-
+            if (diveCount == (int)diveSpeed)
+            {
+                diveGo = false;
+                diveCount = 0;
+                if (isUpright)
+                {
+                    isUpright = false;
+                    GBPM.horizontalEnabled = false;
+                }
+                else if (!isUpright)
+                {
+                    StandUp();
+                }
+            }
 	}
 
     /// <summary>
@@ -96,11 +95,14 @@ public class Dive : MonoBehaviour {
     /// <param name="col"></param>
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Ball" && !isUpright)
+        if (isServer)
         {
-            Rigidbody RB = col.gameObject.GetComponent<Rigidbody>();
-            RB.velocity = ballSlowdown * RB.velocity;
-            RB.angularVelocity = ballSlowdown * RB.angularVelocity;
+            if (col.gameObject.tag == "Ball" && !isUpright)
+            {
+                Rigidbody RB = col.gameObject.GetComponent<Rigidbody>();
+                RB.velocity = ballSlowdown * RB.velocity;
+                RB.angularVelocity = ballSlowdown * RB.angularVelocity;
+            }
         }
     }
 }
