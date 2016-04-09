@@ -20,7 +20,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Left()
 	{
-		Application.LoadLevel("Tutorial");
+		Application.LoadLevel("Exit");
 	}
 
     /// <summary>
@@ -28,7 +28,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Right()
 	{
-		Application.LoadLevel("Exit");
+		Application.LoadLevel("Networking");
 	}
 
     /// <summary>
@@ -36,7 +36,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Up()
 	{
-		Application.LoadLevel("Settings");
+		Application.LoadLevel("Tutorial");
 	}
 
     /// <summary>
@@ -44,6 +44,6 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Down()
 	{
-		Application.LoadLevel("Networking");
+//		Application.LoadLevel("Networking");
 	}
 }

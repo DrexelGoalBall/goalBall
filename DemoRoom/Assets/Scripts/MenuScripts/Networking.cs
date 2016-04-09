@@ -19,7 +19,7 @@ public class Networking : MenuLogic
     /// </summary>
 	new private void Left()
 	{
-		// Navigate to Quick Match Menu
+		Application.LoadLevel("MainMenu");
 	}
 
     /// <summary>
@@ -35,7 +35,7 @@ public class Networking : MenuLogic
     /// </summary>
 	new private void Up()
 	{
-		Application.LoadLevel("MainMenu");
+		// Navigate to Quick Match Menu
 	}
 
     /// <summary>
