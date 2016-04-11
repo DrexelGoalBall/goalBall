@@ -9,20 +9,17 @@ using XInputDotNetPure;
 public class RumbleOnCollide : MonoBehaviour
 {
 
-    public float rumbleStrength = .5f;
-    public string collideString = "Limits";
-    private float timer = 0f;
+    public float rumbleWall = .5f;
+    public float rumbleBall = .8f;
+    public string WallString = "Limits";
+    public string BallString = "Ball";
     public float maxTime = 1f;
-    private bool rumble = false;
-	
-	/// <summary>
-    /// Detect when the player enters a collider with the tag collideString and activates the Rubmle Function.
-    /// </summary>
-    /// <param name="col"></param>
-    void OnTriggerEnter(Collider col)
+
+    public RumbleController rumbler;
+
+    void Start()
     {
-        Debug.Log(col.gameObject.tag);
-        if (col.gameObject.tag == collideString) Rumble();
+        rumbler = GetComponent<RumbleController>();
     }
 
     /// <summary>
@@ -32,33 +29,7 @@ public class RumbleOnCollide : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         Debug.Log(col.gameObject.tag);
-        if (col.gameObject.tag == collideString) Rumble();
-    }
-
-
-    void Update()
-    {
-        if (rumble)
-        {
-            timer += Time.deltaTime;
-            GamePad.SetVibration(PlayerIndex.One, rumbleStrength, 0);
-            if (timer > maxTime)
-            {
-                rumble = false;
-            }
-        }
-        else
-        {
-            GamePad.SetVibration(PlayerIndex.One, 0, 0);
-        }
-    }
-
-    /// <summary>
-    /// Rumbles an xbox controller.
-    /// </summary>
-    public void Rumble()
-    {
-        rumble = true;
-        timer = 0f;
+        if (col.gameObject.tag == WallString) rumbler.BasicRumble(maxTime,rumbleWall,rumbleWall);
+        else if (col.gameObject.tag == BallString) rumbler.BasicRumble(maxTime, rumbleBall, rumbleBall);
     }
 }

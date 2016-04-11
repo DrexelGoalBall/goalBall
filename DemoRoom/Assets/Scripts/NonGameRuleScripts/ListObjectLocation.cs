@@ -8,7 +8,7 @@ public class ListObjectLocation : MonoBehaviour
 {
     public string currentArea;
     private Transform objectTransfom;
-    private float noMovementThreshold = 0.0001f;
+    private float noMovementThreshold = 0.01f;
     private const int noMovementFrames = 3;
     Vector3[] previousLocations = new Vector3[noMovementFrames];
     public bool isMoving;

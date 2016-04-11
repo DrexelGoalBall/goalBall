@@ -12,27 +12,25 @@ public class Ball_MotionSync : NetworkBehaviour
     private Vector3 syncPos;
     // 
     [SyncVar]
-    private Vector3 syncRot;
+    private Vector3 syncVel;
     // 
     [SyncVar]
     private Vector3 throwForce;
 
     // 
     private Vector3 lastPos;
-    private Quaternion lastRot;
+    private Vector3 lastVel;
     // 
     private Transform myTransform;
 
     // 
-    private float lerpRate = 10;
-    private float posThreshold = 0.5f;
-    private float rotThreshold = 5;
-
+    public float lerpRate = 10;
+    public float posThreshold = 0.05f;
+    public float velThreshold = 0.05f;
+    
     // 
     private Transform startTrans;
-
-    //[SyncVar(hook = "ApplyForce")]
-    //private bool isThrown = false; 
+    private Rigidbody rigidBody; 
 
     /// <summary>
     ///     Sets up the initial values
@@ -40,6 +38,7 @@ public class Ball_MotionSync : NetworkBehaviour
     void Start()
     {
         startTrans = myTransform = transform;
+        rigidBody = GetComponent<Rigidbody>();
         throwForce = new Vector3(0, 0, 0);
     }
 
@@ -57,8 +56,8 @@ public class Ball_MotionSync : NetworkBehaviour
     /// </summary>
     public void Reset()
     {
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
         Debug.Log("Reset Ball");
+        rigidBody.velocity = Vector3.zero;
         myTransform.position = startTrans.position;
         myTransform.rotation = startTrans.rotation;
     }
@@ -73,13 +72,21 @@ public class Ball_MotionSync : NetworkBehaviour
             return;
         }
 
-        if (Vector3.Distance(myTransform.position, lastPos) > posThreshold || Quaternion.Angle(myTransform.rotation, lastRot) > rotThreshold)
+        if (Vector3.Distance(myTransform.position, lastPos) > posThreshold)
         {
             lastPos = myTransform.position;
-            lastRot = myTransform.rotation;
-
             syncPos = myTransform.position;
-            syncRot = myTransform.localEulerAngles;
+        }
+
+        if (Vector3.Distance(rigidBody.velocity, lastVel) > velThreshold)
+        {
+            lastVel = rigidBody.velocity;
+            syncVel = rigidBody.velocity;
+        }
+        else if (Vector3.Distance(rigidBody.velocity, Vector3.zero) < velThreshold)
+        {
+            lastVel = Vector3.zero;
+            syncVel = Vector3.zero;
         }
     }
     /// <summary>
@@ -92,40 +99,14 @@ public class Ball_MotionSync : NetworkBehaviour
             return;
         }
 
-        myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
-        myTransform.rotation = Quaternion.Lerp(myTransform.rotation, Quaternion.Euler(syncRot), Time.deltaTime * lerpRate);
+        if (syncVel == Vector3.zero)
+        {
+            rigidBody.velocity = syncVel;
+            myTransform.position = syncPos;
+        }
+        else
+        {
+            myTransform.position = Vector3.Lerp(myTransform.position, syncPos, Time.deltaTime * lerpRate);
+        }
     }
-
-   // void ApplyForce(bool isThrown)
-   // {
-   //     Debug.Log(throwForce);
-   //     Rigidbody ballRB = GetComponent<Rigidbody>();
-   //     ballRB.AddForce(throwForce);
-   //     Debug.Log("Thrown");
-   // }
-
-   // [Command]
-   // void CmdThrow(bool pIsThrown, Vector3 force)
-   // {
-   //     isThrown = pIsThrown;
-   //     if (isServer && !isClient)
-   //         throwForce = force;
-   //         ApplyForce(isThrown);
-   //     Debug.Log("Command called");
-   // }
-
-   //[ClientCallback]
-   //public void TransmitThrow(bool pIsThrown, Vector3 force)
-   // {
-   //     if (isLocalPlayer)// && (ballheld || ball.transform.parent == null))
-   //     {
-   //         Debug.Log("Send");
-   //         CmdThrow(pIsThrown,force);
-   //         Debug.Log("Back");
-   //         if (!isServer)
-   //         {
-   //             isThrown = pIsThrown;
-   //         }
-   //     }
-   // }
 }

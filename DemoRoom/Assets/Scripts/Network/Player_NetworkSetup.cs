@@ -19,16 +19,20 @@ public class Player_NetworkSetup : NetworkBehaviour
 	{
         // Retrieve the movement script for this player and enable it
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
-        //gbpm.enabled = true;
         PlayerInputController controller = GetComponent<PlayerInputController>();
         DebugSwapLayer DSL = GetComponent<DebugSwapLayer>();
+        RumbleOnCollide ROC = GetComponent<RumbleOnCollide>();
+
+        //Enable all parts of Player needed for the client
         controller.enabled = true;
-        // Update the spawn position to the selected team and position
-        SetSpawn(gbpm);
-        // Enable the camera and audiolistener
         playerCamera.enabled = true;
-		audioListener.enabled = true;
+        ROC.enabled = true;
+        audioListener.enabled = true;
         DSL.enabled = true;
+
+
+        SetSpawn(gbpm);
+
 
         gameObject.layer = LayerMask.NameToLayer("Player");
 	}
