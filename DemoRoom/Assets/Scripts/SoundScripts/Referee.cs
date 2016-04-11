@@ -302,6 +302,42 @@ public class Referee : NetworkBehaviour
     }
 
     /// <summary>
+    /// Ref says: game over.
+    /// </summary>
+    public void PlayGameOver()
+    {
+        if (isServer)
+            queue.Add("GameOver");
+    }
+
+    /// <summary>
+    /// Ref says: wins.
+    /// </summary>
+    public void PlayWins()
+    {
+        if (isServer)
+            queue.Add("Wins");
+    }
+
+    /// <summary>
+    /// Ref says: final score.
+    /// </summary>
+    public void PlayFinalScore()
+    {
+        if (isServer)
+            queue.Add("FinalScore");
+    }
+
+    /// <summary>
+    /// Ref says: press throw button to return to menu.
+    /// </summary>
+    public void PlayReturnToMenu()
+    {
+        if (isServer)
+            queue.Add("ReturnToMenu");
+    }
+
+    /// <summary>
     /// Takes the current scores and announces them in audio.
     /// </summary>
     public void ReadScore(int scoreToRead)

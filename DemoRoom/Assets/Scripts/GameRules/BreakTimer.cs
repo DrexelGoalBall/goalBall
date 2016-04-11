@@ -7,6 +7,7 @@ public class BreakTimer : NetworkBehaviour
 {
     public GameObject ball;
     private Referee referee;
+    private GameEnd gameEnd;
 
     public enum Type
     {
@@ -14,6 +15,7 @@ public class BreakTimer : NetworkBehaviour
         gameStart,
         halftime,
         overtime,
+        gameEnd,
         goal,
         foul,
     }
@@ -28,6 +30,7 @@ public class BreakTimer : NetworkBehaviour
     public int gameStartBreakLength = 0;
     public int halftimeBreakLength = 10;
     public int overtimeBreakLength = 10;
+    public int gameEndBreakLength = 33;
     public int goalBreakLength = 2;
     public int foulBreakLength = 2;
 
@@ -39,6 +42,7 @@ public class BreakTimer : NetworkBehaviour
 	void Start()
     {
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
+        gameEnd = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameEnd>();
 
         timer = gameObject.GetComponent<Timer>();
 	}
@@ -77,8 +81,6 @@ public class BreakTimer : NetworkBehaviour
             timer.Pause();
             timer.SetLengthOfTimer(0);
 
-            ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
             switch (currentBreakType)
             {
                 case Type.gameStart:
@@ -94,10 +96,16 @@ public class BreakTimer : NetworkBehaviour
                         referee.PlayBlueTeam();
                     referee.PlayPlay();
                     break;
+                case Type.gameEnd:
+                    gameEnd.ReturnToMenu();
+                    break;
                 case Type.none:
                 default:
                     break;
             }
+
+            ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
             currentBreakType = Type.none;
         }
@@ -137,6 +145,9 @@ public class BreakTimer : NetworkBehaviour
                 break;
             case Type.overtime:
                 length = overtimeBreakLength;
+                break;
+            case Type.gameEnd:
+                length = gameEndBreakLength;
                 break;
             case Type.goal:
                 length = goalBreakLength;

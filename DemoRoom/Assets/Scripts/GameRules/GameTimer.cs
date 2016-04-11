@@ -30,7 +30,6 @@ public class GameTimer : NetworkBehaviour
     //Other Objects
     private Referee referee;
     private ScoreKeeper scoreKeeper;
-    private HalfTimePause halfTimeHandler;
     private BallReset ballReset;
     private BreakTimer breakTimer;
 
@@ -45,7 +44,6 @@ public class GameTimer : NetworkBehaviour
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
         scoreKeeper = gameController.GetComponent<ScoreKeeper>();
-        halfTimeHandler = gameController.GetComponent<HalfTimePause>();
         ballReset = gameController.GetComponent<BallReset>();
         breakTimer = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
 	}
@@ -92,6 +90,8 @@ public class GameTimer : NetworkBehaviour
     /// </summary>
 	void nextHalf()
     {
+        Debug.Log("Half " + half);
+
         if (half >= 2)
         {
             if (scoreKeeper.BlueScore() == scoreKeeper.RedScore())
@@ -103,7 +103,7 @@ public class GameTimer : NetworkBehaviour
                 else
                 {
                     overtime = true;
-                    timer.SetLengthOfTimer(overtimeHalfLength);
+                    timer.SetLengthOfTimer(overtimeHalfLength + 1);
                     Possession poss = ball.GetComponent<Possession>();
                     if (new CoinFlip().Flip())
                     {
@@ -124,6 +124,7 @@ public class GameTimer : NetworkBehaviour
             }
             else
             {
+                StopGame();
                 ServerEndTheGame();
                 return;
             }
@@ -141,8 +142,12 @@ public class GameTimer : NetworkBehaviour
             breakTimer.StartBreak(BreakTimer.Type.halftime);
 
             referee.PlayHalfTime();
-            halfTimeHandler.HalfTime();
-
+            // Read red score
+            referee.PlayRedTeam();
+            referee.ReadScore(scoreKeeper.RedScore());
+            // Read blue score
+            referee.PlayBlueTeam();
+            referee.ReadScore(scoreKeeper.BlueScore());
         }
 
         timer.Reset();
@@ -185,13 +190,21 @@ public class GameTimer : NetworkBehaviour
     }
 
     /// <summary>
+    /// Check if game is over.
+    /// </summary>
+    /// <returns></returns>
+    public bool GameHasEnded()
+    {
+        return endGame;
+    }
+
+    /// <summary>
     /// The game is over so let all the clients know
     /// </summary>
     public void ServerEndTheGame()
     {
         if (isServer)
         {
-            timeText.text = "GAME OVER";
             endGame = true;
         }
     }
@@ -201,12 +214,6 @@ public class GameTimer : NetworkBehaviour
     /// </summary>
     public void ClientGameEnd(bool end)
     {
-        if (end)
-        {
-            timeText.text = "GAME OVER";
-            //Application.LoadLevel("GameOver");
-        }
-
         endGame = end;
     }
 }

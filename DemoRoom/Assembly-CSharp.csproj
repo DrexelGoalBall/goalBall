@@ -51,15 +51,15 @@
      <Compile Include="Assets\Scripts\GameRules\CoinFlip.cs" />
      <Compile Include="Assets\Scripts\GameRules\DoOnKey.cs" />
      <Compile Include="Assets\Scripts\GameRules\Fouls.cs" />
+     <Compile Include="Assets\Scripts\GameRules\GameEnd.cs" />
      <Compile Include="Assets\Scripts\GameRules\GameStart.cs" />
      <Compile Include="Assets\Scripts\GameRules\GameTimer.cs" />
-     <Compile Include="Assets\Scripts\GameRules\HalfTimePause.cs" />
      <Compile Include="Assets\Scripts\GameRules\LineTrigger.cs" />
      <Compile Include="Assets\Scripts\GameRules\Possession.cs" />
      <Compile Include="Assets\Scripts\GameRules\RedGoal.cs" />
      <Compile Include="Assets\Scripts\GameRules\ScoreKeeper.cs" />
      <Compile Include="Assets\Scripts\GameRules\Timer.cs" />
-     <Compile Include="Assets\Scripts\GamepadScripts\RumbleOnCollide.cs" />
+     <Compile Include="Assets\Scripts\GamepadScripts\PlayerRumbleController.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\Exit.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\MenuScripts\MenuLogic.cs" />
@@ -89,6 +89,7 @@
      <Compile Include="Assets\Scripts\PlayerPhysics\Dive.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\GoalBallPlayerMovementV1.cs" />
      <Compile Include="Assets\Scripts\PlayerPhysics\PlayerInputController.cs" />
+     <Compile Include="Assets\Scripts\PlayerPhysics\RumbleController.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\Blindfold.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\RedOrBlue.cs" />
      <Compile Include="Assets\Scripts\SceneScripts\SceneChanger.cs" />
@@ -116,7 +117,7 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="XInputDotNetPure">
- <HintPath>C:/Users/colto_000/Documents/GitHub/goalBall/DemoRoom/Assets/Plugins/x86_64/XInputDotNetPure.dll</HintPath>
+ <HintPath>C:/Users/Ryan/Documents/GitHub/goalBall/DemoRoom/Assets/Plugins/x86_64/XInputDotNetPure.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
