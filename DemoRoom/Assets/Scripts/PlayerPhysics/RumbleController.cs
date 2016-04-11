@@ -55,9 +55,9 @@ public class RumbleController : MonoBehaviour {
         for (int i=0; i < bursts; i++)
         {
             StartCoroutine(RumbleAfterDelay(delays,.2f,lS,rS));
-            delays += .2f;
+            delays += .1f;
             StartCoroutine(RumbleAfterDelay(delays, .2f, 0, 0));
-            delays += .2f;
+            delays += .1f;
         }
     }
 

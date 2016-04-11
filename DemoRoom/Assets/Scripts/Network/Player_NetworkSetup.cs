@@ -21,7 +21,7 @@ public class Player_NetworkSetup : NetworkBehaviour
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
         PlayerInputController controller = GetComponent<PlayerInputController>();
         DebugSwapLayer DSL = GetComponent<DebugSwapLayer>();
-        RumbleOnCollide ROC = GetComponent<RumbleOnCollide>();
+        PlayerRumbleController ROC = GetComponent<PlayerRumbleController>();
 
         //Enable all parts of Player needed for the client
         controller.enabled = true;
