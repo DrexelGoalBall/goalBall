@@ -4,18 +4,19 @@ using System.Collections;
 // Static class with tools used for menu navigation and use
 namespace MenuTools
 {
+
     /// <summary>
     ///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
     /// </summary>
-    public class MenuLogic : MonoBehaviour 
+    public class MenuLogic : MonoBehaviour, IHorizController, IVertController
     {
-		// Keypress trackers
-		private int horiz = 0;
-		private int vert = 0;
+    		public MenuController controller;
 
-		private bool hasSounded = false; // Prevents repeating sound on button press
-
-		private int HOLDLIMIT = 30; // How many frames button must be held to run function
+    		private void OnEnable()
+    		{
+    			controller.SetIHorizController(this);
+    			controller.SetIVertController(this);
+    		}
 
 		public string HorizontalButton = "Horizontal";
 		public string VerticalButton = "Vertical";
@@ -185,6 +186,23 @@ namespace MenuTools
 			source.Play();
 			hasSounded = true;
 		}
+
+	}
+
+
+	public class MenuController
+	{
+		// Keypress trackers
+		private int horiz = 0;
+		private int vert = 0;
+
+		private bool hasSounded = false; // Prevents repeating sound on button press
+
+		private int HOLDLIMIT = 30; // How many frames button must be held to run function
+
+		private IHorizController horizController;
+		private IVertController vertController;
+
 
 	}
 }
