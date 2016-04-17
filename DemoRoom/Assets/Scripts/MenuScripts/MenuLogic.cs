@@ -4,19 +4,18 @@ using System.Collections;
 // Static class with tools used for menu navigation and use
 namespace MenuTools
 {
+	/// <summary>
+	///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
+	/// </summary>
+	public class MenuLogic : MonoBehaviour 
+	{
+		// Keypress trackers
+		private int horiz = 0;
+		private int vert = 0;
 
-    /// <summary>
-    ///     Receives user input on menus, plays audio clips and calls appropriate functions based on selections
-    /// </summary>
-    public class MenuLogic : MonoBehaviour, IHorizController, IVertController
-    {
-    		public MenuController controller;
+		private bool hasSounded = false; // Prevents repeating sound on button press
 
-    		private void OnEnable()
-    		{
-    			controller.SetIHorizController(this);
-    			controller.SetIVertController(this);
-    		}
+		private int HOLDLIMIT = 30; // How many frames button must be held to run function
 
 		public string HorizontalButton = "Horizontal";
 		public string VerticalButton = "Vertical";
@@ -40,11 +39,11 @@ namespace MenuTools
 
 		private AudioSource source;
 
-        /// <summary>
-        ///     Get the AudioSource for the menu when the scene starts
-        /// </summary>
+		/// <summary>
+		///     Get the AudioSource for the menu when the scene starts
+		/// </summary>
 		void Start() 
-        {
+		{
 			source = GetComponent<AudioSource>();
 		}
 	
@@ -52,19 +51,19 @@ namespace MenuTools
 		///     Every frame, check for user input on menu
 		/// </summary>
 		void Update() 
-        {
+		{
 			directionalMenuLogic(Left, Right, Up, Down);
 		}
 
 // Protected Functions
 
-        /// <summary>
-        ///     Checks for user button presses and calls respective function
-        /// </summary>
-        /// <param name="left">Defined Left function</param>
-        /// <param name="right">Defined Right function</param>
-        /// <param name="up">Defined Up function</param>
-        /// <param name="down">Defined Down function</param>
+		/// <summary>
+		///     Checks for user button presses and calls respective function
+		/// </summary>
+		/// <param name="left">Defined Left function</param>
+		/// <param name="right">Defined Right function</param>
+		/// <param name="up">Defined Up function</param>
+		/// <param name="down">Defined Down function</param>
 		protected void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down)
 		{
 			if (Input.GetButtonUp(HorizontalButton))
@@ -141,33 +140,33 @@ namespace MenuTools
 
 	// These instances should only ever be called if a menu is missing functions
 
-        /// <summary>
-        ///     Left menu option is selected (only called if menu is missing Left function)
-        /// </summary>
-        protected void Left()
+		/// <summary>
+		///     Left menu option is selected (only called if menu is missing Left function)
+		/// </summary>
+		protected void Left()
 		{
 			print ("UNDEFINEDLEFT");
 		}
 
-        /// <summary>
-        ///     Right menu option is selected (only called if menu is missing Right function)
-        /// </summary>
-        protected void Right()
+		/// <summary>
+		///     Right menu option is selected (only called if menu is missing Right function)
+		/// </summary>
+		protected void Right()
 		{
 			print ("UNDEFINEDRIGHT");
 		}
 
-        /// <summary>
-        ///     Up menu option is selected (only called if menu is missing Up function)
-        /// </summary>
+		/// <summary>
+		///     Up menu option is selected (only called if menu is missing Up function)
+		/// </summary>
 		protected void Up()
 		{
 			print ("UNDEFINEDUP");
 		}
 
-        /// <summary>
-        ///     Down menu option is selected (only called if menu is missing Down function)
-        /// </summary>
+		/// <summary>
+		///     Down menu option is selected (only called if menu is missing Down function)
+		/// </summary>
 		protected void Down()
 		{
 			print ("UNDEFINEDDOWN");
@@ -175,10 +174,10 @@ namespace MenuTools
 
 // Private Functions
 
-        /// <summary>
-        ///     Plays clip when direction is pressed
-        /// </summary>
-        /// <param name="clip">Clip to play</param>
+		/// <summary>
+		///     Plays clip when direction is pressed
+		/// </summary>
+		/// <param name="clip">Clip to play</param>
 		private void playDirectionalSound(AudioClip clip)
 		{
 			source.Stop();
@@ -187,22 +186,43 @@ namespace MenuTools
 			hasSounded = true;
 		}
 
-	}
 
+// Test and Debug Functions
 
-	public class MenuController
-	{
-		// Keypress trackers
-		private int horiz = 0;
-		private int vert = 0;
+		public void PressRight()
+		{
+			horiz = HOLDLIMIT;
+		}
 
-		private bool hasSounded = false; // Prevents repeating sound on button press
+		public void PressLeft()
+		{
+			horiz = -HOLDLIMIT;
+		}
 
-		private int HOLDLIMIT = 30; // How many frames button must be held to run function
+		public void PressUp()
+		{
+			vert = HOLDLIMIT;
+		}
 
-		private IHorizController horizController;
-		private IVertController vertController;
+		public void PressDown()
+		{
+			vert = -HOLDLIMIT;
+		}
 
+		public int GetHoriz()
+		{
+			return horiz;
+		}
+
+		public int GetVert()
+		{
+			return vert;
+		}
+
+		public bool isSourcePlaying()
+		{
+			return source.isPlaying;
+		}
 
 	}
 }
