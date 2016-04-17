@@ -89,6 +89,11 @@ public class BallReset : MonoBehaviour
         StopBall();
     }
 
+    public GameObject GetBall()
+    {
+        return Ball;
+    }
+
     /// <summary>
     /// Places ball at the location it is closest to
     /// </summary>

@@ -9,7 +9,6 @@ public class NavigationTest : MonoBehaviour {
 
 	public MenuTools.MenuLogic menuLogicRef;
 
-
 	private bool lC = false, rC = false, uC = false, dC = false;
 
 	void Awake () {
