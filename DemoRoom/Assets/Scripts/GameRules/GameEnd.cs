@@ -21,7 +21,7 @@ public class GameEnd : NetworkBehaviour
 
     // 
     public Text winnerText;
-    public Image gameOverBackground;
+    public GameObject gameOverPanel;
 
     // 
     private Winner winner = Winner.tie;
@@ -87,7 +87,7 @@ public class GameEnd : NetworkBehaviour
                     winner = Winner.tie;
                 }
 
-                gameOverBackground.enabled = true;
+                gameOverPanel.SetActive(true);
 
                 initialized = true;
             }
