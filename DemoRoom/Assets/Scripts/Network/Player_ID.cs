@@ -7,17 +7,18 @@ using UnityEngine.Networking;
 /// </summary>
 public class Player_ID : NetworkBehaviour 
 {
-    // 
+    // String containing unique id to sync to all connections
 	[SyncVar] private string playerUniqueIdentity;
-    // 
-	private NetworkInstanceId playerNetID;
-    // 
-	private Transform myTransform;
-    // 
-    public string prefabName = "PlayerV2";
+    // String containing the tag for this player's team to sync to all connections
+    [SyncVar] private string playerTeamTag;
 
-    [SyncVar]
-    private string playerTeamTag;
+    // The id for this object provided by the network connection
+	private NetworkInstanceId playerNetID;
+    // Current transformation values
+	private Transform myTransform;
+    
+    // Name of the prefab, since by default Unity adds duplicates with (Clone)
+    public string prefabName = "PlayerV2";
 
     /// <summary>
     ///     When the local player object is set up, get and set its unique identity
@@ -37,17 +38,19 @@ public class Player_ID : NetworkBehaviour
 	}
 
     /// <summary>
-    ///     Checks whether identity is not unique and updates it accordingly
+    ///     Set the identity and tag of this object if it has not been properly set yet
     /// </summary>
 	void Update() 
 	{
 		if (myTransform.name == "" || myTransform.name == string.Format("{0}(Clone)", prefabName))
 		{
+            // Name of object is not currently unique, so try to set it
 			SetIdentity();
 		}
 
         if (gameObject.tag.Equals("Player") && !string.IsNullOrEmpty(playerTeamTag))
         {
+            // Team tag has not been updated, so try to update it
             gameObject.tag = playerTeamTag;
         }
 	}
@@ -92,8 +95,7 @@ public class Player_ID : NetworkBehaviour
     /// </summary>
 	string MakeUniqueIdentity()
 	{
-		string uniqueName = "Player " + playerNetID.ToString();
-		return uniqueName;
+        return "Player " + playerNetID.ToString();
 	}
 
     /// <summary>

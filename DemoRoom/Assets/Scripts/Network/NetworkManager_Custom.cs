@@ -22,18 +22,16 @@ public class NetworkManager_Custom : NetworkManager
     public Text playerElementText;
     private Text connInfoText;
 
-    public GameObject ball;
-
     // Indices and corresponding strings of selected team and position
     public int teamIndex = 0, positionIndex = 0;
     public string team = "", position = "";
 
     /// <summary>
-    ///     When started, updates the UI depending on the loaded scene and sets the maximum allowed connections
+    ///     When started, update the UI for the loaded scene and sets the maximum allowed connections
     /// </summary>
     void Start()
     {
-        // Update the UI depending on the scene that was loaded
+        // Set UI up for the scene this script was first loaded for  
         OnLevelWasLoaded(Application.loadedLevel);
         // Set the maximum number of players
         NetworkManager.singleton.maxConnections = 6;
@@ -45,38 +43,32 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     void Update()
     {
-        // 
+        // Check if we are in a networked game
         if (NetworkManager.singleton.isNetworkActive)
         {
-            // Spawn new ball if one is not there
-            //if (NetworkServer.active && GameObject.FindGameObjectWithTag("Ball") == null)
-            //    NetworkServer.Spawn(ball);
-
-            // 
-            GameObject[] redPlayers = GameObject.FindGameObjectsWithTag("RedPlayer");
-            GameObject[] bluePlayers = GameObject.FindGameObjectsWithTag("BluePlayer");
-            GameObject[] players = redPlayers.Concat(bluePlayers).ToArray();
-
-            // 
             if (capacityText != null)
             {
+                // Get all of the players for both teams
+                GameObject[] redPlayers = GameObject.FindGameObjectsWithTag("RedPlayer");
+                GameObject[] bluePlayers = GameObject.FindGameObjectsWithTag("BluePlayer");
+                GameObject[] players = redPlayers.Concat(bluePlayers).ToArray();
+                // Show current player count
                 capacityText.text = string.Format("{0}/{1}", players.Length, NetworkManager.singleton.maxConnections);
             }
 
-            // 
             if (connInfoText != null)
             {
-                // 
                 if (NetworkServer.active)
                 {
-                    // 
                     string conn = "Server";
                     if (NetworkClient.active)
                         conn = "Host";
+                    // Display connection information for this Server/Host
                     connInfoText.text = string.Format("{0}  |  Address = {1}  |  Port = {2}", conn, Network.player.ipAddress, NetworkManager.singleton.networkPort) ;
                 }
                 else if (NetworkClient.active)
                 {
+                    // Display connection information for this client
                     connInfoText.text = string.Format("Client  |  Address = {0}  |  Port = {1}", NetworkManager.singleton.networkAddress, NetworkManager.singleton.networkPort);
                 }
             }
@@ -88,11 +80,10 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public void ServerDirect()
     {
-        // 
         networkInfoText.text = "Creating local match...";
+        // Update the connection information and start as a server
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
-        // 
         NetworkManager.singleton.StartServer();
     }
 
@@ -101,11 +92,10 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public void HostDirect()
     {
-        // 
         networkInfoText.text = "Hosting local match...";
+        // Update the connection information and start as a host
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
-        // 
         NetworkManager.singleton.StartHost();
     }
 
@@ -114,19 +104,18 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public void JoinDirect()
     {
-        // 
+        // Check if the player is already joining a game
         if (!joining)
         {
-            // 
             joining = true;
-            // 
+            // Check if an address was provided
             string address = GameObject.Find("AddressField").GetComponent<InputField>().text;
             if (string.IsNullOrEmpty(address))
                 address = "localhost";
+            networkInfoText.text = string.Format("Joining match on {0}...", address);
+            // Update the connection information and join as a client
             NetworkManager.singleton.networkAddress = address;
             //NetworkManager.singleton.networkPort = 7777;
-            networkInfoText.text = string.Format("Joining match on {0}...", address);
-            // 
             NetworkManager.singleton.StartClient();
         }
     }
@@ -151,15 +140,17 @@ public class NetworkManager_Custom : NetworkManager
     /// <summary>
     ///     Sets up the UI based on the loaded scene
     /// </summary>
+    /// <param name="level">Level number</param>
     void OnLevelWasLoaded(int level)
     {
-        // 
-        if (level == 0)
+        if (NetworkManager.singleton.offlineScene.Equals(Application.loadedLevelName))
         {
+            // Set menu UI if the current level is the offline scene
             StartCoroutine(SetupMenuSceneUI());
         }
         else
         {
+            // Set up the game UI otherwise
             SetupGameSceneUI();
         }
     }
@@ -171,10 +162,9 @@ public class NetworkManager_Custom : NetworkManager
     /// <param name="conn">Connection from the client</param>
     public override void OnClientConnect(NetworkConnection conn)
     {
-        base.OnClientConnect(conn);
-
-        joining = false;
         Debug.Log("Client Connect");
+        joining = false;
+        base.OnClientConnect(conn);
     }
 
     /// <summary>
@@ -184,26 +174,15 @@ public class NetworkManager_Custom : NetworkManager
     /// <param name="conn">Connection from the client</param>
     public override void OnClientDisconnect(NetworkConnection conn)
     {
+        Debug.Log("Client Disconnect");
         if (joining)
         {
             networkInfoText.text = "Failed to join.";
             Debug.Log(conn.address + " - " + conn.hostId);
-            //if (conn.address.Trim().Equals("127.0.0.1"))
-            //    HostDirect();
         }
         joining = false;
-        Debug.Log("Client Disconnect");
-
         base.OnClientDisconnect(conn);
     }
-
-    /*public override void OnClientError(NetworkConnection conn, int errorCode)
-    {
-        base.OnClientError(conn, errorCode);
-        
-        joining = false;
-        Debug.Log("Client Error");
-    }*/
 
     /// <summary>
     ///     On server, when client joins, add player
@@ -212,10 +191,9 @@ public class NetworkManager_Custom : NetworkManager
     /// <param name="conn">Connection from the client</param>
     public override void OnServerConnect(NetworkConnection conn)
     {
-        base.OnServerConnect(conn);
-
-        joining = false;
         Debug.Log("Server Connect");
+        joining = false;
+        base.OnServerConnect(conn);
     }
 
     /// <summary>
@@ -225,40 +203,10 @@ public class NetworkManager_Custom : NetworkManager
     /// <param name="conn">Connection from the client</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        //GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        //if (ball != null)
-        //{
-        //    GameObject g = ball;
-        //    while (g.transform.parent != null)
-        //    {
-        //        g = g.transform.parent.gameObject;
-        //    }
-
-        //    CatchThrowV2 ct = g.GetComponent<CatchThrowV2>();
-        //    if (ct != null)
-        //    {
-        //        Debug.Log("Ball is going to be deleted, save it!");
-        //        ball.transform.parent = null;
-        //        ct.Drop();
-        //    }
-        //    //NetworkIdentity ni = g.GetComponent<NetworkIdentity>();
-        //    //if (ni != null && ni.isLocalPlayer)
-        //    //    g.transform.parent = null;
-        //}
-
-        base.OnServerDisconnect(conn);
-
-        joining = false;
         Debug.Log("Server Disconnect");
-    }
-    
-    /*public override void OnServerError(NetworkConnection conn, int errorCode)
-    {
-        base.OnServerError(conn, errorCode);
-        
         joining = false;
-        Debug.Log("Server Error");
-    }*/
+        base.OnServerDisconnect(conn);
+    }
 
     /// <summary>
     ///     Hook called when client is stopped
@@ -266,10 +214,9 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public override void OnStopClient()
     {
-        //base.OnStopClient();
-
-        joining = false;
         Debug.Log("Stop Client");
+        joining = false;
+        //base.OnStopClient();
     }
 
     /// <summary>
@@ -278,10 +225,9 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public override void OnStopHost()
     {
-        //base.OnStopHost();
-
-        joining = false;
         Debug.Log("Stop Host");
+        joining = false;
+        //base.OnStopHost();
     }
 
     /// <summary>
@@ -290,10 +236,9 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public override void OnStopServer()
     {
-        base.OnStopServer();
-
-        joining = false;
         Debug.Log("Stop Server");
+        joining = false;
+        base.OnStopServer();
     }
 
     /// <summary>

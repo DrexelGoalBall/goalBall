@@ -3,38 +3,39 @@ using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
+
 /// <summary>
 ///     Synchronizes the position of the player over the network
 /// </summary>
 [NetworkSettings (channel = 0, sendInterval = 0.01f)]
 public class Player_SyncPosition : NetworkBehaviour 
 {
-    // 
-	[SyncVar (hook = "SyncPositionValues")]
-	private Vector3 syncPos;
+    // Position vector to sync clients with from server
+	[SyncVar (hook = "SyncPositionValues")] private Vector3 syncPos;
 
-    // 
-	[SerializeField] Transform myTransform;
-	
-    // 
+    // Current transformation values
+	[SerializeField] private Transform myTransform;
+
+    // The current rate at which lerping is occurring
     private float lerpRate;
+    // The default rate to lerp
 	private float normalLerpRate = 16;
+    // For historical lerping, the rate to lerp when updates are coming faster than they can be lerped to
 	private float fasterLerpRate = 27;
+    // For historical lerping, highest number of positions in list before faster rate is used
+    public int catchUpTreshold = 10;
 
-    // 
+    // The previous position of this player when last moved
 	private Vector3 lastPos;
-    // 
-	private float threshold = 0.1f;
+    // Difference between current position and last position to consider updating
+	private float positionThreshold = 0.1f;
 
-    // 
+    // Whether or not to use historical lerping
+    [SerializeField] private bool useHistoricalLerping = false;
+    // For historical lerping, list of positions necessary to lerp through
 	private List<Vector3> syncPosList = new List<Vector3>();
-    // 
-	[SerializeField] private bool useHistoricalLerping = false;
-    // 
+    // For historical lerping, distance between current position and next position in list to consider reached
 	private float closeEnough = 0.11f;
-
-    // 
-    //private Transform playerStartTransform;
 
     /// <summary>
     ///     Sets up the initial values
@@ -42,8 +43,6 @@ public class Player_SyncPosition : NetworkBehaviour
 	void Start()
 	{
 		lerpRate = normalLerpRate;
-
-        //playerStartTransform = transform;
 	}
 
     /// <summary>
@@ -69,6 +68,7 @@ public class Player_SyncPosition : NetworkBehaviour
 	{
 		if (!isLocalPlayer)
 		{
+            // Determine which lerping has been selected to be used
 			if (useHistoricalLerping)
 			{
 				HistoricalLerping();
@@ -77,8 +77,6 @@ public class Player_SyncPosition : NetworkBehaviour
 			{
 				OrdinaryLerping();
 			}
-
-			//Debug.Log(Time.deltaTime.ToString());
 		}
 	}
 
@@ -90,7 +88,6 @@ public class Player_SyncPosition : NetworkBehaviour
 	void CmdProvidePositionToServer (Vector3 pos)
 	{
 		syncPos = pos;
-		Debug.Log("Command called");
 	}
 
     /// <summary>
@@ -99,7 +96,7 @@ public class Player_SyncPosition : NetworkBehaviour
 	[ClientCallback]
 	void TransmitPosition()
 	{
-		if (isLocalPlayer && Vector3.Distance(myTransform.position, lastPos) > threshold)
+		if (isLocalPlayer && Vector3.Distance(myTransform.position, lastPos) > positionThreshold)
 		{
 			CmdProvidePositionToServer(myTransform.position);
 			lastPos = myTransform.position;
@@ -118,7 +115,7 @@ public class Player_SyncPosition : NetworkBehaviour
 	}
 
     /// <summary>
-    ///     Lerps the player by providing it the most recent position everytime
+    ///     Lerps the player by providing it the most recent position every time
     /// </summary>
 	void OrdinaryLerping()
 	{
@@ -130,20 +127,20 @@ public class Player_SyncPosition : NetworkBehaviour
     /// </summary>
 	void HistoricalLerping()
 	{
-        // 
-		if(syncPosList.Count > 0)
+        // Check if there are any positions to sync to
+		if (syncPosList.Count > 0)
 		{
-            // 
+            // Move this object toward the next position
 			myTransform.position = Vector3.Lerp(myTransform.position, syncPosList[0], Time.deltaTime * lerpRate);
 
-            // 
-			if(Vector3.Distance(myTransform.position, syncPosList[0]) < closeEnough)
+			if (Vector3.Distance(myTransform.position, syncPosList[0]) < closeEnough)
 			{
+                // Remove the position from the list when we have gotten close enough to it
 				syncPosList.RemoveAt(0);
 			}
 
-            // 
-			if(syncPosList.Count > 10)
+            // Increase the rate if necessary to catch up with position updates
+            if (syncPosList.Count > catchUpTreshold)
 			{
 				lerpRate = fasterLerpRate;
 			}
@@ -151,8 +148,6 @@ public class Player_SyncPosition : NetworkBehaviour
 			{
 				lerpRate = normalLerpRate;
 			}
-
-			//Debug.Log(syncPosList.Count.ToString());
 		}
 	}
 }

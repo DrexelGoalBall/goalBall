@@ -3,12 +3,18 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+/// <summary>
+///     Stops the action for a specific amount of time and conveys necessary information for the given type of break
+/// </summary>
 public class BreakTimer : NetworkBehaviour 
 {
+    // References to necessary objects and scripts
     public GameObject ball;
     private Referee referee;
     private GameEnd gameEnd;
 
+    // Enumeration of the different types of breaks that can occur
+    // Note: Since the BreakTimer must be attached to object at run-time, need to use enums instead of abstraction
     public enum Type
     {
         none,
@@ -20,13 +26,16 @@ public class BreakTimer : NetworkBehaviour
         foul,
     }
 
-    [SyncVar(hook = "BreakChange")]
-    public bool onBreak = false;
+    // Flag to sync clients with from server to tell when a break is occurring
+    [SyncVar(hook = "BreakChange")] public bool onBreak = false;
     
+    // The type of break that is currently taking place
     private Type currentBreakType = Type.none;
 
+    // Timer to keep track how much time is left in break
     private Timer timer;
 
+    // Length of the different types of breaks
     public int gameStartBreakLength = 0;
     public int halftimeBreakLength = 10;
     public int overtimeBreakLength = 10;
@@ -38,7 +47,9 @@ public class BreakTimer : NetworkBehaviour
     public bool debug = false;
     public Text breakText;
 
-	// Use this for initialization
+    /// <summary>
+    ///     Retrieve the necessary object and script references
+    /// </summary>
 	void Start()
     {
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
@@ -46,41 +57,56 @@ public class BreakTimer : NetworkBehaviour
 
         timer = gameObject.GetComponent<Timer>();
 	}
-	
-	// Update is called once per frame
+
+    /// <summary>
+    ///     Checks if the break has ended or displays the amount of time left on the current break
+    /// </summary>
 	void Update()
     {
         if (onBreak && (timer.isPaused() || timer.getTime() <= 0))
         {
+            // When timer runs out, break is over
             EndBreak();
         }
         else
         {
-            //if (debug && isServer)
-                breakText.text = timer.getTimeString();
+            // Display how much time is left on the break
+            breakText.text = timer.getTimeString();
         }
 	}
 
+    /// <summary>
+    ///     On the server, initiate the given type of break
+    /// </summary>
+    /// <param name="type">The type of break that is necessary to start</param>
     public void StartBreak(Type type)
     {
         if (isServer)
         {
             onBreak = true;
             currentBreakType = type;
+            // Prevent the ball from moving
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            // Start the timer
             timer.SetLengthOfTimer(GetLengthFromType(currentBreakType));
             timer.Resume();
         }
     }
 
+    /// <summary>
+    ///     On the server, end the current break
+    /// </summary>
     private void EndBreak()
     {
         if (isServer)
         {
             onBreak = false;
+            
+            // Stop the timer
             timer.Pause();
             timer.SetLengthOfTimer(0);
 
+            // Execute the necessary end of break actions for this type of break
             switch (currentBreakType)
             {
                 case Type.gameStart:
@@ -97,28 +123,37 @@ public class BreakTimer : NetworkBehaviour
                     referee.PlayPlay();
                     break;
                 case Type.gameEnd:
-                    gameEnd.ReturnToMenu();
+                    gameEnd.LeaveGame();
                     break;
                 case Type.none:
                 default:
                     break;
             }
 
+            // Allow ball to move
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
+            // Reset the break type
             currentBreakType = Type.none;
         }
     }
 
+    /// <summary>
+    ///     Allows outside scripts to check if there is a break occurring
+    /// </summary>
     public bool OnBreak()
     {
         return onBreak;
     }
 
-    private void BreakChange(bool brk)
+    /// <summary>
+    ///     On the clients, change the break flag and the ball constraints accordingly
+    /// </summary>
+    /// <param name="breakStarted">Whether the break has just started or ended</param>
+    private void BreakChange(bool breakStarted)
     {
-        if (brk)
+        if (breakStarted)
         {
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
@@ -128,9 +163,14 @@ public class BreakTimer : NetworkBehaviour
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         }
 
-        onBreak = brk;
+        onBreak = breakStarted;
     }
 
+    /// <summary>
+    ///     Retrieve the length of time for the given break type
+    /// </summary>
+    /// <param name="type">Type of break</param>
+    /// <returns>Integer amount of time in seconds</returns>
     private int GetLengthFromType(Type type)
     {
         int length = 0;

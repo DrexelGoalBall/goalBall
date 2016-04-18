@@ -8,10 +8,11 @@ using UnityEngine.UI;
 /// </summary>
 public class Player_Latency : NetworkBehaviour 
 {
-    // 
-	private NetworkClient nClient;
-    // 
+    // The client component of the current connection
+	private NetworkClient networkClient;
+    // Amount of latency currently
 	private int latency;
+    // UI Text component to display latency amount
 	private Text latencyText;
 
     /// <summary>
@@ -19,7 +20,7 @@ public class Player_Latency : NetworkBehaviour
     /// </summary>
 	public override void OnStartLocalPlayer()
 	{
-		nClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
+		networkClient = GameObject.Find("NetworkManager_Custom").GetComponent<NetworkManager>().client;
 		latencyText = GameObject.Find("LatencyText").GetComponent<Text>();
 	}
 
@@ -38,7 +39,7 @@ public class Player_Latency : NetworkBehaviour
 	{
 		if (isLocalPlayer)
 		{
-			latency = nClient.GetRTT();
+			latency = networkClient.GetRTT();
 			latencyText.text = latency.ToString();
 		}
 	}

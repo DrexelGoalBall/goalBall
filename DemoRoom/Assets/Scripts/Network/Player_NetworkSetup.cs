@@ -8,32 +8,32 @@ using UnityEngine.Networking;
 public class Player_NetworkSetup : NetworkBehaviour 
 {
     // Camera for this player
-	[SerializeField] Camera playerCamera;
+	[SerializeField] private Camera playerCamera;
     // AudioListener for this player
-	[SerializeField] AudioListener audioListener;
+	[SerializeField] private AudioListener audioListener;
 
     /// <summary>
     ///     When the local player object is set up, enable the necessary components and set its spawn position
     /// </summary>
-	public override void OnStartLocalPlayer ()
+	public override void OnStartLocalPlayer()
 	{
-        // Retrieve the movement script for this player and enable it
+        // Retrieve the various components necessary for this player
         GoalBallPlayerMovementV1 gbpm = GetComponent<GoalBallPlayerMovementV1>();
         PlayerInputController controller = GetComponent<PlayerInputController>();
         DebugSwapLayer DSL = GetComponent<DebugSwapLayer>();
         PlayerRumbleController ROC = GetComponent<PlayerRumbleController>();
 
-        //Enable all parts of Player needed for the client
+        // Enable all components for this client
         controller.enabled = true;
         playerCamera.enabled = true;
         ROC.enabled = true;
         audioListener.enabled = true;
         DSL.enabled = true;
 
-
+        // Relocate this player to there designated position
         SetSpawn(gbpm);
 
-
+        // Make sure player is on the layer affected by boundaries
         gameObject.layer = LayerMask.NameToLayer("Player");
 	}
 
@@ -74,6 +74,7 @@ public class Player_NetworkSetup : NetworkBehaviour
             teamTag = "RedPlayer";
         }
 
+        // Depending on the team, set the proper tag for this player
         GetComponent<Player_ID>().SetTeamTag(teamTag);
 
         // Move the player to the correct position and rotation

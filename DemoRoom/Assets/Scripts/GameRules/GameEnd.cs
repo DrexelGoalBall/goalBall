@@ -3,9 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
+/// <summary>
+///     Announces and displays who has won the game, allows players to exit to menu
+/// </summary>
 public class GameEnd : NetworkBehaviour
 {
-    // 
+    // Enumeration on the possible results of the game
     private enum Winner
     {
         tie,
@@ -13,35 +16,36 @@ public class GameEnd : NetworkBehaviour
         blue,
     }
 
-    // 
+    // References to necessary scripts
     private GameTimer gameTimer;
     private ScoreKeeper scoreKeeper;
     private Referee referee;
     private BreakTimer breakTimer;
 
-    // 
+    // UI Text component to update with winner
     public Text winnerText;
+    // Panel to display containing winner text and other necessary components
     public GameObject gameOverPanel;
 
-    // 
+    // The result of the game
     private Winner winner = Winner.tie;
 
-    // 
+    // Strings to display if either team wins
     public string redWins = "RED TEAM WINS!";
     public string blueWins = "BLUE TEAM WINS!";
 
-    // 
+    // Colors to change winner text for the winning team
     public Color redTeamColor = Color.red;
     public Color blueTeamColor = Color.blue;
 
-    // 
-    public string skipInput = "Throw";
+    // Input string of button to press to return to the menu
+    public string returnToMenuInput = "Throw";
 
     // 
     private bool initialized = false;
 	
     /// <summary>
-    /// Initializes all variables needed to run the script.
+    ///     Retrieve the necessary object and script references
     /// </summary>
     void Start()
     {
@@ -53,21 +57,24 @@ public class GameEnd : NetworkBehaviour
     }
 
 	/// <summary>
-	/// Displays and announces who has won the game
+	///     When the game ends, repeatedly announce who has won and allow player to exit to the menu
 	/// </summary>
 	void Update()
     {
 	    if (gameTimer.GameHasEnded())
         {
-            if (Input.GetButtonDown(skipInput))
+            if (Input.GetButtonDown(returnToMenuInput))
             {
-                ReturnToMenu();
+                // Player wants to go to the menu now
+                LeaveGame();
             }
 
             if (!initialized)
             {
+                // Start the end game break which will automatically go to the menu when it ends
                 breakTimer.StartBreak(BreakTimer.Type.gameEnd);
 
+                // Set the winner and update the UI accordingly
                 if (scoreKeeper.RedScore() > scoreKeeper.BlueScore())
                 {
                     winnerText.text = redWins;
@@ -93,10 +100,13 @@ public class GameEnd : NetworkBehaviour
             }
             else
             {
+                // Check if the referee is currently announcing the results
                 if (!referee.refereeSpeaking())
                 {
+                    // Announce that the game has ended
                     referee.PlayGameOver();
                     
+                    // Announce the winner
                     switch(winner)
                     {
                         case Winner.red:
@@ -112,16 +122,16 @@ public class GameEnd : NetworkBehaviour
                             break;
                     }
 
+                    // Announce the final scores
                     referee.PlayFinalScore();
-                    
-                    // Read red score
+                    // Red team score
                     referee.PlayRedTeam();
                     referee.ReadScore(scoreKeeper.RedScore());
-
-                    // Read blue score
+                    // Blue team score
                     referee.PlayBlueTeam();
                     referee.ReadScore(scoreKeeper.BlueScore());
 
+                    // Announce how to exit to menu
                     referee.PlayReturnToMenu();
                 }
             }
@@ -129,13 +139,22 @@ public class GameEnd : NetworkBehaviour
 	}
 
     /// <summary>
-    /// Loads the offline menu scene to exit the game.
+    ///     Exits the current networked game
     /// </summary>
-    public void ReturnToMenu()
+    public void LeaveGame()
     {
-        if (!isServer && isClient)
+        if (isServer)
         {
-            NetworkManager_Custom.singleton.StopClient();
+            // Server does not need to keep game open
+            //Application.Quit();
+        }
+        else
+        {
+            if (isClient)
+            {
+                // Client should return to the offline scene
+                NetworkManager_Custom.singleton.StopClient();
+            }
         }
     }
 }
