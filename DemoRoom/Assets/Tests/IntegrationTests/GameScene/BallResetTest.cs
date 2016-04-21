@@ -15,8 +15,6 @@ public class BallResetTest : MonoBehaviour {
 	void Awake()
 	{
 		IAssertionComponentConfigurator configurator;
-
-		
 	}
 
 	void Start()

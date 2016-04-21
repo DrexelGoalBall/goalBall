@@ -44,11 +44,11 @@ public class ScoreKeeper: NetworkBehaviour {
     {
         if (isServer)
         {
-            BlueTeamScore++;
+            ScoreBluePoint();
             Ref.PlayGoal();
-            Ref.PlayBlueTeam();
+            Ref.PlayRedTeam();
             //Ref.PlayPlay();
-            BR.resetToClosestPoint(true);
+            BR.resetToClosestPoint(false);
             if (GT.InOvertime())
             {
                 GT.ServerEndTheGame();
@@ -69,7 +69,7 @@ public class ScoreKeeper: NetworkBehaviour {
     {
         if (isServer)
         {
-            BlueTeamScore--;
+            RemoveBluePoint();
         }
 	}
 
@@ -80,11 +80,11 @@ public class ScoreKeeper: NetworkBehaviour {
     {
         if (isServer)
         {
-            RedTeamScore++;
+            ScoreRedPoint();
             Ref.PlayGoal();
-            Ref.PlayRedTeam();
+            Ref.PlayBlueTeam();
             //Ref.PlayPlay();
-            BR.resetToClosestPoint(false);
+            BR.resetToClosestPoint(true);
             if (GT.InOvertime())
             {
                 GT.ServerEndTheGame();
@@ -105,7 +105,7 @@ public class ScoreKeeper: NetworkBehaviour {
     {
         if (isServer)
         {
-            RedTeamScore--;
+            RemoveRedPoint();
         }
     }
 
@@ -144,5 +144,27 @@ public class ScoreKeeper: NetworkBehaviour {
     public int BlueScore()
     {
         return BlueTeamScore;
+    }
+
+
+// Abstracted point score functions (for use with testing to avoid isServer checks)
+    public void ScoreRedPoint()
+    {
+            RedTeamScore++;
+    }
+
+    public void ScoreBluePoint()
+    {
+            BlueTeamScore++;
+    }
+
+    public void RemoveRedPoint()
+    {
+        RedTeamScore--;
+    }
+
+    public void RemoveBluePoint()
+    {
+            BlueTeamScore--;
     }
 }
