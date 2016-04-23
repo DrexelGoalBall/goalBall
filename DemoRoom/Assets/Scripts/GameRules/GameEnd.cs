@@ -41,9 +41,15 @@ public class GameEnd : NetworkBehaviour
     // Input string of button to press to return to the menu
     public string returnToMenuInput = "Throw";
 
-    // 
+    // Flag to tell if the UI has already been initialized
     private bool initialized = false;
-	
+
+    // Timer to countdown the pause between announcements
+    private Timer timer;
+
+    // Amount of time to pause between announcements
+    public int announcementPauseLength = 5;
+
     /// <summary>
     ///     Retrieve the necessary object and script references
     /// </summary>
@@ -54,6 +60,9 @@ public class GameEnd : NetworkBehaviour
         scoreKeeper = gameController.GetComponent<ScoreKeeper>();
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         breakTimer = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
+
+        timer = gameObject.GetComponent<Timer>();
+        timer.SetLengthOfTimer(announcementPauseLength);
     }
 
 	/// <summary>
@@ -96,43 +105,40 @@ public class GameEnd : NetworkBehaviour
 
                 gameOverPanel.SetActive(true);
 
+                // Make first wave of announcements
+                GameEndAnnouncements();
+
                 initialized = true;
             }
             else
             {
                 // Check if the referee is currently announcing the results
-                if (!referee.refereeSpeaking())
+                if (referee.refereeSpeaking())
                 {
-                    // Announce that the game has ended
-                    referee.PlayGameOver();
-                    
-                    // Announce the winner
-                    switch(winner)
+                    // Make sure timer is not going while referee is talking
+                    if (!timer.isPaused())
                     {
-                        case Winner.red:
-                            referee.PlayRedTeam();
-                            referee.PlayWins();
-                            break;
-                        case Winner.blue:
-                            referee.PlayBlueTeam();
-                            referee.PlayWins();
-                            break;
-                        case Winner.tie:
-                        default:
-                            break;
+                        timer.Pause();
+                        timer.Reset();
                     }
-
-                    // Announce the final scores
-                    referee.PlayFinalScore();
-                    // Red team score
-                    referee.PlayRedTeam();
-                    referee.ReadScore(scoreKeeper.RedScore());
-                    // Blue team score
-                    referee.PlayBlueTeam();
-                    referee.ReadScore(scoreKeeper.BlueScore());
-
-                    // Announce how to exit to menu
-                    referee.PlayReturnToMenu();
+                }
+                else
+                {
+                    if (timer.getTime() <= 0)
+                    {
+                        // Time's up, start next group of announcements
+                        timer.Pause();
+                        timer.Reset();
+                        GameEndAnnouncements();
+                    }
+                    else
+                    {
+                        // Start the timer for the pause between announcements
+                        if (timer.isPaused())
+                        {
+                            timer.Resume();
+                        }
+                    }
                 }
             }
         }
@@ -156,5 +162,42 @@ public class GameEnd : NetworkBehaviour
                 NetworkManager_Custom.singleton.StopClient();
             }
         }
+    }
+
+    /// <summary>
+    ///     Make the necessary end of game announcements
+    /// </summary>
+    public void GameEndAnnouncements()
+    {
+        // Announce that the game has ended
+        referee.PlayGameOver();
+
+        // Announce the winner
+        switch (winner)
+        {
+            case Winner.red:
+                referee.PlayRedTeam();
+                referee.PlayWins();
+                break;
+            case Winner.blue:
+                referee.PlayBlueTeam();
+                referee.PlayWins();
+                break;
+            case Winner.tie:
+            default:
+                break;
+        }
+
+        // Announce the final scores
+        referee.PlayFinalScore();
+        // Red team score
+        referee.PlayRedTeam();
+        referee.ReadScore(scoreKeeper.RedScore());
+        // Blue team score
+        referee.PlayBlueTeam();
+        referee.ReadScore(scoreKeeper.BlueScore());
+
+        // Announce how to exit to menu
+        referee.PlayReturnToMenu();
     }
 }
