@@ -23,9 +23,11 @@ public class GameTimer : NetworkBehaviour
     bool fifteenSecondsCheck = false;
 
     [SyncVar]
+    bool gameStarted = false;
+    [SyncVar]
     bool gameGoing = false;
     [SyncVar(hook = "ClientGameEnd")]
-    bool endGame = false;
+    bool gameEnded = false;
 
     //Other Objects
     private Referee referee;
@@ -53,10 +55,10 @@ public class GameTimer : NetworkBehaviour
     /// </summary>
     void Update () 
     {
-        if (endGame) 
-            return;
-
         timeText.text = timer.getTimeString();
+
+        if (!gameStarted || gameEnded)
+            return;
 
         if (isServer)
         {
@@ -66,9 +68,14 @@ public class GameTimer : NetworkBehaviour
             }
             else
             {
+                if (isServer && Input.GetKeyDown(KeyCode.Alpha0))
+                {
+                    timer.SetTime(3);
+                }
+
                 if (!gameGoing)
                 {
-                    StartGame();
+                    ResumeGame();
                 }
 
                 if (timer.getTime() <= 0)
@@ -98,7 +105,12 @@ public class GameTimer : NetworkBehaviour
             {
                 if (overtime)
                 {
-                    // SHOOTOUT
+                    // EXTRA THROWS SHOULD START HERE
+
+                    // For now though, end the game
+                    StopGame();
+                    ServerEndTheGame();
+                    return;
                 }
                 else
                 {
@@ -150,25 +162,17 @@ public class GameTimer : NetworkBehaviour
             referee.ReadScore(scoreKeeper.BlueScore());
         }
 
+        fifteenSecondsCheck = false;
         timer.Reset();
     }
 
     /// <summary>
-    /// Starts the Timer.
+    /// Check if game has begun.
     /// </summary>
-    public void StartGame()
+    /// <returns></returns>
+    public bool GameHasStarted()
     {
-        timer.Resume();
-        gameGoing = true;
-    }
-
-    /// <summary>
-    /// Stops the Timer.
-    /// </summary>
-    public void StopGame()
-    {
-        timer.Pause();
-        gameGoing = false;
+        return gameStarted;
     }
 
     /// <summary>
@@ -195,17 +199,48 @@ public class GameTimer : NetworkBehaviour
     /// <returns></returns>
     public bool GameHasEnded()
     {
-        return endGame;
+        return gameEnded;
     }
 
     /// <summary>
-    /// The game is over so let all the clients know
+    /// Initiates the game and starts the timer.
+    /// </summary>
+    public void StartGame()
+    {
+        if (isServer)
+        {
+            ResumeGame();
+            gameStarted = true;
+            breakTimer.StartBreak(BreakTimer.Type.gameStart);
+        }
+    }
+
+    /// <summary>
+    /// Starts the Timer.
+    /// </summary>
+    public void ResumeGame()
+    {
+        timer.Resume();
+        gameGoing = true;
+    }
+
+    /// <summary>
+    /// Stops the Timer.
+    /// </summary>
+    public void StopGame()
+    {
+        timer.Pause();
+        gameGoing = false;
+    }
+
+    /// <summary>
+    /// The game is over so let all the clients know.
     /// </summary>
     public void ServerEndTheGame()
     {
         if (isServer)
         {
-            endGame = true;
+            gameEnded = true;
         }
     }
 
@@ -214,6 +249,6 @@ public class GameTimer : NetworkBehaviour
     /// </summary>
     public void ClientGameEnd(bool end)
     {
-        endGame = end;
+        gameEnded = end;
     }
 }

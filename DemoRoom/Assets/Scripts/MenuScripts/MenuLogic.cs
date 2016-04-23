@@ -21,7 +21,7 @@ namespace MenuTools
 		public string VerticalButton = "Vertical";
 
 		public string SubmitButton = "Submit"; // Keyboard
-		public string SubmitButtonAlt = "Catch"; // Controller
+		public string SubmitButtonAlt = "Throw"; // Controller
 
 		public string CancelButton; // For Later Use?
 

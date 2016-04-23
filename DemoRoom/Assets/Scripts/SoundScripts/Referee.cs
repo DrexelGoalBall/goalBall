@@ -53,12 +53,12 @@ public class Referee : NetworkBehaviour
     void Update()
     {
         // Debug controls to test audio in multiple builds
-        if (Input.GetKeyDown(KeyCode.Keypad7))
-            AS.panStereo = -1;
-        if (Input.GetKeyDown(KeyCode.Keypad8))
-            AS.panStereo = 0;
-        if (Input.GetKeyDown(KeyCode.Keypad9))
-            AS.panStereo = 1;
+        //if (Input.GetKeyDown(KeyCode.Keypad7))
+        //    AS.panStereo = -1;
+        //if (Input.GetKeyDown(KeyCode.Keypad8))
+        //    AS.panStereo = 0;
+        //if (Input.GetKeyDown(KeyCode.Keypad9))
+        //    AS.panStereo = 1;
         
         // Check if audio is already playing
         if (!AS.isPlaying)
@@ -101,6 +101,16 @@ public class Referee : NetworkBehaviour
         if (AS.isPlaying || playlist.Count > 0) return true;
         return false;
     }
+
+    /// <summary>
+    ///     On the server, add this clip name to the queue and local playlist
+    /// </summary>
+    /// <param name="clipName">Name of clip to add to the queue</param>
+    private void AddClipStringToQueue(string clipName)
+    {
+        queue.Add(clipName);
+        playlist.Add(clipName);
+    }
     
     //Things referee can say
     /// <summary>
@@ -109,7 +119,7 @@ public class Referee : NetworkBehaviour
     public void PlayFifteenSeconds()
     {
         if (isServer)
-            queue.Add("FifteenSeconds");
+            AddClipStringToQueue("FifteenSeconds");
     }
 
     /// <summary>
@@ -118,7 +128,7 @@ public class Referee : NetworkBehaviour
     public void PlayBallOver()
     {
         if (isServer)
-            queue.Add("BallOver");
+            AddClipStringToQueue("BallOver");
     }
 
     /// <summary>
@@ -127,7 +137,7 @@ public class Referee : NetworkBehaviour
     public void PlayBlockedOut()
     {
         if (isServer)
-            queue.Add("BlockedOut");
+            AddClipStringToQueue("BlockedOut");
     }
 
     /// <summary>
@@ -136,7 +146,7 @@ public class Referee : NetworkBehaviour
     public void PlayCenter()
     {
         if (isServer)
-            queue.Add("Center");
+            AddClipStringToQueue("Center");
     }
 
     /// <summary>
@@ -145,7 +155,7 @@ public class Referee : NetworkBehaviour
     public void PlayDeadBall()
     {
         if (isServer)
-            queue.Add("DeadBall");
+            AddClipStringToQueue("DeadBall");
     }
 
     /// <summary>
@@ -154,7 +164,7 @@ public class Referee : NetworkBehaviour
     public void PlayExtraThrows()
     {
         if (isServer)
-            queue.Add("ExtraThrows");
+            AddClipStringToQueue("ExtraThrows");
     }
 
     /// <summary>
@@ -163,7 +173,7 @@ public class Referee : NetworkBehaviour
     public void PlayGame()
     {
         if (isServer)
-            queue.Add("Game");
+            AddClipStringToQueue("Game");
     }
 
     /// <summary>
@@ -172,7 +182,7 @@ public class Referee : NetworkBehaviour
     public void PlayHalfTime()
     {
         if (isServer)
-            queue.Add("HalfTime");
+            AddClipStringToQueue("HalfTime");
     }
 
     /// <summary>
@@ -181,7 +191,7 @@ public class Referee : NetworkBehaviour
     public void PlayLineOut()
     {
         if (isServer)
-            queue.Add("LineOut");
+            AddClipStringToQueue("LineOut");
     }
 
     /// <summary>
@@ -190,7 +200,7 @@ public class Referee : NetworkBehaviour
     public void PlayOfficialTimeOut()
     {
         if (isServer)
-            queue.Add("OfficialTimeOut");
+            AddClipStringToQueue("OfficialTimeOut");
     }
 
     /// <summary>
@@ -199,7 +209,7 @@ public class Referee : NetworkBehaviour
     public void PlayOut()
     {
         if (isServer)
-            queue.Add("Out");
+            AddClipStringToQueue("Out");
     }
 
     /// <summary>
@@ -208,7 +218,7 @@ public class Referee : NetworkBehaviour
     public void PlayOvertime()
     {
         if (isServer)
-            queue.Add("Overtime");
+            AddClipStringToQueue("Overtime");
     }
 
     /// <summary>
@@ -217,7 +227,7 @@ public class Referee : NetworkBehaviour
     public void PlayPenaltyDeclined()
     {
         if (isServer)
-            queue.Add("PenaltyDeclined");
+            AddClipStringToQueue("PenaltyDeclined");
     }
 
     /// <summary>
@@ -226,7 +236,7 @@ public class Referee : NetworkBehaviour
     public void PlayPersonalPenalty()
     {
         if (isServer)
-            queue.Add("PersonalPenalty");
+            AddClipStringToQueue("PersonalPenalty");
     }
 
     /// <summary>
@@ -235,7 +245,7 @@ public class Referee : NetworkBehaviour
     public void PlayPlay()
     {
         if (isServer)
-            queue.Add("Play");
+            AddClipStringToQueue("Play");
     }
 
     /// <summary>
@@ -244,7 +254,7 @@ public class Referee : NetworkBehaviour
     public void PlayQuietPlease()
     {
         if (isServer)
-            queue.Add("QuietPlease");
+            AddClipStringToQueue("QuietPlease");
     }
 
     /// <summary>
@@ -253,7 +263,7 @@ public class Referee : NetworkBehaviour
     public void PlayTime()
     {
         if (isServer)
-            queue.Add("Time");
+            AddClipStringToQueue("Time");
     }
 
     /// <summary>
@@ -262,7 +272,7 @@ public class Referee : NetworkBehaviour
     public void PlayTimeOut()
     {
         if (isServer)
-            queue.Add("TimeOut");
+            AddClipStringToQueue("TimeOut");
     }
 
     /// <summary>
@@ -271,7 +281,7 @@ public class Referee : NetworkBehaviour
     public void PlayRedTeam()
     {
         if (isServer)
-            queue.Add("RedTeam");
+            AddClipStringToQueue("RedTeam");
     }
 
     /// <summary>
@@ -280,7 +290,7 @@ public class Referee : NetworkBehaviour
     public void PlayBlueTeam()
     {
         if (isServer)
-            queue.Add("BlueTeam");
+            AddClipStringToQueue("BlueTeam");
     }
 
     /// <summary>
@@ -289,7 +299,7 @@ public class Referee : NetworkBehaviour
     public void PlayGoal()
     {
         if (isServer)
-            queue.Add("Goal");
+            AddClipStringToQueue("Goal");
     }
 
     /// <summary>
@@ -298,7 +308,7 @@ public class Referee : NetworkBehaviour
     public void PlayFoul()
     {
         if (isServer)
-            queue.Add("Foul");
+            AddClipStringToQueue("Foul");
     }
 
     /// <summary>
@@ -307,7 +317,7 @@ public class Referee : NetworkBehaviour
     public void PlayGameOver()
     {
         if (isServer)
-            queue.Add("GameOver");
+            AddClipStringToQueue("GameOver");
     }
 
     /// <summary>
@@ -316,7 +326,7 @@ public class Referee : NetworkBehaviour
     public void PlayWins()
     {
         if (isServer)
-            queue.Add("Wins");
+            AddClipStringToQueue("Wins");
     }
 
     /// <summary>
@@ -325,7 +335,7 @@ public class Referee : NetworkBehaviour
     public void PlayFinalScore()
     {
         if (isServer)
-            queue.Add("FinalScore");
+            AddClipStringToQueue("FinalScore");
     }
 
     /// <summary>
@@ -334,7 +344,7 @@ public class Referee : NetworkBehaviour
     public void PlayReturnToMenu()
     {
         if (isServer)
-            queue.Add("ReturnToMenu");
+            AddClipStringToQueue("ReturnToMenu");
     }
 
     /// <summary>
@@ -385,24 +395,24 @@ public class Referee : NetworkBehaviour
     //       print("ONES: " + ones);
             if (tens > 10)
             {
-                    queue.Add(numMap[tens]);    
+                    AddClipStringToQueue(numMap[tens]);    
             }
             
             if (tens == 10 && ones != 0) // Tens are different because english is a beautiful language
             {
                 if (ones == 1 || ones == 2) // Special cases
                 {
-                     queue.Add(numMap[ones + 10]);
+                     AddClipStringToQueue(numMap[ones + 10]);
                 }
                 else
                 {
-                    queue.Add(numMap[ones]);
-                    queue.Add("Teen");
+                    AddClipStringToQueue(numMap[ones]);
+                    AddClipStringToQueue("Teen");
                 }
             }
             else if (tens == 0 || ones != 0) // Only use zero if tens is zero
             {
-                queue.Add(numMap[ones]);
+                AddClipStringToQueue(numMap[ones]);
             }
         }
 

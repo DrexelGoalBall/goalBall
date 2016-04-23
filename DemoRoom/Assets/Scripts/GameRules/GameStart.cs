@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
+using System.Linq;
 
 /// <summary>
 /// This script starts up the game and activates everything that needs to be activated for a game to start.
 /// </summary>
-public class GameStart : MonoBehaviour {
+public class GameStart : NetworkBehaviour
+{
     //Scripts
     private CoinFlip CF;
 
@@ -12,17 +15,11 @@ public class GameStart : MonoBehaviour {
     private BallReset BR;
     private Referee Ref;
     private GameTimer GT;
-    private BreakTimer BT;
 
     //Ball
     public GameObject ball;
 
-    //Values
-    int rValue = 0;
-    int bValue = 1;
-
     //Checks
-    bool check = true;
     bool setupDone = false;
 
     /// <summary>
@@ -33,10 +30,8 @@ public class GameStart : MonoBehaviour {
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
-        BT = GameObject.Find("BreakTimer").GetComponent<BreakTimer>();
         Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
-        Ref.PlayQuietPlease();
-
+        
         CF = new CoinFlip();
         if (CF.Flip())
         {
@@ -44,10 +39,6 @@ public class GameStart : MonoBehaviour {
             ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.blue);
             // Give the ball to the red team
             BR.placeBallRSC();
-            Ref.PlayRedTeam();
-            Ref.PlayCenter();
-            //Ref.PlayPlay();
-            BT.StartBreak(BreakTimer.Type.gameStart);
         }
         else
         {
@@ -55,11 +46,9 @@ public class GameStart : MonoBehaviour {
             ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.red);
             // Give the ball to the blue team
             BR.placeBallBSC();
-            Ref.PlayBlueTeam();
-            Ref.PlayCenter();
-            //Ref.PlayPlay();
-            BT.StartBreak(BreakTimer.Type.gameStart);
         }
+        Ref.PlayQuietPlease();
+
         setupDone = true;
     }
 
@@ -68,10 +57,28 @@ public class GameStart : MonoBehaviour {
     /// </summary>
     void Update()
     {
-        if (!Ref.refereeSpeaking() && check && setupDone)
+        if (isServer && !GT.GameHasStarted() && setupDone)
         {
-            GT.StartGame();
-            check = false;
+            // Allow server to start the game
+            if (Input.GetButtonDown("Throw"))
+            {
+                GT.StartGame();
+                return;
+            }
+
+            GameObject[] redPlayers = GameObject.FindGameObjectsWithTag("RedPlayer");
+            GameObject[] bluePlayers = GameObject.FindGameObjectsWithTag("BluePlayer");
+            GameObject[] players = redPlayers.Concat(bluePlayers).ToArray();
+
+            // Check if any of the players want to start the game
+            foreach (GameObject player in players)
+            {
+                if (player.GetComponent<Player_Ready>().isReady())
+                {
+                    GT.StartGame();
+                    return;
+                }
+            }
         }
     }
 }

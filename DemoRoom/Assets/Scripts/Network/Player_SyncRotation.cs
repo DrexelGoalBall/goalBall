@@ -50,7 +50,10 @@ public class Player_SyncRotation : NetworkBehaviour
     /// </summary>
 	void FixedUpdate()
 	{
-		TransmitRotations();
+        if (isClient)
+        {
+            TransmitRotations();
+        }
 	}
 
     /// <summary>

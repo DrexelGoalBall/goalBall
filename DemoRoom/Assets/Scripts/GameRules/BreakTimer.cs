@@ -39,7 +39,7 @@ public class BreakTimer : NetworkBehaviour
     public int gameStartBreakLength = 0;
     public int halftimeBreakLength = 10;
     public int overtimeBreakLength = 10;
-    public int gameEndBreakLength = 33;
+    public int gameEndBreakLength = 43;
     public int goalBreakLength = 2;
     public int foulBreakLength = 2;
 
@@ -109,14 +109,15 @@ public class BreakTimer : NetworkBehaviour
             // Execute the necessary end of break actions for this type of break
             switch (currentBreakType)
             {
-                case Type.gameStart:
                 case Type.goal:
                 case Type.foul:
                     referee.PlayPlay();
                     break;
+                case Type.gameStart:
                 case Type.halftime:
                 case Type.overtime:
-                    if (ball.GetComponent<Possession>().HasPossessionOfBall() == Possession.Team.red)
+                    Possession.Team poss = ball.GetComponent<Possession>().HasPossessionOfBall();
+                    if (poss == Possession.Team.red)
                         referee.PlayRedTeam();
                     else
                         referee.PlayBlueTeam();
