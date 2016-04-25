@@ -68,11 +68,6 @@ public class GameTimer : NetworkBehaviour
             }
             else
             {
-                if (isServer && Input.GetKeyDown(KeyCode.Alpha0))
-                {
-                    timer.SetTime(3);
-                }
-
                 if (!gameGoing)
                 {
                     ResumeGame();
