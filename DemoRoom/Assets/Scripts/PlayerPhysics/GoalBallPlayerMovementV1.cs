@@ -47,27 +47,24 @@ public class GoalBallPlayerMovementV1 : NetworkBehaviour
     }
 
 	/// <summary>
-	/// Gets the Horizontal and Vertical movement axis and gets their values.
-	/// Then this function increases the velocity of the player in that direction.
+	/// Increases the velocity of the player by the provided values.
 	/// </summary>
 	/// <param name="Horizontal"></param>
 	/// <param name="Vertical"></param>
-	public void Move (string Horizontal, string Vertical)
+	public void Move (float Horizontal, float Vertical)
 	{
-		float hinput = Input.GetAxis(Horizontal);
-		float vinput = Input.GetAxis(Vertical);
-        if (Mathf.Abs(hinput) + Mathf.Abs(vinput) > .1)
+        if (Mathf.Abs(Horizontal) + Mathf.Abs(Vertical) > .1)
         {
             goBack = false;
         }
 
             if (!horizontalEnabled)
 		{
-			RB.velocity = (gameObject.transform.up * vinput * slowSpeed);
+			RB.velocity = (gameObject.transform.up * Vertical * slowSpeed);
 		}
 		else
 		{
-			RB.velocity = (gameObject.transform.right * hinput * speed) + (gameObject.transform.forward * vinput * speed);
+			RB.velocity = (gameObject.transform.right * Horizontal * speed) + (gameObject.transform.forward * Vertical * speed);
 		}
 	}
 

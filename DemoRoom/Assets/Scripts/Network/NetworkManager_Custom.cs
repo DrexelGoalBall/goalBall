@@ -26,6 +26,9 @@ public class NetworkManager_Custom : NetworkManager
     public int teamIndex = 0, positionIndex = 0;
     public string team = "", position = "";
 
+    // Tag string to check for server setup info object
+    public string serverSetupInfoTag = "ServerSetupInfo";
+
     /// <summary>
     ///     When started, update the UI for the loaded scene and sets the maximum allowed connections
     /// </summary>
@@ -71,6 +74,20 @@ public class NetworkManager_Custom : NetworkManager
                     // Display connection information for this client
                     connInfoText.text = string.Format("Client  |  Address = {0}  |  Port = {1}", NetworkManager.singleton.networkAddress, NetworkManager.singleton.networkPort);
                 }
+            }
+        }
+        else
+        {
+            // Determine if this instance is for a server
+            GameObject serverSetupInfo = GameObject.FindGameObjectWithTag(serverSetupInfoTag);
+            if (serverSetupInfo != null)
+            {
+                // Get the port to create the match on
+                NetworkManager.singleton.networkPort = serverSetupInfo.GetComponent<ServerSetupInfo>().portNumber;
+                // Remove the server setup info object as it has served its purpose
+                //GameObject.Destroy(serverInfo);
+                // Start the game
+                ServerDirect();
             }
         }
     }

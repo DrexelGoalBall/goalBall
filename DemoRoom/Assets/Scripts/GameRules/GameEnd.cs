@@ -39,7 +39,7 @@ public class GameEnd : NetworkBehaviour
     public Color blueTeamColor = Color.blue;
 
     // Input string of button to press to return to the menu
-    public string returnToMenuInput = "Throw";
+    public string returnToMenuInput = "Submit";
 
     // Flag to tell if the UI has already been initialized
     private bool initialized = false;
@@ -72,7 +72,7 @@ public class GameEnd : NetworkBehaviour
     {
 	    if (gameTimer.GameHasEnded())
         {
-            if (Input.GetButtonDown(returnToMenuInput))
+            if (InputPlayers.player0.GetButtonDown(returnToMenuInput))
             {
                 // Player wants to go to the menu now
                 LeaveGame();

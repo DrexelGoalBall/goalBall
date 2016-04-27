@@ -86,27 +86,23 @@ public class CatchThrowV2 : NetworkBehaviour {
     #endregion
 
     /// <summary>
-    /// Controls the Aim of the player based on the horizontalAim and verticalAim parameters.
+    /// Changes where the player is looking based on the provided values.
     /// </summary>
-    /// <param name="horizontalAim"></param>
-    /// <param name="verticalAim"></param>
-    public void Aim(string horizontalAim, string verticalAim)
+    /// <param name="Horizontal"></param>
+    /// <param name="Vertical"></param>
+    public void Aim(float Horizontal, float Vertical)
     {
         if (ball == null)
             ball = GameObject.FindGameObjectWithTag("Ball");
 
-        //Get controller input
-        float xAim = Input.GetAxis(horizontalAim);
-        float yAim = Input.GetAxis(verticalAim);
-
         if (stiff)
         {
-            stiffAim(xAim, yAim);
-        } else
+            stiffAim(Horizontal, Vertical);
+        } 
+        else
         {
-            FPSAim(xAim, yAim);
+            FPSAim(Horizontal, Vertical);
         }
-
     }
 
     /// <summary>

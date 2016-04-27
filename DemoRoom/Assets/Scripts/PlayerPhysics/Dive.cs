@@ -12,7 +12,6 @@ public class Dive : NetworkBehaviour {
 	private int diveCount;
 
     public float diveSpeed = 10f;
-    public string diveCommand = "Dive";
     public float ballSlowdown = .333f;
     private GoalBallPlayerMovementV1 GBPM;
 
@@ -72,12 +71,10 @@ public class Dive : NetworkBehaviour {
     /// <summary>
     /// Activates a dive action to occur.
     /// </summary>
-	public void DivePressed(){
-        if (Input.GetButtonDown(diveCommand))
-        {
-            if (!diveGo)
-                diveGo = true;
-        }
+	public void DivePressed()
+    {
+        if (!diveGo)
+            diveGo = true;
     }
 
     /// <summary>

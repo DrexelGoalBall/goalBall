@@ -11,14 +11,14 @@ public class Player_Ready : NetworkBehaviour
     [SyncVar] private bool ready = false;
     
     // Button user should press to ready up
-    public string readyButton = "Throw";
+    public string readyButton = "Submit";
 
 	/// <summary>
 	///     Checks for users input to ready/unready
 	/// </summary>
 	void Update()
     {
-        if (Input.GetButtonDown(readyButton))
+        if (InputPlayers.player0.GetButtonDown(readyButton))
         {
             CmdReadyUp(!ready);
         }

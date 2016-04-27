@@ -17,11 +17,10 @@ namespace MenuTools
 
 		private int HOLDLIMIT = 30; // How many frames button must be held to run function
 
-		public string HorizontalButton = "Horizontal";
-		public string VerticalButton = "Vertical";
+		public string HorizontalButton = "Move Horizontal";
+		public string VerticalButton = "Move Vertical";
 
-		public string SubmitButton = "Submit"; // Keyboard
-		public string SubmitButtonAlt = "Throw"; // Controller
+		public string SubmitButton = "Submit";
 
 		public string CancelButton; // For Later Use?
 
@@ -66,12 +65,12 @@ namespace MenuTools
         /// <param name="down">Defined Down function</param>
 		protected void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down)
 		{
-			if (Input.GetButtonUp(HorizontalButton))
+            if (InputPlayers.player0.GetButtonUp(HorizontalButton))
 			{
 				horiz = 0;
 				hasSounded = false;
 			}
-			if (Input.GetButtonUp(VerticalButton))
+            if (InputPlayers.player0.GetButtonUp(VerticalButton))
 			{
 				vert = 0;
 				hasSounded = false;
@@ -104,10 +103,10 @@ namespace MenuTools
 				}
 			}
 
-			float horizonDir = Input.GetAxis(HorizontalButton);
-			float verticDir = Input.GetAxis(VerticalButton);
+            float horizonDir = InputPlayers.player0.GetAxis(HorizontalButton);
+            float verticDir = InputPlayers.player0.GetAxis(VerticalButton);
 
-			if (Input.GetButtonDown(SubmitButton) || Input.GetButtonDown(SubmitButtonAlt))
+            if (InputPlayers.player0.GetButtonDown(SubmitButton))
 			{
 				if (horizonDir > 0) // Right
 				{

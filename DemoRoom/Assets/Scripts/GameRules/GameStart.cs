@@ -22,6 +22,9 @@ public class GameStart : NetworkBehaviour
     //Checks
     bool setupDone = false;
 
+    // Input that server change start the game with
+    public string serverStartGameInput = "Submit";
+
     /// <summary>
     /// Initializes all variables needed to run the script.
     /// </summary>
@@ -60,7 +63,7 @@ public class GameStart : NetworkBehaviour
         if (isServer && !GT.GameHasStarted() && setupDone)
         {
             // Allow server to start the game
-            if (Input.GetButtonDown("Throw"))
+            if (InputPlayers.player0.GetButtonDown(serverStartGameInput))
             {
                 GT.StartGame();
                 return;

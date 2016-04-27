@@ -6,16 +6,17 @@ using System.Collections;
 /// This is being done so that all player action scripts can be kept on while not having to worry about
 /// controlling other players due to network games.
 /// </summary>
-public class PlayerInputController : MonoBehaviour {
-    public string HorizontalMove = "Horizontal";
-    public string VerticalMove = "Vertical";
+public class PlayerInputController : MonoBehaviour 
+{
+    public string MoveHorizontal = "Move Horizontal";
+    public string MoveVertical = "Move Vertical";
+    public string LookHorizontal = "Look Horizontal";
+    public string LookVertical = "Look Vertical";
     public string Catch = "Catch";
     public string Throw = "Throw";
-    public string horizontalAim = "horizontalAim";
-    public string verticalAim = "verticalAim";
-    public string DiveButton = "Dive";
-    public string ResetAim = "ResetAim";
-    public string ResetPos = "ResetPos";
+    public string Dive = "Dive";
+    public string ResetAim = "Reset Aim";
+    public string ResetPosition = "Reset Position";
 
     private GoalBallPlayerMovementV1 PlayerMovement;
     private CatchThrowV2 CatchThrow;
@@ -40,31 +41,35 @@ public class PlayerInputController : MonoBehaviour {
     {
         if (gameTimer.GameIsGoing())
         {
-            PlayerMovement.Move(HorizontalMove, VerticalMove);
-            CatchThrow.Aim(horizontalAim, verticalAim);
+            PlayerMovement.Move(InputPlayers.player0.GetAxis(MoveHorizontal), InputPlayers.player0.GetAxis(MoveVertical));
+            CatchThrow.Aim(InputPlayers.player0.GetAxis(LookHorizontal), InputPlayers.player0.GetAxis(LookVertical));
 
-            if (Input.GetButtonDown(Catch))
+            if (InputPlayers.player0.GetButtonDown(Catch))
             {
                 CatchThrow.CatchBall();
             }
 
-            if (Input.GetButtonDown(Throw))
+            if (InputPlayers.player0.GetButtonDown(Throw))
             {
                 CatchThrow.ChargeBall();
             }
-            if (Input.GetButtonUp(Throw))
+
+            if (InputPlayers.player0.GetButtonUp(Throw))
             {
                 CatchThrow.ThrowBall();
             }
-            if (Input.GetButtonDown(DiveButton))
+
+            if (InputPlayers.player0.GetButtonDown(Dive))
             {
                 dive.DivePressed();
             }
-            if (Input.GetButtonDown(ResetAim))
+
+            if (InputPlayers.player0.GetButtonDown(ResetAim))
             {
                 CatchThrow.ResetAim();
             }
-            if (Input.GetButtonDown(ResetPos))
+
+            if (InputPlayers.player0.GetButtonDown(ResetPosition))
             {
                 PlayerMovement.AutoMove();
             }
