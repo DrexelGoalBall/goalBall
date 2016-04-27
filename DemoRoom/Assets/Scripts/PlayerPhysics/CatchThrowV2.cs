@@ -12,7 +12,6 @@ public class CatchThrowV2 : NetworkBehaviour {
     public GameObject ThrowDirection;
     public GameObject ball;
     public GameObject aim;
-    private Rigidbody playerRB;
 
     //Throw Options
     public float throwForce = 10f;
@@ -50,7 +49,6 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     void Start()
     {
-        playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
         initialAim = transform.localEulerAngles.y;
     }
@@ -73,8 +71,6 @@ public class CatchThrowV2 : NetworkBehaviour {
         {
             ballInRange = false;
         }
-
-        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
         if (Input.GetKeyDown(KeyCode.M))
         {

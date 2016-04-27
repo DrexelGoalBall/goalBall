@@ -12,13 +12,11 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
     public GameObject ThrowDirection;
     public GameObject ball;
     public GameObject aim;
-    private Rigidbody playerRB;
 
     //Throw Options
     public float throwForce = 10f;
     private bool ballInRange = false;
     public bool ballheld = false;
-    Vector3 Force = new Vector3(0, 0, 0);
     public float pickupDistance = 5f;
     private bool charging = false;
     private float timer = 0f;
@@ -47,7 +45,6 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
     /// </summary>
     void Start()
     {
-        playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
         initialAim = transform.localEulerAngles.y;
     }
@@ -70,8 +67,6 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
         {
             ballInRange = false;
         }
-
-        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
 
         if (Input.GetKeyDown(KeyCode.M))
         {

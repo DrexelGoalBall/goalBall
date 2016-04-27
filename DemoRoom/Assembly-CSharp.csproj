@@ -92,6 +92,13 @@
      <Compile Include="Assets\Rewired\Internal\Scripts\InputManager.cs" />
      <Compile Include="Assets\Rewired\Internal\Scripts\Misc\ExternalTools.cs" />
      <Compile Include="Assets\Rewired\Internal\Scripts\Platforms\Ouya\OuyaInputSource.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\FoulBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\GameBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\GameEndBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\GameStartBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\GoalBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\HalftimeBreak.cs" />
+     <Compile Include="Assets\Scripts\BreakScripts\OvertimeBreak.cs" />
      <Compile Include="Assets\Scripts\GameRules\BallReset.cs" />
      <Compile Include="Assets\Scripts\GameRules\BlueGoal.cs" />
      <Compile Include="Assets\Scripts\GameRules\BreakTimer.cs" />
@@ -158,17 +165,11 @@
      <None Include="Assets\Rewired\Documentation\ReleaseNotes.txt" />
      <None Include="Assets\Editor\Doxygen\Resources\BaseDoxyfile.txt" />
      <None Include="Assets\Editor\Doxygen\ReadMe.txt" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="XInputDotNetPure">
  <HintPath>C:/Users/Ryan/Documents/GitHub/goalBall/DemoRoom/Assets/Plugins/x86_64/XInputDotNetPure.dll</HintPath>

@@ -66,7 +66,7 @@ public class Fouls : NetworkBehaviour
             return;
 
         string location = ballLocation.currentArea;
-        Possession.Team possession = ballPossession.HasPossessionOfBall();
+        
         //TIMER FOUL
         if (!GT.GameIsGoing())
         {
@@ -126,7 +126,7 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(BreakTimer.Type.foul);
+        BT.StartBreak(new FoulBreak());
 
         Possession.Team possession = ballPossession.HasPossessionOfBall();
         print("Line Out");
@@ -152,7 +152,7 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(BreakTimer.Type.foul);
+        BT.StartBreak(new FoulBreak());
 
 		print("Throw Time Foul");
         REF.PlayFoul();
@@ -176,7 +176,7 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(BreakTimer.Type.foul);
+        BT.StartBreak(new FoulBreak());
 
         Possession.Team possession = ballPossession.HasPossessionOfBall();
         REF.PlayDeadBall();

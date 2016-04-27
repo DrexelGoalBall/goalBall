@@ -81,7 +81,7 @@ public class GameEnd : NetworkBehaviour
             if (!initialized)
             {
                 // Start the end game break which will automatically go to the menu when it ends
-                breakTimer.StartBreak(BreakTimer.Type.gameEnd);
+                breakTimer.StartBreak(new GameEndBreak());
 
                 // Set the winner and update the UI accordingly
                 if (scoreKeeper.RedScore() > scoreKeeper.BlueScore())
