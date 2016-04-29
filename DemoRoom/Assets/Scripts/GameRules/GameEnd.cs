@@ -72,7 +72,7 @@ public class GameEnd : NetworkBehaviour
     {
 	    if (gameTimer.GameHasEnded())
         {
-            if (InputPlayers.player0.GetButtonDown(returnToMenuInput))
+            if (InputPlayers.player0.GetAnyButtonDown())
             {
                 // Player wants to go to the menu now
                 LeaveGame();

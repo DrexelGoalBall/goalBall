@@ -18,7 +18,7 @@ public class Player_Ready : NetworkBehaviour
 	/// </summary>
 	void Update()
     {
-        if (InputPlayers.player0.GetButtonDown(readyButton))
+        if (InputPlayers.player0.GetButtonDown(readyButton) && isLocalPlayer)
         {
             CmdReadyUp(!ready);
         }
