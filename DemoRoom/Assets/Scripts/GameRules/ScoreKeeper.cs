@@ -55,7 +55,7 @@ public class ScoreKeeper: NetworkBehaviour {
             }
             else
             {
-                BT.StartBreak(BreakTimer.Type.goal);
+                BT.StartBreak(new GoalBreak());
             }
         }
         
@@ -91,7 +91,7 @@ public class ScoreKeeper: NetworkBehaviour {
             }
             else
             {
-                BT.StartBreak(BreakTimer.Type.goal);
+                BT.StartBreak(new GoalBreak());
             }
         }
         

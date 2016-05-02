@@ -12,13 +12,11 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
     public GameObject ThrowDirection;
     public GameObject ball;
     public GameObject aim;
-    private Rigidbody playerRB;
 
     //Throw Options
     public float throwForce = 10f;
     private bool ballInRange = false;
     public bool ballheld = false;
-    Vector3 Force = new Vector3(0, 0, 0);
     public float pickupDistance = 5f;
     private bool charging = false;
     private float timer = 0f;
@@ -47,7 +45,6 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
     /// </summary>
     void Start()
     {
-        playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
         initialAim = transform.localEulerAngles.y;
     }
@@ -71,8 +68,6 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
             ballInRange = false;
         }
 
-        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-
         if (Input.GetKeyDown(KeyCode.M))
         {
             if (stiff) stiff = false;
@@ -83,27 +78,23 @@ public class DEBUGCatchThrowV2 : MonoBehaviour {
     #endregion
 
     /// <summary>
-    /// Controls the Aim of the player based on the horizontalAim and verticalAim parameters.
+    /// Changes where the player is looking based on the provided values.
     /// </summary>
-    /// <param name="horizontalAim"></param>
-    /// <param name="verticalAim"></param>
-    public void Aim(string horizontalAim, string verticalAim)
+    /// <param name="Horizontal"></param>
+    /// <param name="Vertical"></param>
+    public void Aim(float Horizontal, float Vertical)
     {
         if (ball == null)
             ball = GameObject.FindGameObjectWithTag("Ball");
 
-        //Get controller input
-        float xAim = Input.GetAxis(horizontalAim);
-        float yAim = Input.GetAxis(verticalAim);
-
         if (stiff)
         {
-            stiffAim(xAim, yAim);
-        } else
-        {
-            FPSAim(xAim, yAim);
+            stiffAim(Horizontal, Vertical);
         }
-
+        else
+        {
+            FPSAim(Horizontal, Vertical);
+        }
     }
 
     /// <summary>

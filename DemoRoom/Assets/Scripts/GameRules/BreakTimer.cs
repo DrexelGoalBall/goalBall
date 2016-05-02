@@ -8,43 +8,19 @@ using UnityEngine.Networking;
 /// </summary>
 public class BreakTimer : NetworkBehaviour 
 {
+    // Type of break that is currently being taken
+    private GameBreak gameBreakType = null;
+
     // References to necessary objects and scripts
     public GameObject ball;
-    private Referee referee;
-    private GameEnd gameEnd;
-
-    // Enumeration of the different types of breaks that can occur
-    // Note: Since the BreakTimer must be attached to object at run-time, need to use enums instead of abstraction
-    public enum Type
-    {
-        none,
-        gameStart,
-        halftime,
-        overtime,
-        gameEnd,
-        goal,
-        foul,
-    }
 
     // Flag to sync clients with from server to tell when a break is occurring
     [SyncVar(hook = "BreakChange")] public bool onBreak = false;
-    
-    // The type of break that is currently taking place
-    private Type currentBreakType = Type.none;
 
     // Timer to keep track how much time is left in break
     private Timer timer;
 
-    // Length of the different types of breaks
-    public int gameStartBreakLength = 0;
-    public int halftimeBreakLength = 10;
-    public int overtimeBreakLength = 10;
-    public int gameEndBreakLength = 43;
-    public int goalBreakLength = 2;
-    public int foulBreakLength = 2;
-
-    // Debugging purposes
-    public bool debug = false;
+    // UI text to display the amount of time left for this break
     public Text breakText;
 
     /// <summary>
@@ -52,9 +28,6 @@ public class BreakTimer : NetworkBehaviour
     /// </summary>
 	void Start()
     {
-        referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
-        gameEnd = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameEnd>();
-
         timer = gameObject.GetComponent<Timer>();
 	}
 
@@ -79,16 +52,18 @@ public class BreakTimer : NetworkBehaviour
     ///     On the server, initiate the given type of break
     /// </summary>
     /// <param name="type">The type of break that is necessary to start</param>
-    public void StartBreak(Type type)
+    public void StartBreak(GameBreak type)
     {
         if (isServer)
         {
             onBreak = true;
-            currentBreakType = type;
             // Prevent the ball from moving
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            // Start the timer
-            timer.SetLengthOfTimer(GetLengthFromType(currentBreakType));
+            // Set the type of break that is happening and perform any necessary actions for it
+            gameBreakType = type;
+            gameBreakType.StartOfBreakActions();
+            timer.SetLengthOfTimer(gameBreakType.GetBreakLength());
+            // Start the countdown
             timer.Resume();
         }
     }
@@ -106,37 +81,13 @@ public class BreakTimer : NetworkBehaviour
             timer.Pause();
             timer.SetLengthOfTimer(0);
 
-            // Execute the necessary end of break actions for this type of break
-            switch (currentBreakType)
-            {
-                case Type.goal:
-                case Type.foul:
-                    referee.PlayPlay();
-                    break;
-                case Type.gameStart:
-                case Type.halftime:
-                case Type.overtime:
-                    Possession.Team poss = ball.GetComponent<Possession>().HasPossessionOfBall();
-                    if (poss == Possession.Team.red)
-                        referee.PlayRedTeam();
-                    else
-                        referee.PlayBlueTeam();
-                    referee.PlayPlay();
-                    break;
-                case Type.gameEnd:
-                    gameEnd.LeaveGame();
-                    break;
-                case Type.none:
-                default:
-                    break;
-            }
+            // Perform any necessary actions for the end of this break type
+            gameBreakType.EndOfBreakActions();
+            gameBreakType = null;
 
             // Allow ball to move
             ball.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-
-            // Reset the break type
-            currentBreakType = Type.none;
         }
     }
 
@@ -165,42 +116,5 @@ public class BreakTimer : NetworkBehaviour
         }
 
         onBreak = breakStarted;
-    }
-
-    /// <summary>
-    ///     Retrieve the length of time for the given break type
-    /// </summary>
-    /// <param name="type">Type of break</param>
-    /// <returns>Integer amount of time in seconds</returns>
-    private int GetLengthFromType(Type type)
-    {
-        int length = 0;
-
-        switch (type)
-        {
-            case Type.gameStart:
-                length = gameStartBreakLength;
-                break;
-            case Type.halftime:
-                length = halftimeBreakLength;
-                break;
-            case Type.overtime:
-                length = overtimeBreakLength;
-                break;
-            case Type.gameEnd:
-                length = gameEndBreakLength;
-                break;
-            case Type.goal:
-                length = goalBreakLength;
-                break;
-            case Type.foul:
-                length = foulBreakLength;
-                break;
-            case Type.none:
-            default:
-                break;
-        }
-
-        return length;
     }
 }

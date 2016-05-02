@@ -12,7 +12,6 @@ public class CatchThrowV2 : NetworkBehaviour {
     public GameObject ThrowDirection;
     public GameObject ball;
     public GameObject aim;
-    private Rigidbody playerRB;
 
     //Throw Options
     public float throwForce = 10f;
@@ -50,7 +49,6 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     void Start()
     {
-        playerRB = gameObject.GetComponent<Rigidbody>();
         ball = GameObject.FindGameObjectWithTag("Ball");
         initialAim = transform.localEulerAngles.y;
     }
@@ -74,8 +72,6 @@ public class CatchThrowV2 : NetworkBehaviour {
             ballInRange = false;
         }
 
-        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
-
         if (Input.GetKeyDown(KeyCode.M))
         {
             if (stiff) stiff = false;
@@ -86,27 +82,23 @@ public class CatchThrowV2 : NetworkBehaviour {
     #endregion
 
     /// <summary>
-    /// Controls the Aim of the player based on the horizontalAim and verticalAim parameters.
+    /// Changes where the player is looking based on the provided values.
     /// </summary>
-    /// <param name="horizontalAim"></param>
-    /// <param name="verticalAim"></param>
-    public void Aim(string horizontalAim, string verticalAim)
+    /// <param name="Horizontal"></param>
+    /// <param name="Vertical"></param>
+    public void Aim(float Horizontal, float Vertical)
     {
         if (ball == null)
             ball = GameObject.FindGameObjectWithTag("Ball");
 
-        //Get controller input
-        float xAim = Input.GetAxis(horizontalAim);
-        float yAim = Input.GetAxis(verticalAim);
-
         if (stiff)
         {
-            stiffAim(xAim, yAim);
-        } else
+            stiffAim(Horizontal, Vertical);
+        } 
+        else
         {
-            FPSAim(xAim, yAim);
+            FPSAim(Horizontal, Vertical);
         }
-
     }
 
     /// <summary>

@@ -13,7 +13,6 @@ public class GameStart : NetworkBehaviour
 
     //Neccessary Components
     private BallReset BR;
-    private Referee Ref;
     private GameTimer GT;
 
     //Ball
@@ -21,6 +20,9 @@ public class GameStart : NetworkBehaviour
 
     //Checks
     bool setupDone = false;
+
+    // Input that server change start the game with
+    public string serverStartGameInput = "Submit";
 
     /// <summary>
     /// Initializes all variables needed to run the script.
@@ -30,7 +32,6 @@ public class GameStart : NetworkBehaviour
         GameObject GameController = GameObject.FindGameObjectWithTag("GameController");
         BR = GameController.GetComponent<BallReset>();
         GT = GameController.GetComponent<GameTimer>();
-        Ref = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
         
         CF = new CoinFlip();
         if (CF.Flip())
@@ -47,7 +48,6 @@ public class GameStart : NetworkBehaviour
             // Give the ball to the blue team
             BR.placeBallBSC();
         }
-        Ref.PlayQuietPlease();
 
         setupDone = true;
     }
@@ -60,7 +60,7 @@ public class GameStart : NetworkBehaviour
         if (isServer && !GT.GameHasStarted() && setupDone)
         {
             // Allow server to start the game
-            if (Input.GetButtonDown("Throw"))
+            if (InputPlayers.player0.GetButtonDown(serverStartGameInput))
             {
                 GT.StartGame();
                 return;

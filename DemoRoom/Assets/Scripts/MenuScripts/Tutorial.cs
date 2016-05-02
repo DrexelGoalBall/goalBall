@@ -8,15 +8,14 @@ using MenuTools;
 // Used to navigate and manage the tutorial menu
 public class Tutorial : MonoBehaviour 
 {
-	public string LeaveButton = "ResetPos";
-	public string AltLeaveButton = "Start";
+	public string LeaveButton = "Cancel";
 
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>
 	void Update() 
-    	{
-		if(Input.GetButtonDown(LeaveButton) || Input.GetButtonDown(AltLeaveButton))
+    {
+        if (InputPlayers.player0.GetButtonDown(LeaveButton))
 		{
 			Application.LoadLevel("MainMenu");			
 		}

@@ -11,8 +11,6 @@ public class Ball_MotionSync : NetworkBehaviour
     [SyncVar] private Vector3 syncPos;
     // Velocity vector to sync clients with from server
     [SyncVar] private Vector3 syncVel;
-    // Throw force vector to sync clients with from server
-    [SyncVar] private Vector3 throwForce;
 
     // Last position and velocity of ball on server that was sent
     private Vector3 lastPos;
@@ -40,7 +38,6 @@ public class Ball_MotionSync : NetworkBehaviour
         startTrans = transform;
         myTransform = transform;
         rigidBody = GetComponent<Rigidbody>();
-        throwForce = new Vector3(0, 0, 0);
     }
 
     /// <summary>

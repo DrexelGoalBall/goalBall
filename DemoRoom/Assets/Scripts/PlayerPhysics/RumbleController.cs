@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
+using Rewired;
 
 /// <summary>
 /// This class controls what happens when we need to make an XBOX controller Rumble
@@ -11,21 +12,46 @@ public class RumbleController : MonoBehaviour {
     private float time = 0f;
     private float lStrength = 0f;
     private float rStrength = 0f;
-	
-	// Update is called once per frame
+
+    // Update is called once per frame
     /// <summary>
     /// Controls the vibration of the player one controller.  When the above variables update it will rumble accordingly.
     /// </summary>
-	void Update ()
+    void Update()
     {
-	    if (endTime >= time)
+        foreach (Joystick joystick in InputPlayers.player0.controllers.Joysticks)
         {
-            GamePad.SetVibration(PlayerIndex.One, lStrength, rStrength);
-            time += Time.deltaTime;
+            if (!joystick.supportsVibration) continue;
+
+            if (endTime >= time)
+            {
+                VibrateForJoystickType(joystick, lStrength, rStrength);
+                time += Time.deltaTime;
+            }
+            else
+            {
+                VibrateForJoystickType(joystick, 0f, 0f);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Execute the correct vibration method for the type of joystick
+    /// </summary>
+    /// <param name="lS">The left strength of the rumble</param>
+    /// <param name="rS">the right strength of the rumble</param>
+    private void VibrateForJoystickType(Joystick joystick, float lS, float rS)
+    {
+        // Get the Dual Shock 4 Controller Extension from the Joystick
+        var ds4 = joystick.GetExtension<Rewired.ControllerExtensions.DualShock4Extension>();
+
+        if (ds4 != null)
+        {
+            ds4.SetVibration(lS, rS);
         }
         else
         {
-            GamePad.SetVibration(PlayerIndex.One, 0f, 0f);
+            joystick.SetVibration(lS, rS);
         }
     }
 

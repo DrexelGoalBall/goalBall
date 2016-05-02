@@ -68,11 +68,6 @@ public class GameTimer : NetworkBehaviour
             }
             else
             {
-                if (isServer && Input.GetKeyDown(KeyCode.Alpha0))
-                {
-                    timer.SetTime(3);
-                }
-
                 if (!gameGoing)
                 {
                     ResumeGame();
@@ -101,13 +96,15 @@ public class GameTimer : NetworkBehaviour
 
         if (half >= 2)
         {
+            // End of the second half
+
+            // Check if the score is currently tied
             if (scoreKeeper.BlueScore() == scoreKeeper.RedScore())
             {
                 if (overtime)
                 {
-                    // EXTRA THROWS SHOULD START HERE
-
-                    // For now though, end the game
+                    // End of overtime, start extra throws
+                    // For now, though, end the game
                     StopGame();
                     ServerEndTheGame();
                     return;
@@ -130,8 +127,7 @@ public class GameTimer : NetworkBehaviour
 
                     half = 1;
 
-                    breakTimer.StartBreak(BreakTimer.Type.overtime);
-                    referee.PlayOvertime();
+                    breakTimer.StartBreak(new OvertimeBreak());
                 }
             }
             else
@@ -151,15 +147,7 @@ public class GameTimer : NetworkBehaviour
             // Update what half it is
             half++;
 
-            breakTimer.StartBreak(BreakTimer.Type.halftime);
-
-            referee.PlayHalfTime();
-            // Read red score
-            referee.PlayRedTeam();
-            referee.ReadScore(scoreKeeper.RedScore());
-            // Read blue score
-            referee.PlayBlueTeam();
-            referee.ReadScore(scoreKeeper.BlueScore());
+            breakTimer.StartBreak(new HalftimeBreak());
         }
 
         fifteenSecondsCheck = false;
@@ -211,7 +199,7 @@ public class GameTimer : NetworkBehaviour
         {
             ResumeGame();
             gameStarted = true;
-            breakTimer.StartBreak(BreakTimer.Type.gameStart);
+            breakTimer.StartBreak(new GameStartBreak());
         }
     }
 
