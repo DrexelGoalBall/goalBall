@@ -192,7 +192,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     public void CatchBall()
     {
-        if (ballInRange || ballheld)
+        if (ball.transform.parent == null && (ballInRange || ballheld))
         {
             TransmitBallPickup(true);
         }
@@ -215,6 +215,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     public void ThrowBall()
     {
+        if (ball.transform.parent != gameObject.transform && ballheld) Drop(); 
         if (ballheld)
         {
             float charge = timer / maxtime;

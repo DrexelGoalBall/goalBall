@@ -8,8 +8,8 @@ public class CoinFlip : ScriptableObject {
     
 
     public float odds = .5f;
-    public int expected = 1;
-    public int actual = 0;
+    private int expected = 1;
+    private int actual = 0;
 	
    
     /// <summary>
@@ -24,6 +24,15 @@ public class CoinFlip : ScriptableObject {
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Getter for expected.
+    /// </summary>
+    /// <returns>The value of expected.</returns>
+    public int getExpected()
+    {
+        return expected;
     }
 
     /// <summary>
