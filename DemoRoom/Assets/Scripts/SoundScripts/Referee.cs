@@ -67,6 +67,11 @@ public class Referee : NetworkBehaviour
             if (playlist.Count > 0)
             {
                 // Get and play next clip
+                if (!clipDictionary[playlist[0]])
+                {
+                    playlist.RemoveAt(0);
+                    return;
+                }
                 AudioClip audio = clipDictionary[playlist[0]];
                 AS.clip = audio;
                 AS.Play();
@@ -119,7 +124,7 @@ public class Referee : NetworkBehaviour
     public void PlayFifteenSeconds()
     {
         if (isServer)
-            AddClipStringToQueue("FifteenSeconds");
+            AddClipStringToQueue("Fifteen2");
     }
 
     /// <summary>
@@ -128,7 +133,7 @@ public class Referee : NetworkBehaviour
     public void PlayBallOver()
     {
         if (isServer)
-            AddClipStringToQueue("BallOver");
+            AddClipStringToQueue("Ball_Over2");
     }
 
     /// <summary>
@@ -137,7 +142,7 @@ public class Referee : NetworkBehaviour
     public void PlayBlockedOut()
     {
         if (isServer)
-            AddClipStringToQueue("BlockedOut");
+            AddClipStringToQueue("Blocked_Out0");
     }
 
     /// <summary>
@@ -146,7 +151,7 @@ public class Referee : NetworkBehaviour
     public void PlayCenter()
     {
         if (isServer)
-            AddClipStringToQueue("Center");
+            AddClipStringToQueue("Center0");
     }
 
     /// <summary>
@@ -155,7 +160,7 @@ public class Referee : NetworkBehaviour
     public void PlayDeadBall()
     {
         if (isServer)
-            AddClipStringToQueue("DeadBall");
+            AddClipStringToQueue("Dead_Ball");
     }
 
     /// <summary>
@@ -164,7 +169,7 @@ public class Referee : NetworkBehaviour
     public void PlayExtraThrows()
     {
         if (isServer)
-            AddClipStringToQueue("ExtraThrows");
+            AddClipStringToQueue("Extra_Throws0");
     }
 
     /// <summary>
@@ -173,7 +178,7 @@ public class Referee : NetworkBehaviour
     public void PlayGame()
     {
         if (isServer)
-            AddClipStringToQueue("Game");
+            AddClipStringToQueue("Game0");
     }
 
     /// <summary>
@@ -182,7 +187,7 @@ public class Referee : NetworkBehaviour
     public void PlayHalfTime()
     {
         if (isServer)
-            AddClipStringToQueue("HalfTime");
+            AddClipStringToQueue("HalfTime0");
     }
 
     /// <summary>
@@ -191,7 +196,7 @@ public class Referee : NetworkBehaviour
     public void PlayLineOut()
     {
         if (isServer)
-            AddClipStringToQueue("LineOut");
+            AddClipStringToQueue("LineOut1");
     }
 
     /// <summary>
@@ -200,7 +205,7 @@ public class Referee : NetworkBehaviour
     public void PlayOfficialTimeOut()
     {
         if (isServer)
-            AddClipStringToQueue("OfficialTimeOut");
+            AddClipStringToQueue("TO0");
     }
 
     /// <summary>
@@ -209,7 +214,7 @@ public class Referee : NetworkBehaviour
     public void PlayOut()
     {
         if (isServer)
-            AddClipStringToQueue("Out");
+            AddClipStringToQueue("Out1");
     }
 
     /// <summary>
@@ -218,7 +223,7 @@ public class Referee : NetworkBehaviour
     public void PlayOvertime()
     {
         if (isServer)
-            AddClipStringToQueue("Overtime");
+            AddClipStringToQueue("Overtime0");
     }
 
     /// <summary>
@@ -227,7 +232,7 @@ public class Referee : NetworkBehaviour
     public void PlayPenaltyDeclined()
     {
         if (isServer)
-            AddClipStringToQueue("PenaltyDeclined");
+            AddClipStringToQueue("Penalty_Declined1");
     }
 
     /// <summary>
@@ -236,7 +241,7 @@ public class Referee : NetworkBehaviour
     public void PlayPersonalPenalty()
     {
         if (isServer)
-            AddClipStringToQueue("PersonalPenalty");
+            AddClipStringToQueue("Personal_Penalty0");
     }
 
     /// <summary>
@@ -245,7 +250,7 @@ public class Referee : NetworkBehaviour
     public void PlayPlay()
     {
         if (isServer)
-            AddClipStringToQueue("Play");
+            AddClipStringToQueue("Play1");
     }
 
     /// <summary>
@@ -254,7 +259,7 @@ public class Referee : NetworkBehaviour
     public void PlayQuietPlease()
     {
         if (isServer)
-            AddClipStringToQueue("QuietPlease");
+            AddClipStringToQueue("Quiet2");
     }
 
     /// <summary>
@@ -263,7 +268,7 @@ public class Referee : NetworkBehaviour
     public void PlayTime()
     {
         if (isServer)
-            AddClipStringToQueue("Time");
+            AddClipStringToQueue("Time0");
     }
 
     /// <summary>
@@ -272,7 +277,7 @@ public class Referee : NetworkBehaviour
     public void PlayTimeOut()
     {
         if (isServer)
-            AddClipStringToQueue("TimeOut");
+            AddClipStringToQueue("TimeOut0");
     }
 
     /// <summary>
@@ -281,7 +286,7 @@ public class Referee : NetworkBehaviour
     public void PlayRedTeam()
     {
         if (isServer)
-            AddClipStringToQueue("RedTeam");
+            AddClipStringToQueue("RedTeam1");
     }
 
     /// <summary>
@@ -290,7 +295,7 @@ public class Referee : NetworkBehaviour
     public void PlayBlueTeam()
     {
         if (isServer)
-            AddClipStringToQueue("BlueTeam");
+            AddClipStringToQueue("Blue_Team0");
     }
 
     /// <summary>
@@ -299,7 +304,7 @@ public class Referee : NetworkBehaviour
     public void PlayGoal()
     {
         if (isServer)
-            AddClipStringToQueue("Goal");
+            AddClipStringToQueue("Goal1");
     }
 
     /// <summary>
@@ -308,7 +313,7 @@ public class Referee : NetworkBehaviour
     public void PlayFoul()
     {
         if (isServer)
-            AddClipStringToQueue("Foul");
+            AddClipStringToQueue("Personal_Penalty2");
     }
 
     /// <summary>
