@@ -100,7 +100,7 @@ public class Fouls : NetworkBehaviour
         }
 
         //DEADBALL
-        if (location == RedNeutralArea || location == BlueNeutralArea)
+        if (ball.transform.parent == null && (location == RedNeutralArea || location == BlueNeutralArea))
         {
             DeadBallTimer.Resume();
 
