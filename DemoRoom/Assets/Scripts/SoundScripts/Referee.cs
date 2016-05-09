@@ -322,7 +322,7 @@ public class Referee : NetworkBehaviour
     public void PlayGameOver()
     {
         if (isServer)
-            AddClipStringToQueue("GameOver");
+            AddClipStringToQueue("GameOver0");
     }
 
     /// <summary>

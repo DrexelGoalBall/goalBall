@@ -173,23 +173,23 @@ public class GameEnd : NetworkBehaviour
         referee.PlayGameOver();
 
         // Announce the winner
-        switch (winner)
-        {
-            case Winner.red:
-                referee.PlayRedTeam();
-                referee.PlayWins();
-                break;
-            case Winner.blue:
-                referee.PlayBlueTeam();
-                referee.PlayWins();
-                break;
-            case Winner.tie:
-            default:
-                break;
-        }
+        //switch (winner)
+        //{
+        //    case Winner.red:
+        //        referee.PlayRedTeam();
+        //        referee.PlayWins();
+        //        break;
+        //    case Winner.blue:
+        //        referee.PlayBlueTeam();
+        //        referee.PlayWins();
+        //        break;
+        //    case Winner.tie:
+        //    default:
+        //        break;
+        //}
 
         // Announce the final scores
-        referee.PlayFinalScore();
+        //referee.PlayFinalScore();
         // Red team score
         referee.PlayRedTeam();
         referee.ReadScore(scoreKeeper.RedScore());
@@ -198,6 +198,6 @@ public class GameEnd : NetworkBehaviour
         referee.ReadScore(scoreKeeper.BlueScore());
 
         // Announce how to exit to menu
-        referee.PlayReturnToMenu();
+        //referee.PlayReturnToMenu();
     }
 }

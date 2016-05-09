@@ -37,14 +37,14 @@ public class GameStart : NetworkBehaviour
         if (CF.Flip())
         {
             // Red team won toss, blue will get ball next half
-            ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.blue);
+            ball.GetComponent<Possession>().SetNextHalfPossession(Possession.Team.blue);
             // Give the ball to the red team
             BR.placeBallRSC();
         }
         else
         {
             // Blue team won toss, red will get the ball next half
-            ball.GetComponent<Possession>().SetNextToGetBall(Possession.Team.red);
+            ball.GetComponent<Possession>().SetNextHalfPossession(Possession.Team.red);
             // Give the ball to the blue team
             BR.placeBallBSC();
         }

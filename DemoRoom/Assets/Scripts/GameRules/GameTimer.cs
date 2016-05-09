@@ -116,12 +116,12 @@ public class GameTimer : NetworkBehaviour
                     Possession poss = ball.GetComponent<Possession>();
                     if (new CoinFlip().Flip())
                     {
-                        poss.SetNextToGetBall(Possession.Team.blue);
+                        poss.SetNextHalfPossession(Possession.Team.blue);
                         ballReset.placeBallRSC();
                     }
                     else
                     {
-                        poss.SetNextToGetBall(Possession.Team.red);
+                        poss.SetNextHalfPossession(Possession.Team.red);
                         ballReset.placeBallBSC();
                     }
 
@@ -139,7 +139,7 @@ public class GameTimer : NetworkBehaviour
         }
         else
         {
-            if (ball.GetComponent<Possession>().GetNextToGetBall() == Possession.Team.red)
+            if (ball.GetComponent<Possession>().GetNextHalfPossession() == Possession.Team.red)
                 ballReset.placeBallRSC();
             else
                 ballReset.placeBallBSC();
