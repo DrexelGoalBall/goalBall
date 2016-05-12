@@ -126,21 +126,21 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(new FoulBreak());
+        REF.PlayLineOut();
 
         Possession.Team possession = ballPossession.HasPossessionOfBall();
-        print("Line Out");
-        REF.PlayLineOut();
         if (possession == Possession.Team.red)
         {
             REF.PlayRedTeam();
             foul(true, true);
         }
-        if (possession == Possession.Team.blue)
+        else
         {
             REF.PlayBlueTeam();
             foul(false, true);
         }
+
+        BT.StartBreak(new FoulBreak());
 	}
 
     /// <summary>
@@ -152,10 +152,8 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(new FoulBreak());
-
-		print("Throw Time Foul");
         REF.PlayFoul();
+
         if (inRedZone)
         {
             REF.PlayRedTeam();
@@ -166,6 +164,8 @@ public class Fouls : NetworkBehaviour
             REF.PlayBlueTeam();
             foul(false, false);
         }
+
+        BT.StartBreak(new FoulBreak());
     }
 
     /// <summary>
@@ -176,33 +176,34 @@ public class Fouls : NetworkBehaviour
         if (!isServer)
             return;
 
-        BT.StartBreak(new FoulBreak());
+        REF.PlayDeadBall();
 
         Possession.Team possession = ballPossession.HasPossessionOfBall();
-        REF.PlayDeadBall();
         if (possession == Possession.Team.red)
         {
             REF.PlayRedTeam();
             foul(true, false);
         }
-        if (possession == Possession.Team.blue)
+        else
         {
             REF.PlayBlueTeam();
             foul(false, false);
         }
+
+        BT.StartBreak(new FoulBreak());
     }
 
     /// <summary>
     /// Activates the move of the foul and makes the Referee call play at the end.ss
     /// </summary>
-    /// <param name="isRed"></param>
+    /// <param name="committedByRed"></param>
     /// <param name="resetToClosest">Whether to reset ball to closest position or center</param>
-	public void foul(bool isRed, bool resetToClosest)
+    private void foul(bool committedByRed, bool resetToClosest)
     {
         if (!isServer)
             return;
         
-        if (isRed)
+        if (committedByRed)
         {
             if (resetToClosest)
                 BR.resetToClosestPoint(false);
@@ -216,7 +217,5 @@ public class Fouls : NetworkBehaviour
             else
                 BR.placeBallRSC();
         }
-
-        //REF.PlayPlay();
     }
 }

@@ -9,6 +9,9 @@ public abstract class GameBreak
     // Reference for Referee script
     protected Referee referee;
 
+    // Reference to the ball GameObject
+    protected GameObject ball;
+
     // Number of seconds for the break to last
     protected int breakLength;
 
@@ -18,6 +21,7 @@ public abstract class GameBreak
     public GameBreak()
     {
         referee = GameObject.FindGameObjectWithTag("Referee").GetComponent<Referee>();
+        ball = GameObject.FindGameObjectWithTag("Ball");
     }
 
     /// <summary>

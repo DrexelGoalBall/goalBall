@@ -29,7 +29,6 @@ public class GameStartBreak : GameBreak
     /// </summary>
     public override void EndOfBreakActions()
     {
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
         if (ball.GetComponent<Possession>().HasPossessionOfBall() == Possession.Team.red)
             referee.PlayRedTeam();
         else

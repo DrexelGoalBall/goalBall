@@ -14,7 +14,7 @@ public class NetworkManager_Custom : NetworkManager
 {
     // Main Menu Components
     private bool joining = false;
-    private Text networkInfoText;
+    private Text networkStatusText;
 
     // Game Components
     private Button disconnectButton;
@@ -97,7 +97,7 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public void ServerDirect()
     {
-        networkInfoText.text = "Creating local match...";
+        UpdateStatusUI("Creating local match...");
         // Update the connection information and start as a server
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
@@ -109,7 +109,7 @@ public class NetworkManager_Custom : NetworkManager
     /// </summary>
     public void HostDirect()
     {
-        networkInfoText.text = "Hosting local match...";
+        UpdateStatusUI("Hosting local match...");
         // Update the connection information and start as a host
         NetworkManager.singleton.networkAddress = "localhost";
         //NetworkManager.singleton.networkPort = 7777;
@@ -129,7 +129,7 @@ public class NetworkManager_Custom : NetworkManager
             string address = GameObject.Find("AddressField").GetComponent<InputField>().text;
             if (string.IsNullOrEmpty(address))
                 address = "localhost";
-            networkInfoText.text = string.Format("Joining match on {0}...", address);
+            UpdateStatusUI(string.Format("Joining match on {0}...", address));
             // Update the connection information and join as a client
             NetworkManager.singleton.networkAddress = address;
             //NetworkManager.singleton.networkPort = 7777;
@@ -194,7 +194,7 @@ public class NetworkManager_Custom : NetworkManager
         Debug.Log("Client Disconnect");
         if (joining)
         {
-            networkInfoText.text = "Failed to join.";
+            UpdateStatusUI("Failed to join.");
             Debug.Log(conn.address + " - " + conn.hostId);
         }
         joining = false;
@@ -265,16 +265,32 @@ public class NetworkManager_Custom : NetworkManager
     {
         yield return new WaitForSeconds(0.3f);
 
-        networkInfoText = GameObject.Find("NetworkInfoText").GetComponent<Text>();
+        GameObject networkStatusObject = GameObject.Find("NetworkStatusText");
+        if (networkStatusObject != null)
+        {
+            networkStatusText = networkStatusObject.GetComponent<Text>();
+        }
 
-        GameObject.Find("ServerButton").GetComponent<Button>().onClick.RemoveAllListeners();
-        GameObject.Find("ServerButton").GetComponent<Button>().onClick.AddListener(ServerDirect);
+        GameObject serverButton = GameObject.Find("ServerButton");
+        if (serverButton != null)
+        {
+            serverButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            serverButton.GetComponent<Button>().onClick.AddListener(ServerDirect);
+        }
 
-        GameObject.Find("HostButton").GetComponent<Button>().onClick.RemoveAllListeners();
-        GameObject.Find("HostButton").GetComponent<Button>().onClick.AddListener(HostDirect);
+        GameObject hostButton = GameObject.Find("HostButton");
+        if (hostButton != null)
+        {
+            hostButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            hostButton.GetComponent<Button>().onClick.AddListener(HostDirect);
+        }
 
-        GameObject.Find("JoinButton").GetComponent<Button>().onClick.RemoveAllListeners();
-        GameObject.Find("JoinButton").GetComponent<Button>().onClick.AddListener(JoinDirect);
+        GameObject joinButton = GameObject.Find("JoinButton");
+        if (joinButton != null)
+        {
+            joinButton.GetComponent<Button>().onClick.RemoveAllListeners();
+            joinButton.GetComponent<Button>().onClick.AddListener(JoinDirect);
+        }
     }
 
     /// <summary>
@@ -289,5 +305,17 @@ public class NetworkManager_Custom : NetworkManager
         capacityText = GameObject.Find("Capacity").GetComponent<Text>();
 
         connInfoText = GameObject.Find("ConnectionInfo").GetComponent<Text>();
+    }
+
+    /// <summary>
+    ///     Updates the UI status element
+    /// </summary>
+    /// <param name="status">String containing the updated status</param>
+    public void UpdateStatusUI(string status)
+    {
+        if (networkStatusText != null)
+        {
+            networkStatusText.text = status;
+        }
     }
 }

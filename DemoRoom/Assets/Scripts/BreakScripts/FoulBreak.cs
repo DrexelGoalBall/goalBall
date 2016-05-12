@@ -11,7 +11,7 @@ public class FoulBreak : GameBreak
     /// </summary>
     public FoulBreak()
     {
-        breakLength = 2;
+        breakLength = 4;
     }
 
     /// <summary>
@@ -25,10 +25,14 @@ public class FoulBreak : GameBreak
 
     /// <summary>
     ///     Actions to perform when the break ends
-    ///     -- Announce that play has continued
+    ///     -- Announce who possesses the ball and that play has continued
     /// </summary>
     public override void EndOfBreakActions()
     {
+        if (ball.GetComponent<Possession>().HasPossessionOfBall() == Possession.Team.red)
+            referee.PlayRedTeam();
+        else
+            referee.PlayBlueTeam();
         referee.PlayPlay();
     }
 }
