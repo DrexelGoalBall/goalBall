@@ -40,6 +40,10 @@ public class CatchThrowV2 : NetworkBehaviour {
     [SyncVar(hook = "DropIfHolding")]
     public bool dropBall = false;
 
+	//Delaty between actions
+	private float delayMax = .1f;
+	private float delayTimer = 0f;
+
     #endregion
 
     #region basicUnityFunctions
@@ -59,6 +63,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     void Update()
     {
+		delayTimer += Time.deltaTime;
         Vector3 playerPos = gameObject.transform.position;
         Vector3 ballPos = ball.transform.position;
 
@@ -80,6 +85,20 @@ public class CatchThrowV2 : NetworkBehaviour {
 
     }
     #endregion
+
+	/// <summary>
+	/// Delays the control to prevent multiple messages being sent to the server too quickly
+	/// </summary>
+	/// <returns><c>true</c>, if control should be delayed, <c>false</c> otherwise.</returns>
+	private bool delayControl()
+	{
+		if (delayTimer > delayMax)
+		{
+			delayTimer = 0;
+			return true;
+		}
+		return false;
+	}
 
     /// <summary>
     /// Changes where the player is looking based on the provided values.
@@ -192,7 +211,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     public void CatchBall()
     {
-        if ((ball.transform.parent == null && ballInRange))
+        if (delayControl() && (ball.transform.parent == null && ballInRange))
         {
             TransmitBallPickup(true);
         }
@@ -216,7 +235,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     public void ThrowBall()
     {
         if (ball.transform.parent != gameObject.transform && ballheld) Drop(); 
-        if (ballheld)
+        if (delayControl() && ballheld)
         {
             float charge = timer / maxtime;
             if (charge > 1) charge = 1;
