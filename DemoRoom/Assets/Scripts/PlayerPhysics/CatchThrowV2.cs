@@ -192,7 +192,7 @@ public class CatchThrowV2 : NetworkBehaviour {
     /// </summary>
     public void CatchBall()
     {
-        if ((ball.transform.parent == null && ballInRange) || ballheld)
+        if ((ball.transform.parent == null && ballInRange))
         {
             TransmitBallPickup(true);
         }
