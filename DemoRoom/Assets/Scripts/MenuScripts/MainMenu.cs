@@ -12,6 +12,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	void Update() 
     {
+        PlayInstructionsAfterDelay();
 		directionalMenuLogic(Left, Right, Up, Down);
 	}
 
@@ -28,7 +29,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Right()
 	{
-		Application.LoadLevel("Networking");
+		Application.LoadLevel("NetworkingMenuBasic");
 	}
 
     /// <summary>

@@ -10,12 +10,12 @@ namespace MenuTools
 	public class MenuLogic : MonoBehaviour 
 	{
 		// Keypress trackers
-		private int horiz = 0;
-		private int vert = 0;
+		private float horiz = 0;
+		private float vert = 0;
 
 		private bool hasSounded = false; // Prevents repeating sound on button press
 
-		private int HOLDLIMIT = 10; // How many frames button must be held to run function
+		private float LIMIT = 0.9f; // How many frames button must be held to run function
 
 		public string HorizontalButton = "Move Horizontal";
 		public string VerticalButton = "Move Vertical";
@@ -45,6 +45,12 @@ namespace MenuTools
 		private Transform upBumper;
 		private Transform downBumper;
 
+        //Timer until we explain the Menu;
+        private float TimeLimit = 10;
+        private float timer = 0;
+        public bool shouldPlay = true;
+        public AudioClip Instructions;
+
 		/// <summary>
 		///     Get the AudioSource for the menu when the scene starts
 		/// </summary>
@@ -69,8 +75,21 @@ namespace MenuTools
 		/// </summary>
 		void Update() 
 		{
-			directionalMenuLogic(Left, Right, Up, Down);
+            directionalMenuLogic(Left, Right, Up, Down);
 		}
+
+        protected void PlayInstructionsAfterDelay()
+        {
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+            if (timer > TimeLimit && Instructions && shouldPlay)
+            {
+                source.clip = Instructions;
+                source.Play();
+                TimeLimit = 20;
+                shouldPlay = false;
+            }
+        }
 
 // Protected Functions
 
@@ -83,104 +102,60 @@ namespace MenuTools
 		/// <param name="down">Defined Down function</param>
 		protected void directionalMenuLogic(LeftFunc left, RightFunc right, UpFunc up, DownFunc down)
 		{
+            horiz = InputPlayers.player0.GetAxis(HorizontalButton);
+            vert = InputPlayers.player0.GetAxis(VerticalButton);
 
-			// Logic to ensure only one direction is ever being used. Favors horizontal selection over vertical selection.
-			if (horiz != 0 && vert != 0)
-			{
-				vert = 0;
-			}
-
-			print("HOR: " + horiz);
-			print("VER: " + vert);
-
-			if (InputPlayers.player0.GetButtonUp(HorizontalButton))
-			{
-				horiz = 0;
-				hasSounded = false;
-			}
-			if (InputPlayers.player0.GetButtonUp(VerticalButton))
-			{
-				vert = 0;
-				hasSounded = false;
-			}
+            if (horiz < LIMIT && vert < LIMIT)
+            {
+                changeBumpers("off");
+            }
 
 			// Audio for each option if user holds down key for long enough
 		//	if (!hasSounded) // To be used if the welcome instructions should be skippable if the user presses a button
-			if (!source.isPlaying && !hasSounded) // To be used if the welcome instructions are supposed to be unskippable
-			{
-				if (horiz >= HOLDLIMIT) // Right
-				{
-					playDirectionalSound(rightSound);
-					horiz = 0;
-				}	
-				else if (horiz <= -(HOLDLIMIT) ) // Left
-				{
-					playDirectionalSound(leftSound);
-					horiz = 0;
-				}	
+			 if (horiz >= LIMIT) // Right
+			 {
+                if (!source.isPlaying) playDirectionalSound(rightSound);
+                changeBumpers("Right");
+			 }	
+			 else if (horiz <= -(LIMIT) ) // Left
+			 {
+                if (!source.isPlaying) playDirectionalSound(leftSound);
+                changeBumpers("Left");
+            }	
+           
+			 if (vert >= LIMIT) // Up
+			 {
+                if (!source.isPlaying) playDirectionalSound(upSound);
+                changeBumpers("Up");
+            }
+			 else if (vert <= -(LIMIT) ) // Down
+			 {
+                if (!source.isPlaying) playDirectionalSound(downSound);
+                changeBumpers("Down");
+            }
 
-				if (vert >= HOLDLIMIT) // Up
-				{	
-					playDirectionalSound(upSound);
-					vert = 0;
-				}
-				else if (vert <= -(HOLDLIMIT) ) // Down
-				{
-					playDirectionalSound(downSound);
-					vert = 0;
-				}
-			}
+            if (InputPlayers.player0.GetButtonDown(SubmitButton))
+            {
+                if (horiz > LIMIT) // Right
+                {
+                    right();
+                }
+                else if (horiz < -1*LIMIT) // Left
+                {
+                    left();
+                }
 
-			float horizonDir = InputPlayers.player0.GetAxis(HorizontalButton);
-			float verticDir = InputPlayers.player0.GetAxis(VerticalButton);
+                if (vert > LIMIT) // Up
+                {
+                    up();
+                }
+                else if (vert < -1*LIMIT) // Down
+                {
+                    down();
+                }
+            }
 
-			if (InputPlayers.player0.GetButtonDown(SubmitButton))
-			{
-				if (horizonDir > 0) // Right
-				{
-					right();
-				}	
-				else if (horizonDir < 0 ) // Left
-				{
-					left();
-				}	
-
-				if (verticDir > 0) // Up
-				{	
-					up();
-				}
-				else if (verticDir < 0) // Down
-				{
-					down(); 
-				}
-			}
-
-			if (horizonDir > 0) // Right
-			{
-				horiz++;
-				changeBumpers("Right");
-
-			}
-			else if (horizonDir < 0) // Left
-			{
-				horiz--;
-				changeBumpers("Left");
-			}
-			else if (verticDir > 0) // Up
-			{
-				vert++;
-				changeBumpers("Up");
-			}
-			else if (verticDir < 0) // Down
-			{
-				vert--;
-				changeBumpers("Down");
-			}
-			else
-			{
-				changeBumpers("off");
-			}
-		}
+        }
 
 	// These instances should only ever be called if a menu is missing functions
 
