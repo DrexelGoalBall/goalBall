@@ -65,7 +65,7 @@ namespace MenuTools
 				leftBumper = bumpers.Find("LeftBumper");
 				rightBumper = bumpers.Find("RightBumper");	
 				upBumper = bumpers.Find("UpBumper");
-				downBumper = bumpers.Find("DownBumper");				
+				downBumper = bumpers.Find("DownBumper");
 			}
 
 		}
@@ -190,6 +190,14 @@ namespace MenuTools
 		{
 			print ("UNDEFINEDDOWN");
 		}
+
+        /// <summary>
+        ///     Allow specific menus to stop audio when necessary
+        /// </summary>
+        protected void StopAudio()
+        {
+            source.Stop();
+        }
 
 // Private Functions
 

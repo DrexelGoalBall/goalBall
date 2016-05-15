@@ -29,7 +29,7 @@ public class MainMenu : MenuLogic
     /// </summary>
 	new private void Right()
 	{
-		Application.LoadLevel("NetworkingMenuBasic");
+		Application.LoadLevel("GameMenu");
 	}
 
     /// <summary>

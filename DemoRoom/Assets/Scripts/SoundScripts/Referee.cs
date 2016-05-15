@@ -361,60 +361,14 @@ public class Referee : NetworkBehaviour
     {
         if (isServer)
         {
-            Dictionary <int, string> numMap = new Dictionary <int, string>()
+            List<string> soundFilenames = NumberSoundUtility.NumberToSoundFilenames(scoreToRead);
+            if (soundFilenames != null)
             {
-                {0, "Zero"},
-                {1, "One"},
-                {2, "Two"},
-                {3, "Three"},
-                {4, "Four"},
-                {5, "Five"},
-                {6, "Six"},
-                {7, "Seven"},
-                {8, "Eight"},
-                {9, "Nine"},
-                {10, "Ten"},
-                {11, "Eleven"},
-                {12, "Twelve"},
-                {13, "Thirteen"},
-                {14, "Fourteen"},
-                {15, "Fifteen"},
-                {16, "Sixteen"},
-                {17, "Seventeen"},
-                {18, "Eighteen"},
-                {19, "Nineteen"},
-                {20, "Twenty"},
-                {30, "Thirty"},
-                {40, "Fourty"},
-                {50, "Fifty"},
-                {60, "Sixty"},
-                {70, "Seventy"},
-                {80, "Eighty"},
-                {90, "Ninety"}
-            };
-            string fullScore = scoreToRead.ToString();
-            int ones = fullScore[fullScore.Length-1] - '0';
-            int tens = fullScore.Length > 1 ? fullScore[fullScore.Length-2] - '0' : 0;
-
-            tens = tens * 10; // Allows reading directly into the dictionary above
-
-    //       print ("TENS: " + tens);
-    //       print("ONES: " + ones);
-            if (tens > 10)
-            {
-                    AddClipStringToQueue(numMap[tens]);    
-            }
-            
-            if (tens == 10 && ones != 0) // Tens are different because english is a beautiful language
-            {
-                AddClipStringToQueue(numMap[ones + 10]);
-            }
-            else if (tens == 0 || ones != 0) // Only use zero if tens is zero
-            {
-                AddClipStringToQueue(numMap[ones]);
+                foreach (string sfn in soundFilenames)
+                {
+                    queue.Add(sfn);
+                }
             }
         }
-
     }
-
 }

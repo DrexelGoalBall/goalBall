@@ -6,12 +6,22 @@ using MenuTools;
 /// </summary>
 public class Networking : MenuLogic 
 {
+    // Reference to NetworkManager_Custom script
+    public NetworkManager_Custom networkManager;
+
+    // Reference to JoinGameList script
+    public JoinGameList joinGameList;
+
     /// <summary>
     ///     Updates the menu logic with the functions for this menu
     /// </summary>
 	void Update () 
     {
-		directionalMenuLogic(Left, Right, Up, Down);
+        // Do not accept input, while join game list is open
+        if (!joinGameList.Displayed)
+        {
+            directionalMenuLogic(Left, Right, Up, Down);
+        }
 	}
 
     /// <summary>
@@ -27,7 +37,10 @@ public class Networking : MenuLogic
     /// </summary>
 	new private void Right()
 	{
-		// Navigate to Joining Menu
+		// Show the join game list
+        joinGameList.Displayed = true;
+        // Stop any audio from playing
+        StopAudio();
 	}
 
     /// <summary>
@@ -43,6 +56,7 @@ public class Networking : MenuLogic
     /// </summary>
 	new private void Down ()
 	{
-		// Navigate to Host Menu
+		// Try to start a game on the Goalball server
+        networkManager.GoalballServer();
 	}
 }

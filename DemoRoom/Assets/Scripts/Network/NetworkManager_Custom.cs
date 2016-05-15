@@ -12,6 +12,9 @@ using System.Linq;
 /// </summary>
 public class NetworkManager_Custom : NetworkManager
 {
+    // Reference to the ServerLink script
+    public ServerLink serverLink;
+
     // Main Menu Components
     private bool joining = false;
     private Text networkStatusText;
@@ -19,7 +22,6 @@ public class NetworkManager_Custom : NetworkManager
     // Game Components
     private Button disconnectButton;
     private Text capacityText;
-    public Text playerElementText;
     private Text connInfoText;
 
     // Indices and corresponding strings of selected team and position
@@ -93,6 +95,24 @@ public class NetworkManager_Custom : NetworkManager
     }
 
     /// <summary>
+    ///     Attempt to start a network game on the Goalball server
+    /// </summary>
+    public void GoalballServer()
+    {
+        // Connect to the server if it is not already connected
+        if (!serverLink.connector.isConnected())
+        {
+            serverLink.ConnectToServer();
+        }
+
+        // If the server is connected, request to create a game to join
+        if (serverLink.connector.isConnected())
+        {
+            serverLink.connector.CreateGame();
+        }
+    }
+
+    /// <summary>
     ///     Starts a network game without a local player
     /// </summary>
     public void ServerDirect()
@@ -100,7 +120,6 @@ public class NetworkManager_Custom : NetworkManager
         UpdateStatusUI("Creating local match...");
         // Update the connection information and start as a server
         NetworkManager.singleton.networkAddress = "localhost";
-        //NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartServer();
     }
 
@@ -112,27 +131,42 @@ public class NetworkManager_Custom : NetworkManager
         UpdateStatusUI("Hosting local match...");
         // Update the connection information and start as a host
         NetworkManager.singleton.networkAddress = "localhost";
-        //NetworkManager.singleton.networkPort = 7777;
         NetworkManager.singleton.StartHost();
     }
 
     /// <summary>
-    ///     Tries to join a network game at the provided address and port with a local player
+    ///     Attempt to join a network game at the provided address and port with a local player
     /// </summary>
-    public void JoinDirect()
+    private void JoinDirect()
+    {
+        string address = "localhost";
+        // Check if an address was provided
+        GameObject addressField = GameObject.Find("AddressField");
+        if (addressField != null)
+        {
+            string temp = addressField.GetComponent<InputField>().text;
+            if (!string.IsNullOrEmpty(temp))
+                address = temp;
+        }
+        JoinDirect(address, NetworkManager.singleton.networkPort);
+    }
+
+    /// <summary>
+    ///     Attempt to join a network game at the provided address and port with a local player
+    /// </summary>
+    /// <param name="ip"></param>
+    /// <param name="port"></param>
+    public void JoinDirect(string address, int port)
     {
         // Check if the player is already joining a game
         if (!joining)
         {
             joining = true;
-            // Check if an address was provided
-            string address = GameObject.Find("AddressField").GetComponent<InputField>().text;
-            if (string.IsNullOrEmpty(address))
-                address = "localhost";
-            UpdateStatusUI(string.Format("Joining match on {0}...", address));
-            // Update the connection information and join as a client
+            // Update the connection information
             NetworkManager.singleton.networkAddress = address;
-            //NetworkManager.singleton.networkPort = 7777;
+            NetworkManager.singleton.networkPort = port;            
+            UpdateStatusUI(string.Format("Joining match on {0}...", NetworkManager.singleton.networkAddress));
+            // Join as a client
             NetworkManager.singleton.StartClient();
         }
     }
@@ -165,7 +199,7 @@ public class NetworkManager_Custom : NetworkManager
             // Set menu UI if the current level is the offline scene
             StartCoroutine(SetupMenuSceneUI());
         }
-        else
+        else if (NetworkManager.singleton.onlineScene.Equals(Application.loadedLevelName))
         {
             // Set up the game UI otherwise
             SetupGameSceneUI();
