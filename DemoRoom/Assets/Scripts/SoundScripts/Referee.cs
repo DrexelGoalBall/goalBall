@@ -366,7 +366,7 @@ public class Referee : NetworkBehaviour
             {
                 foreach (string sfn in soundFilenames)
                 {
-                    queue.Add(sfn);
+                    AddClipStringToQueue(sfn);
                 }
             }
         }

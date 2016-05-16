@@ -61,6 +61,7 @@ public class JoinGameList : MonoBehaviour
     private AudioSource audioSource;
 
     // All of the clips that can be played
+    public List<string> Keys = new List<string>();
     public List<AudioClip> audioClips = new List<AudioClip>();
 
     // Dictionary to contain all of the clips for access
@@ -89,10 +90,11 @@ public class JoinGameList : MonoBehaviour
         serverLink.connector.GamesListChanged += UpdateGameList;
 
         // Add all of the clips to the dictionary
-        for (int i = 0; i < audioClips.Count; i++)
+        for (int i = 0; i < Keys.Count; i++)
         {
+            string name = Keys[i];
             AudioClip ac = audioClips[i];
-            clipDictionary.Add(ac.name, ac);
+            clipDictionary.Add(name, ac);
         }
     }
 
@@ -338,7 +340,7 @@ public class JoinGameList : MonoBehaviour
     /// </summary>
     private void ReadGameName()
     {
-        playlist.Add("Game2");
+        playlist.Add("Game");
 
         // Get each individual digit
         foreach (char c in games[gameIndex])

@@ -152,7 +152,7 @@ public class GameEnd : NetworkBehaviour
         if (isServer)
         {
             // Server does not need to keep game open
-            //Application.Quit();
+            Application.Quit();
         }
         else
         {
