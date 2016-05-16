@@ -9,12 +9,12 @@ using UnityEngine.Networking;
 public class GameEnd : NetworkBehaviour
 {
     // Enumeration on the possible results of the game
-    //private enum Winner
-    //{
-    //    tie,
-    //    red,
-    //    blue,
-    //}
+    private enum Winner
+    {
+        tie,
+        red,
+        blue,
+    }
 
     // References to necessary scripts
     private GameTimer gameTimer;
@@ -28,7 +28,7 @@ public class GameEnd : NetworkBehaviour
     public GameObject gameOverPanel;
 
     // The result of the game
-    //private Winner winner = Winner.tie;
+    private Winner winner = Winner.tie;
 
     // Strings to display if either team wins
     public string redWins = "RED TEAM WINS!";
@@ -88,19 +88,19 @@ public class GameEnd : NetworkBehaviour
                 {
                     winnerText.text = redWins;
                     winnerText.color = redTeamColor;
-                    //winner = Winner.red;
+                    winner = Winner.red;
                 }
                 else if (scoreKeeper.BlueScore() > scoreKeeper.RedScore())
                 {
                     winnerText.text = blueWins;
                     winnerText.color = blueTeamColor;
-                    //winner = Winner.blue;
+                    winner = Winner.blue;
                 }
                 else
                 {
                     winnerText.text = "TIE";
                     winnerText.color = Color.white;
-                    //winner = Winner.tie;
+                    winner = Winner.tie;
                 }
 
                 gameOverPanel.SetActive(true);
@@ -173,23 +173,23 @@ public class GameEnd : NetworkBehaviour
         referee.PlayGameOver();
 
         // Announce the winner
-        //switch (winner)
-        //{
-        //    case Winner.red:
-        //        referee.PlayRedTeam();
-        //        referee.PlayWins();
-        //        break;
-        //    case Winner.blue:
-        //        referee.PlayBlueTeam();
-        //        referee.PlayWins();
-        //        break;
-        //    case Winner.tie:
-        //    default:
-        //        break;
-        //}
+        switch (winner)
+        {
+            case Winner.red:
+                referee.PlayRedTeam();
+                referee.PlayWins();
+                break;
+            case Winner.blue:
+                referee.PlayBlueTeam();
+                referee.PlayWins();
+                break;
+            case Winner.tie:
+            default:
+                break;
+        }
 
         // Announce the final scores
-        //referee.PlayFinalScore();
+        referee.PlayFinalScore();
         // Red team score
         referee.PlayRedTeam();
         referee.ReadScore(scoreKeeper.RedScore());
@@ -198,6 +198,6 @@ public class GameEnd : NetworkBehaviour
         referee.ReadScore(scoreKeeper.BlueScore());
 
         // Announce how to exit to menu
-        //referee.PlayReturnToMenu();
+        referee.PlayReturnToMenu();
     }
 }
